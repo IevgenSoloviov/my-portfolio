@@ -7,6 +7,7 @@
 
   <!-- SEO -->
   <meta name="description" content="Portfolio & CV of Ievgen Soloviov. Cloud, DevOps, AI, DB Administration. Experience, education, skills, and projects.">
+  <meta name="author" content="Ievgen Soloviov">
   <meta name="theme-color" content="#0f172a">
 
   <!-- Open Graph -->
@@ -38,8 +39,8 @@
   </nav>
 
   <!-- HERO -->
-  <header class="header-box fade-in" id="hero" role="banner">
-    <img src="img/foto.jpg" alt="Portrait of Ievgen Soloviov" class="profile-pic" loading="lazy">
+  <header class="header-box" id="hero" role="banner">
+    <img src="img/foto.jpg" alt="Professional photo of Ievgen Soloviov" class="profile-pic" loading="lazy">
     <div>
       <h1>Ievgen Soloviov</h1>
       <p>Higher VET Student in Networked Computer Systems Administration</p>
@@ -55,7 +56,7 @@
   </header>
 
   <!-- MAIN CONTENT -->
-  <main id="main">
+  <main id="main" role="main">
 
     <!-- ABOUT -->
     <section id="about" class="fade-in wrap" aria-labelledby="about-title">
@@ -142,55 +143,55 @@
       </div>
     </section>
 
-    <!-- LANGUAGES & SKILLS -->
-    <section id="langskills" class="fade-in wrap" aria-labelledby="langskills-title">
-      <h2 id="langskills-title">Languages & Skills</h2>
-      <div class="grid-2">
-        <article id="languages" class="card">
-          <header class="card-head">
-            <h3>Language Skills</h3>
-            <p class="section-subtitle"><strong>Mother tongue(s):</strong> Spanish | Catalan</p>
-          </header>
-          <div class="grid-2 narrow">
-            <div>
-              <h4>English</h4>
-              <ul class="card-body">
-                <li>Listening: B1</li>
-                <li>Reading: B1</li>
-                <li>Speaking: B1-B2</li>
-                <li>Writing: B1</li>
-              </ul>
-            </div>
-            <div>
-              <h4>Russian</h4>
-              <ul class="card-body">
-                <li>Listening: A2</li>
-                <li>Reading: A1</li>
-                <li>Speaking: A2</li>
-                <li>Writing: A2</li>
-              </ul>
-            </div>
+    <!-- LANGUAGES -->
+    <section id="languages" class="fade-in wrap" aria-labelledby="languages-title">
+      <h2 id="languages-title">Languages</h2>
+      <article class="card">
+        <header class="card-head">
+          <p class="section-subtitle"><strong>Mother tongue(s):</strong> Spanish | Catalan</p>
+        </header>
+        <div class="grid-2 narrow">
+          <div>
+            <h4>English</h4>
+            <ul class="card-body">
+              <li>Listening: B1</li>
+              <li>Reading: B1</li>
+              <li>Speaking: B1-B2</li>
+              <li>Writing: B1</li>
+            </ul>
           </div>
-        </article>
+          <div>
+            <h4>Russian</h4>
+            <ul class="card-body">
+              <li>Listening: A2</li>
+              <li>Reading: A1</li>
+              <li>Speaking: A2</li>
+              <li>Writing: A2</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
 
-        <article id="skills" class="card">
-          <header class="card-head"><h3>Technical Skills</h3></header>
-          <ul class="skills-chiplist">
-            <li class="chip">SQL & Database Administration</li>
-            <li class="chip">Linux / Windows Server</li>
-            <li class="chip">Active Directory</li>
-            <li class="chip">Networking & Subnetting</li>
-            <li class="chip">Firewalls & Security</li>
-            <li class="chip">Docker (basic)</li>
-            <li class="chip">Automation: PowerShell, Python, YAML</li>
-            <li class="chip">Web: HTML, CSS, JS</li>
-            <li class="chip">Git / GitHub</li>
-            <li class="chip">Office 365 suite</li>
-            <li class="chip">Problem solving</li>
-            <li class="chip">Teamwork & collaboration</li>
-          </ul>
-        </article>
-      </div>
+    <!-- SKILLS -->
+    <section id="skills" class="fade-in wrap" aria-labelledby="skills-title">
+      <h2 id="skills-title">Technical Skills</h2>
+      <article class="card">
+        <ul class="skills-chiplist">
+          <li class="chip">SQL & Database Administration</li>
+          <li class="chip">Linux / Windows Server</li>
+          <li class="chip">Active Directory</li>
+          <li class="chip">Networking & Subnetting</li>
+          <li class="chip">Firewalls & Security</li>
+          <li class="chip">Docker (basic)</li>
+          <li class="chip">Automation: PowerShell, Python, YAML</li>
+          <li class="chip">Web: HTML, CSS, JS</li>
+          <li class="chip">Git / GitHub</li>
+          <li class="chip">Office 365 suite</li>
+          <li class="chip">Problem solving</li>
+          <li class="chip">Teamwork & collaboration</li>
+        </ul>
+      </article>
     </section>
 
     <!-- PROJECTS -->
@@ -274,8 +275,10 @@
   </footer>
 
   <!-- Floating buttons -->
-  <button id="theme-toggle" aria-label="Toggle color theme">🌙</button>
-  <button id="scrollTopBtn" title="Go to top" aria-label="Scroll to top">⬆</button>
+  <div class="floating-controls">
+    <button id="theme-toggle" aria-label="Toggle color theme">🌙</button>
+    <button id="scrollTopBtn" title="Go to top" aria-label="Scroll to top">⬆</button>
+  </div>
 
   <script>document.getElementById('year').textContent = new Date().getFullYear()</script>
   <script src="script.js" defer></script>
