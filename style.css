@@ -1,17 +1,84 @@
-:root { --maxw: 900px; --main: #2c3e50; --accent: #3498db; }
+:root {
+  --maxw: 900px;
+  --main: #2c3e50;
+  --accent: #3498db;
+  --bg-light: #f9f9f9;
+}
+
 * { box-sizing: border-box; }
-body { margin:0; font-family: system-ui, Arial, sans-serif; line-height:1.6; color:#333; background:#fdfdfd; }
+body {
+  margin:0;
+  font-family: system-ui, Arial, sans-serif;
+  line-height:1.6;
+  color:#333;
+  background:#fdfdfd;
+}
 .wrap { max-width: var(--maxw); margin: auto; padding: 1.5rem; }
 
-.header-box { display:flex; align-items:center; gap:1.5rem; background: var(--main); color:#fff; padding:2rem 1rem; }
-.profile-pic { width:150px; height:150px; border-radius:50%; object-fit:cover; border:3px solid var(--accent); }
+.header-box {
+  display:flex;
+  align-items:center;
+  gap:1.5rem;
+  background: var(--main);
+  color:#fff;
+  padding:2rem 1rem;
+}
+.profile-pic {
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid var(--accent);
+}
 
 header h1 { margin:0; font-size: 2rem; }
 header p { margin:0.3rem 0; }
 
-h2 { margin-top:2rem; border-bottom:2px solid var(--accent); padding-bottom:0.3rem; }
+h2 {
+  margin-top:2rem;
+  border-bottom:2px solid var(--accent);
+  padding-bottom:0.3rem;
+}
 
 ul { padding-left:1.2rem; }
 ul li { margin-bottom:0.4rem; }
 
-footer { text-align:center; margin-top:2rem; padding:1rem; background:#f4f4f4; color:#555; }
+/* --- PROJECTS STYLING --- */
+#projects {
+  background: var(--bg-light);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+#projects article {
+  background:#fff;
+  padding:1rem 1.5rem;
+  margin-bottom:1.5rem;
+  border-radius:10px;
+  border-left:5px solid var(--accent);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+#projects h3 {
+  margin-top:0;
+  color: var(--main);
+}
+#projects p em {
+  color:#555;
+}
+#projects a {
+  color: var(--accent);
+  font-weight:bold;
+  text-decoration:none;
+}
+#projects a:hover {
+  text-decoration:underline;
+}
+
+/* --- FOOTER --- */
+footer {
+  text-align:center;
+  margin-top:2rem;
+  padding:1rem;
+  background:#f4f4f4;
+  color:#555;
+}
