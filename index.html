@@ -1,93 +1,106 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Ievgen Soloviov - Portfolio & CV</title>
+document.addEventListener("DOMContentLoaded", () => {
+  // ---------- Navbar: canvi de fons quan hi ha scroll ----------
+  const nav = document.querySelector('.navbar');
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    if (Math.abs(window.scrollY - lastScroll) > 10) {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+      lastScroll = window.scrollY;
+    }
+  }, { passive: true });
 
-  <!-- SEO -->
-  <meta name="description" content="Portfolio & CV of Ievgen Soloviov. Cloud, DevOps, AI, DB Administration. Experience, education, skills, and projects.">
-  <meta name="author" content="Ievgen Soloviov">
-  <meta name="theme-color" content="#0f172a">
+  // ---------- Enllaç actiu segons secció visible ----------
+  const hero = document.querySelector('#hero');          // 👈 afegim hero
+  const sections = document.querySelectorAll('section'); 
+  const allSections = [hero, ...sections];               // 👈 incloure hero
+  const links = document.querySelectorAll('.nav-links a');
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Ievgen Soloviov - Portfolio & CV">
-  <meta property="og:description" content="Cloud • DevOps • AI • Databases. Experience, education, skills, and projects.">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="img/preview.png">
-  <meta property="og:image:alt" content="Preview of Ievgen Soloviov Portfolio">
+  const setActive = (id) => {
+    links.forEach(a => {
+      const active = a.getAttribute('href') === `#${id}`;
+      a.classList.toggle('active', active);
+      a.setAttribute("aria-current", active ? "page" : "");
+    });
+  };
 
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <a href="#main" class="sr-only">Skip to main content</a>
+  const ioActive = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) setActive(entry.target.id);
+    });
+  }, { rootMargin: "-40% 0px -50% 0px", threshold: 0.2 });
 
-  <!-- NAVBAR -->
-  <nav class="navbar" role="navigation" aria-label="Primary">
-    <div class="nav-container">
-      <a href="#hero" class="logo">Ievgen<span>Soloviov</span></a>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#languages">Languages</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-  </nav>
+  allSections.forEach(s => ioActive.observe(s));
 
-  <!-- HERO -->
-  <header class="header-box" id="hero" role="banner">
-    <img src="img/foto.jpg" alt="Professional photo of Ievgen Soloviov" class="profile-pic" loading="lazy">
-    <div>
-      <h1>Ievgen Soloviov</h1>
-      <p class="subtitle">Higher VET Student in Networked Computer Systems Administration</p>
-      <p>Passionate about <strong>cloud technologies</strong>, <strong>automation</strong>, <strong>artificial intelligence</strong>, and <strong>database management</strong>.</p>
-      <p class="icons-line">☁️ Cloud Computing | ⚙️ DevOps | 🤖 Artificial Intelligence | 🗄 Database Administration</p>
-      <p class="motto">Motivated to keep learning and take on challenges that enhance efficiency, security, and scalability in IT environments.</p>
+  // ---------- Animació d’entrada (fade-in) ----------
+  const toFade = [...allSections, ...document.querySelectorAll('section article')];
+  toFade.forEach(el => el.classList.add('fade-in'));
 
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#projects">See projects</a>
-        <a class="btn btn-ghost" href="#contact">Contact me</a>
-      </div>
-    </div>
-  </header>
+  const ioFade = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        ioFade.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
 
-  <!-- MAIN CONTENT -->
-  <main id="main" role="main">
-    <!-- ABOUT -->
-    <section id="about" class="fade-in wrap" aria-labelledby="about-title">
-      <h2 id="about-title">About Me</h2>
-      <article class="card">
-        <p>
-          Hello! My name is <strong>Ievgen Soloviov</strong>, I’m a Higher VET student in 
-          Networked Computer Systems Administration. I’m passionate about cloud, 
-          DevOps, automation, AI and database administration. My goal is to keep learning 
-          and growing as an IT professional.
-        </p>
-      </article>
-    </section>
+  toFade.forEach(el => ioFade.observe(el));
 
-    <!-- (la resta de seccions es queden igual que tens ara) -->
-  </main>
+  // ---------- Dark / Light Mode ----------
+  const toggleBtn = document.getElementById('theme-toggle');
+  if (toggleBtn) {
+    const applyTheme = (light) => {
+      document.body.classList.toggle("light", light);
+      toggleBtn.textContent = light ? "☀️" : "🌙";
+      toggleBtn.setAttribute("aria-pressed", String(light));
+    };
 
-  <!-- FOOTER -->
-  <footer class="wrap" role="contentinfo">
-    <small>© <span id="year"></span> Ievgen Soloviov · 
-      <a href="mailto:evgensoloviov12@gmail.com">Contact</a> · 
-      <a href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299" target="_blank">LinkedIn</a>
-    </small>
-  </footer>
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    applyTheme(localStorage.getItem("theme") === "light" || (!localStorage.getItem("theme") && prefersLight));
 
-  <!-- Floating buttons -->
-  <div class="floating-controls">
-    <button id="theme-toggle" aria-label="Toggle color theme">🌙</button>
-    <button id="scrollTopBtn" title="Go to top" aria-label="Scroll to top">⬆</button>
-  </div>
+    toggleBtn.addEventListener('click', () => {
+      const isLight = !document.body.classList.contains("light");
+      applyTheme(isLight);
+      localStorage.setItem("theme", isLight ? "light" : "dark");
+    });
+  }
 
-  <script>document.getElementById('year').textContent = new Date().getFullYear()</script>
-  <script src="script.js" defer></script>
-</body>
-</html>
+  // ---------- Comptadors ----------
+  const counters = document.querySelectorAll('.counter');
+  const animateCounter = (counter) => {
+    const target = +counter.getAttribute('data-target');
+    let count = 0;
+    const step = target / 60;
+    const formatter = new Intl.NumberFormat();
+
+    const update = () => {
+      count = Math.min(count + step, target);
+      counter.textContent = formatter.format(Math.floor(count));
+      if (count < target) requestAnimationFrame(update);
+    };
+    update();
+  };
+
+  const ioCounter = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        ioCounter.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.6 });
+
+  counters.forEach(c => ioCounter.observe(c));
+
+  // ---------- Botó Scroll To Top ----------
+  const scrollBtn = document.getElementById("scrollTopBtn");
+  if (scrollBtn) {
+    window.addEventListener('scroll', () => {
+      scrollBtn.classList.toggle("show", window.scrollY > 300);
+    }, { passive: true });
+
+    scrollBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+});
