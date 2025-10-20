@@ -24,7 +24,7 @@
   </nav>
 
   <!-- HEADER -->
-  <header class="wrap header-box">
+  <header class="wrap header-box fade-in">
     <img src="img/foto.jpg" alt="Ievgen Soloviov" class="profile-pic">
     <div>
       <h1>Ievgen Soloviov</h1>
@@ -37,7 +37,27 @@
 
   <!-- MAIN CONTENT -->
   <main class="wrap">
-    <section id="experience">
+
+    <!-- HIGHLIGHTS -->
+    <section id="highlights" class="fade-in">
+      <h2>Highlights</h2>
+      <div class="highlight-grid">
+        <div class="highlight">
+          <h3 class="counter" data-target="100">0</h3>
+          <p>Resolved Incidents</p>
+        </div>
+        <div class="highlight">
+          <h3 class="counter" data-target="50">0</h3>
+          <p>Servers Managed</p>
+        </div>
+        <div class="highlight">
+          <h3 class="counter" data-target="5">0</h3>
+          <p>Projects Delivered</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="fade-in">
       <h2>WORK EXPERIENCE</h2>
       <article>
         <h3> SERHS – PINEDA DE MAR, SPAIN</h3>
@@ -67,7 +87,7 @@
       </article>
     </section>
 
-    <section id="education">
+    <section id="education" class="fade-in">
       <h2>EDUCATION AND TRAINING</h2>
       <p>09/2024 – CURRENT · Blanes, Spain</p>
       <p><strong>HIGHER TECHNICIAN IN COMPUTER NETWORK SYSTEMS MANAGEMENT</strong> – Institut Sa Palomera</p>
@@ -81,7 +101,7 @@
       <p>Field of study: Information and Communication Technologies (ICTs)</p>
     </section>
 
-    <section id="languages">
+    <section id="languages" class="fade-in">
       <h2>LANGUAGE SKILLS</h2>
       <p><strong>Mother tongue(s):</strong> SPANISH | CATALAN</p>
       <h3>ENGLISH</h3>
@@ -102,7 +122,7 @@
       </ul>
     </section>
 
-    <section id="skills">
+    <section id="skills" class="fade-in">
       <h2>SKILLS</h2>
       <ul>
         <li>SQL & Database Administration</li>
@@ -124,7 +144,7 @@
       </ul>
     </section>
 
-    <section id="projects">
+    <section id="projects" class="fade-in">
       <h2>PROJECTS</h2>
       <div class="projects-grid">
         <article>
@@ -164,7 +184,7 @@
       </div>
     </section>
 
-    <section id="contact">
+    <section id="contact" class="fade-in">
       <h2>CONTACT</h2>
       <p><strong>Phone:</strong> +34 646 249 536</p>
       <p><strong>Email:</strong> <a href="mailto:evgensoloviov12@gmail.com">evgensoloviov12@gmail.com</a></p>
@@ -176,6 +196,10 @@
   <footer class="wrap">
     <small>© <span id="year"></span> Ievgen Soloviov</small>
   </footer>
+
+  <!-- Botons extra -->
+  <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+  <button id="scrollTopBtn" title="Go to top">⬆</button>
 
   <script>document.getElementById('year').textContent = new Date().getFullYear()</script>
   <script src="script.js"></script>
