@@ -7,16 +7,18 @@ document.addEventListener("DOMContentLoaded", () => {
       nav.classList.toggle('scrolled', window.scrollY > 50);
       lastScroll = window.scrollY;
     }
-  });
+  }, { passive: true });
 
   // ---------- Enllaç actiu segons secció visible ----------
   const sections = document.querySelectorAll('main section');
   const links = document.querySelectorAll('.nav-links a');
 
   const setActive = (id) => {
-    links.forEach(a =>
-      a.classList.toggle('active', a.getAttribute('href') === `#${id}`)
-    );
+    links.forEach(a => {
+      const active = a.getAttribute('href') === `#${id}`;
+      a.classList.toggle('active', active);
+      a.setAttribute("aria-current", active ? "page" : "");
+    });
   };
 
   const ioActive = new IntersectionObserver(entries => {
@@ -48,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const applyTheme = (light) => {
       document.body.classList.toggle("light", light);
       toggleBtn.textContent = light ? "🌙" : "☀️";
-      toggleBtn.setAttribute("aria-pressed", light);
+      toggleBtn.setAttribute("aria-pressed", String(light));
     };
 
     // carregar estat del localStorage
@@ -67,16 +69,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const target = +counter.getAttribute('data-target');
     let count = 0;
     const step = target / 60; // 60 frames aprox
-    const formatter = new Intl.NumberFormat(); // separadors
+    const formatter = new Intl.NumberFormat();
 
     const update = () => {
-      count += step;
-      if (count < target) {
-        counter.textContent = formatter.format(Math.floor(count));
-        requestAnimationFrame(update);
-      } else {
-        counter.textContent = formatter.format(target);
-      }
+      count = Math.min(count + step, target);
+      counter.textContent = formatter.format(Math.floor(count));
+      if (count < target) requestAnimationFrame(update);
     };
     update();
   };
@@ -97,7 +95,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (scrollBtn) {
     window.addEventListener('scroll', () => {
       scrollBtn.classList.toggle("show", window.scrollY > 300);
-    });
+    }, { passive: true });
+
     scrollBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
