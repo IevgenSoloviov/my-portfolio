@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const links = document.querySelectorAll('.nav-links a');
 
   const setActive = (id) => {
-    links.forEach(a => 
+    links.forEach(a =>
       a.classList.toggle('active', a.getAttribute('href') === `#${id}`)
     );
   };
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     entries.forEach(entry => {
       if (entry.isIntersecting) setActive(entry.target.id);
     });
-  },{ rootMargin: "-40% 0px -50% 0px", threshold: 0.1 });
+  }, { rootMargin: "-40% 0px -50% 0px", threshold: 0.2 });
 
   sections.forEach(s => ioActive.observe(s));
 
@@ -29,37 +29,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const ioFade = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-      if (entry.isIntersecting){
+      if (entry.isIntersecting) {
         entry.target.classList.add('visible');
         ioFade.unobserve(entry.target);
       }
     });
-  },{ threshold: 0.2 });
+  }, { threshold: 0.2 });
 
   toFade.forEach(el => ioFade.observe(el));
 
   // ---------- Dark / Light Mode ----------
   const toggleBtn = document.getElementById('theme-toggle');
-  if(toggleBtn){
-    // Carregar estat del localStorage
-    if(localStorage.getItem("theme") === "light"){
-      document.documentElement.classList.add("light-mode");
+  if (toggleBtn) {
+    // carregar estat del localStorage
+    if (localStorage.getItem("theme") === "light") {
+      document.body.classList.add("light");
       toggleBtn.textContent = "🌙";
     } else {
-      document.documentElement.classList.add("dark-mode");
+      document.body.classList.remove("light");
       toggleBtn.textContent = "☀️";
     }
 
     toggleBtn.addEventListener('click', () => {
-      document.documentElement.classList.toggle("light-mode");
-      document.documentElement.classList.toggle("dark-mode");
-      const light = document.documentElement.classList.contains("light-mode");
+      document.body.classList.toggle("light");
+      const light = document.body.classList.contains("light");
       toggleBtn.textContent = light ? "🌙" : "☀️";
       localStorage.setItem("theme", light ? "light" : "dark");
     });
   }
 
-  // ---------- Comptadors (Highlights) ----------
+  // ---------- Comptadors (Highlights opcionals) ----------
   const counters = document.querySelectorAll('.counter');
   const animateCounter = (counter) => {
     const target = +counter.getAttribute('data-target');
@@ -85,13 +84,13 @@ document.addEventListener("DOMContentLoaded", () => {
         ioCounter.unobserve(entry.target);
       }
     });
-  },{ threshold: 0.6 });
+  }, { threshold: 0.6 });
 
   counters.forEach(c => ioCounter.observe(c));
 
   // ---------- Botó Scroll To Top ----------
   const scrollBtn = document.getElementById("scrollTopBtn");
-  if(scrollBtn){
+  if (scrollBtn) {
     window.addEventListener('scroll', () => {
       scrollBtn.classList.toggle("show", window.scrollY > 300);
     });
