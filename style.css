@@ -75,7 +75,6 @@ body {
 .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
 
 /* ------------------ HERO ------------------ */
-/* ------------------ HERO BASE ------------------ */
 .header-box {
   display: flex;
   flex-direction: column;
@@ -111,7 +110,6 @@ body {
   box-shadow: var(--shadow);
   transition: transform .4s ease, box-shadow .3s ease;
 }
-
 .profile-pic:hover {
   transform: scale(1.07) rotate(2deg);
   box-shadow:0 15px 40px rgba(0,0,0,.4);
@@ -127,7 +125,7 @@ body {
   .header-box div { flex: 1; }
 }
 
-/* ------------------ HERO TEXT ------------------ */
+/* Textos del hero */
 .header-box h1 {
   font-size: clamp(2.6rem, 5vw, 3.8rem);
   font-weight: 800;
@@ -135,8 +133,6 @@ body {
   color: #fff;
   text-shadow: 0 2px 8px rgba(0,0,0,.25);
 }
-
-/* subtítol (rol) */
 .header-box .subtitle {
   font-size: 1.25rem;
   font-weight: 600;
@@ -144,7 +140,6 @@ body {
   margin-bottom: 1.2rem;
   opacity: 0.95;
 }
-
 .header-box p {
   max-width: 750px;
   margin: .6rem auto;
@@ -152,8 +147,6 @@ body {
   line-height: 1.75;
   opacity: .95;
 }
-
-/* línia amb icones */
 .header-box .icons-line {
   font-size: 1.15rem;
   font-weight: 600;
@@ -164,8 +157,6 @@ body {
   flex-wrap: wrap;
   justify-content: center;
 }
-
-/* missatge final */
 .header-box .motto {
   font-style: italic;
   opacity: 0.9;
@@ -173,35 +164,21 @@ body {
   font-size: 1rem;
 }
 
-/* botons del hero */
-.hero-actions {
-  margin-top: 2rem;
-}
-
+/* Botons hero */
+.hero-actions { margin-top: 2rem; }
 .hero-actions .btn {
   padding: .85rem 1.5rem;
   font-size: 1rem;
   border-radius: 14px;
 }
 
-/* RESPONSIVE */
+/* Responsive hero */
 @media (max-width: 640px){
-  .header-box h1 {
-    font-size: 2rem;
-  }
-  .header-box .subtitle {
-    font-size: 1.05rem;
-    margin-bottom: .8rem;
-  }
-  .header-box p {
-    font-size: .95rem;
-  }
-  .header-box .icons-line {
-    font-size: 1rem;
-    gap: .5rem;
-  }
+  .header-box h1 { font-size: 2rem; }
+  .header-box .subtitle { font-size: 1.05rem; margin-bottom: .8rem; }
+  .header-box p { font-size: .95rem; }
+  .header-box .icons-line { font-size: 1rem; gap: .5rem; }
 }
-
 
 /* ------------------ ABOUT ------------------ */
 #about {
@@ -394,8 +371,6 @@ body.light footer { background:#e2e8f0; color:#0f172a; }
   .nav-links { gap: 1rem; font-size:.9rem; }
   .header-box { flex-direction:column; text-align:center; padding:5rem 1.5rem; }
   .profile-pic { width:130px; height:130px; }
-  .header-box h1 { font-size:2rem; }
-  .header-box p { padding: 0 .2rem; }
   #about, #languages, #skills { padding: 2rem 1rem; }
 }
 
@@ -406,5 +381,3 @@ body.light footer { background:#e2e8f0; color:#0f172a; }
   a { color:#000; text-decoration: underline; }
   .header-box { border-radius: 0; box-shadow: none; }
 }
-
-actualitza
