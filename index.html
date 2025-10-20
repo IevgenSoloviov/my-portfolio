@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Ievgen Soloviov - Portfolio & CV</title>
 
-  <!-- SEO basics -->
+  <!-- SEO -->
   <meta name="description" content="Portfolio & CV of Ievgen Soloviov. Cloud, DevOps, AI, DB Administration. Experience, education, skills, and projects.">
   <meta name="theme-color" content="#0f172a">
 
@@ -14,12 +14,10 @@
   <meta property="og:description" content="Cloud • DevOps • AI • Databases. Experience, education, skills, and projects.">
   <meta property="og:type" content="website">
 
-  <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Skip to content for accessibility -->
-  <a href="#main" class="sr-only" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Skip to main content</a>
+  <a href="#main" class="sr-only">Skip to main content</a>
 
   <!-- NAVBAR -->
   <nav class="navbar" role="navigation" aria-label="Primary">
@@ -36,7 +34,7 @@
     </div>
   </nav>
 
-  <!-- HEADER -->
+  <!-- HERO -->
   <header class="wrap header-box fade-in" id="hero" role="banner">
     <img src="img/foto.jpg" alt="Portrait of Ievgen Soloviov" class="profile-pic" loading="lazy" decoding="async">
     <div>
@@ -45,108 +43,172 @@
       <p>► Passionate about cloud technologies, automation, artificial intelligence, and database management</p>
       <p>☁️ Cloud Computing | ⚙️ DevOps | → Artificial Intelligence | → Database Administration</p>
       <p>► Motivated to keep learning and to take on challenges that enhance efficiency, security, and scalability in IT environments</p>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#projects">See projects</a>
+        <a class="btn btn-ghost" href="#contact">Contact me</a>
+      </div>
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
   <main class="wrap" id="main">
+
+    <!-- EXPERIENCE (TIMELINE) -->
     <section id="experience" class="fade-in" aria-labelledby="exp-title">
       <h2 id="exp-title">WORK EXPERIENCE</h2>
 
-      <article aria-labelledby="serhs-title">
-        <h3 id="serhs-title"> SERHS – PINEDA DE MAR, SPAIN</h3>
-        <h4>SERVICE DESK TECHNICIAN (INTERNSHIP) – 11/06/2025 – 20/11/2025</h4>
-        <ul>
-          <li>Resolved technical incidents in hardware and software.</li>
-          <li>Installed, configured, and maintained operating systems.</li>
-          <li>Provided basic administration of Active Directory.</li>
-          <li>Supported mobile device management.</li>
-          <li>Used ticketing tools (JIRA) to track and follow up on incidents.</li>
-          <li>Assisted users through on-site and remote support.</li>
-          <li>Gained knowledge of corporate network infrastructure, switch management, and cabling.</li>
-          <li>Introduced to security administration, firewall rule review and understanding.</li>
-        </ul>
-      </article>
+      <ol class="timeline">
+        <li class="timeline-item">
+          <div class="timeline-dot"></div>
+          <article class="card" aria-labelledby="serhs-title">
+            <header class="card-head">
+              <h3 id="serhs-title"> SERHS – PINEDA DE MAR, SPAIN</h3>
+              <p class="meta"><strong>Service Desk Technician (Internship)</strong> · 11/06/2025 – 20/11/2025</p>
+            </header>
+            <ul class="card-body">
+              <li>Resolved technical incidents in hardware and software.</li>
+              <li>Installed, configured, and maintained operating systems.</li>
+              <li>Provided basic administration of Active Directory.</li>
+              <li>Supported mobile device management.</li>
+              <li>Used ticketing tools (JIRA) to track and follow up on incidents.</li>
+              <li>Assisted users through on-site and remote support.</li>
+              <li>Gained knowledge of corporate network infrastructure, switch management, and cabling.</li>
+              <li>Introduced to security administration, firewall rule review and understanding.</li>
+            </ul>
+          </article>
+        </li>
 
-      <article aria-labelledby="lloret-title">
-        <h3 id="lloret-title"> LLORET DE MAR TOWN COUNCIL – LLORET DE MAR, SPAIN</h3>
-        <h4>IT ASSISTANT (INTERNSHIP) – 04/2023 – 08/2023</h4>
-        <ul>
-          <li>Managed and updated the content management system (Plone).</li>
-          <li>Implemented design and styles in web pages (CSS).</li>
-          <li>Administered and updated municipal websites.</li>
-          <li>Used mobile application management systems (Lloret Smart).</li>
-          <li>Provided technical support to end-users.</li>
-        </ul>
-      </article>
+        <li class="timeline-item">
+          <div class="timeline-dot"></div>
+          <article class="card" aria-labelledby="lloret-title">
+            <header class="card-head">
+              <h3 id="lloret-title"> LLORET DE MAR TOWN COUNCIL – LLORET DE MAR, SPAIN</h3>
+              <p class="meta"><strong>IT Assistant (Internship)</strong> · 04/2023 – 08/2023</p>
+            </header>
+            <ul class="card-body">
+              <li>Managed and updated the content management system (Plone).</li>
+              <li>Implemented design and styles in web pages (CSS).</li>
+              <li>Administered and updated municipal websites.</li>
+              <li>Used mobile application management systems (Lloret Smart).</li>
+              <li>Provided technical support to end-users.</li>
+            </ul>
+          </article>
+        </li>
+      </ol>
     </section>
 
+    <!-- EDUCATION (CARDS) -->
     <section id="education" class="fade-in" aria-labelledby="edu-title">
       <h2 id="edu-title">EDUCATION AND TRAINING</h2>
-      <p>09/2024 – CURRENT · Blanes, Spain</p>
-      <p><strong>HIGHER TECHNICIAN IN COMPUTER NETWORK SYSTEMS MANAGEMENT</strong> – Institut Sa Palomera</p>
-      <p>Website: <a href="http://www.sapalomera.cat" target="_blank" rel="noopener noreferrer">www.sapalomera.cat</a></p>
-      <p>Field of study: Information and Communication Technologies</p>
-      <p>Level in EQF: EQF level 5</p>
 
-      <p>09/2022 – 06/2024 · Blanes, Spain</p>
-      <p><strong>TECHNICIAN IN MICROCOMPUTER SYSTEMS AND NETWORKS</strong> – Institut Sa Palomera</p>
-      <p>Website: <a href="http://www.sapalomera.cat" target="_blank" rel="noopener noreferrer">www.sapalomera.cat</a></p>
-      <p>Field of study: Information and Communication Technologies (ICTs)</p>
+      <div class="grid-2">
+        <article class="card">
+          <header class="card-head">
+            <p class="meta">09/2024 – CURRENT · Blanes, Spain</p>
+            <h3>Higher Technician in Computer Network Systems Management</h3>
+            <p class="meta">Institut Sa Palomera · <a href="http://www.sapalomera.cat" target="_blank" rel="noopener noreferrer">www.sapalomera.cat</a></p>
+          </header>
+          <ul class="card-body">
+            <li>Field of study: Information and Communication Technologies</li>
+            <li>Level in EQF: EQF level 5</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <header class="card-head">
+            <p class="meta">09/2022 – 06/2024 · Blanes, Spain</p>
+            <h3>Technician in Microcomputer Systems and Networks</h3>
+            <p class="meta">Institut Sa Palomera · <a href="http://www.sapalomera.cat" target="_blank" rel="noopener noreferrer">www.sapalomera.cat</a></p>
+          </header>
+          <ul class="card-body">
+            <li>Field of study: Information and Communication Technologies (ICTs)</li>
+          </ul>
+        </article>
+      </div>
     </section>
 
-    <section id="languages" class="fade-in" aria-labelledby="lang-title">
-      <h2 id="lang-title">LANGUAGE SKILLS</h2>
-      <p><strong>Mother tongue(s):</strong> SPANISH | CATALAN</p>
+    <!-- LANGUAGES + SKILLS (GRID) -->
+    <section class="fade-in" aria-labelledby="langskills-title">
+      <h2 id="langskills-title">LANGUAGES & SKILLS</h2>
 
-      <h3>ENGLISH</h3>
-      <ul>
-        <li>Listening: B1</li>
-        <li>Reading: B1</li>
-        <li>Spoken production: B2</li>
-        <li>Spoken interaction: B1</li>
-        <li>Writing: B1</li>
-      </ul>
+      <div class="grid-2">
+        <!-- LANGUAGES -->
+        <article id="languages" class="card">
+          <header class="card-head">
+            <h3>Language Skills</h3>
+            <p class="section-subtitle"><strong>Mother tongue(s):</strong> SPANISH | CATALAN</p>
+          </header>
 
-      <h3>RUSSIAN</h3>
-      <ul>
-        <li>Listening: A2</li>
-        <li>Reading: A1</li>
-        <li>Spoken production: A2</li>
-        <li>Spoken interaction: A2</li>
-        <li>Writing: A2</li>
-      </ul>
+          <div class="grid-2 narrow">
+            <div>
+              <h4>ENGLISH</h4>
+              <ul class="card-body">
+                <li>Listening: B1</li>
+                <li>Reading: B1</li>
+                <li>Spoken production: B2</li>
+                <li>Spoken interaction: B1</li>
+                <li>Writing: B1</li>
+              </ul>
+            </div>
+            <div>
+              <h4>RUSSIAN</h4>
+              <ul class="card-body">
+                <li>Listening: A2</li>
+                <li>Reading: A1</li>
+                <li>Spoken production: A2</li>
+                <li>Spoken interaction: A2</li>
+                <li>Writing: A2</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- SKILLS -->
+        <article id="skills" class="card">
+          <header class="card-head">
+            <h3>Skills</h3>
+          </header>
+          <ul class="skills-chiplist">
+            <li class="chip">SQL & Database Administration</li>
+            <li class="chip">Linux system administration</li>
+            <li class="chip">Windows Server & Active Directory</li>
+            <li class="chip">Networking & Subnetting</li>
+            <li class="chip">Firewalls & Security</li>
+            <li class="chip">Docker (basic)</li>
+            <li class="chip">Automation: PowerShell, Python, YAML</li>
+            <li class="chip">Web basics: HTML, CSS, JS</li>
+            <li class="chip">Git / GitHub</li>
+            <li class="chip">Office 365 suite</li>
+            <li class="chip">Network services (DNS, DHCP, FTP…)</li>
+            <li class="chip">Problem solving</li>
+            <li class="chip">Teamwork & collaboration</li>
+            <li class="chip">Time management</li>
+            <li class="chip">Customer & user support</li>
+            <li class="chip">Data protection knowledge</li>
+          </ul>
+        </article>
+      </div>
     </section>
 
-    <section id="skills" class="fade-in" aria-labelledby="skills-title">
-      <h2 id="skills-title">SKILLS</h2>
-      <ul>
-        <li>SQL & Database Administration</li>
-        <li>Linux system administration</li>
-        <li>Windows Server & Active Directory</li>
-        <li>Networking & Subnetting</li>
-        <li>Firewalls & Security</li>
-        <li>Docker (basic)</li>
-        <li>Automation & Scripting (PowerShell, Python, YAML)</li>
-        <li>Web development basics (HTML, CSS, JavaScript)</li>
-        <li>Version control (Git / GitHub)</li>
-        <li>Office tools (Word, Excel, PowerPoint, Office 365)</li>
-        <li>Network services (DNS, DHCP, FTP, etc.)</li>
-        <li>Problem solving & troubleshooting</li>
-        <li>Teamwork and collaboration</li>
-        <li>Time management & adaptability</li>
-        <li>Customer and user support</li>
-        <li>Knowledge of data protection regulations</li>
-      </ul>
-    </section>
-
+    <!-- PROJECTS (CARDS GRID) -->
     <section id="projects" class="fade-in" aria-labelledby="proj-title">
       <h2 id="proj-title">PROJECTS</h2>
+
       <div class="projects-grid">
-        <article>
-          <h3>03/2025 – 07/2025 · Hotel Management Application (Python & PostgreSQL)</h3>
-          <p><em>Intermodular project integrating programming and database modules.</em></p>
-          <ul>
+        <article class="card">
+          <header class="card-head">
+            <p class="meta">03/2025 – 07/2025</p>
+            <h3>Hotel Management Application (Python & PostgreSQL)</h3>
+            <p class="section-subtitle">Intermodular project integrating programming and database modules.</p>
+            <div class="tags">
+              <span class="badge">Python</span>
+              <span class="badge">PostgreSQL</span>
+              <span class="badge">Power BI</span>
+              <span class="badge">APIs</span>
+              <span class="badge">Agile</span>
+            </div>
+          </header>
+          <ul class="card-body">
             <li>Designed and implemented a relational database in PostgreSQL for managing a hotel chain.</li>
             <li>Developed a Python-based application to handle customers, bookings, check-in/check-out, staff, and billing.</li>
             <li>Integrated external API (Mossos d’Esquadra) for daily guest report automation.</li>
@@ -161,10 +223,20 @@
           </p>
         </article>
 
-        <article>
-          <h3>02/2024 – 06/2024 · TechSolutions IS – Final IT Infrastructure Project (Institut Sa Palomera)</h3>
-          <p><em>Design and implementation of a complete corporate network environment.</em></p>
-          <ul>
+        <article class="card">
+          <header class="card-head">
+            <p class="meta">02/2024 – 06/2024</p>
+            <h3>TechSolutions IS – Final IT Infrastructure Project (Institut Sa Palomera)</h3>
+            <p class="section-subtitle">Design and implementation of a complete corporate network environment.</p>
+            <div class="tags">
+              <span class="badge">Ubuntu</span>
+              <span class="badge">Windows</span>
+              <span class="badge">AD/LDAP</span>
+              <span class="badge">DNS/DHCP</span>
+              <span class="badge">pfSense</span>
+            </div>
+          </header>
+          <ul class="card-body">
             <li>Planned and deployed a multi-server infrastructure (Ubuntu Server & Windows).</li>
             <li>Configured Active Directory, LDAP, DHCP, DNS, Mail Server (Postfix), Web Server (Apache + WordPress + Moodle).</li>
             <li>Implemented firewall (pfSense), RAID-5, and automated backups with Déjà Dup (Google Drive integration).</li>
@@ -180,12 +252,22 @@
       </div>
     </section>
 
+    <!-- CONTACT -->
     <section id="contact" class="fade-in" aria-labelledby="contact-title">
       <h2 id="contact-title">CONTACT</h2>
-      <p><strong>Phone:</strong> +34 646 249 536</p>
-      <p><strong>Email:</strong> <a href="mailto:evgensoloviov12@gmail.com">evgensoloviov12@gmail.com</a></p>
-      <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299" target="_blank" rel="noopener noreferrer">www.linkedin.com/in/ievgen-soloviov-0709bb299</a></p>
-      <p><strong>Address:</strong> Blanes, 17300, Spain</p>
+
+      <div class="card contact-card">
+        <div class="grid-2 narrow">
+          <div>
+            <p><strong>Phone:</strong> +34 646 249 536</p>
+            <p><strong>Email:</strong> <a href="mailto:evgensoloviov12@gmail.com">evgensoloviov12@gmail.com</a></p>
+          </div>
+          <div>
+            <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299" target="_blank" rel="noopener noreferrer">www.linkedin.com/in/ievgen-soloviov-0709bb299</a></p>
+            <p><strong>Address:</strong> Blanes, 17300, Spain</p>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -199,6 +281,5 @@
 
   <script>document.getElementById('year').textContent = new Date().getFullYear()</script>
   <script src="script.js" defer></script>
-  <noscript>Your browser has JavaScript disabled. Some animations and interactions are not available.</noscript>
 </body>
 </html>
