@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }, { passive: true });
 
   // ---------- Enllaç actiu segons secció visible ----------
-  const sections = document.querySelectorAll('main section');
+  const sections = document.querySelectorAll('section'); // 👈 canviat
   const links = document.querySelectorAll('.nav-links a');
 
   const setActive = (id) => {
@@ -49,12 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (toggleBtn) {
     const applyTheme = (light) => {
       document.body.classList.toggle("light", light);
-      toggleBtn.textContent = light ? "🌙" : "☀️";
+      toggleBtn.textContent = light ? "☀️" : "🌙"; // 👈 més coherent
       toggleBtn.setAttribute("aria-pressed", String(light));
     };
 
-    // carregar estat del localStorage
-    applyTheme(localStorage.getItem("theme") === "light");
+    // carregar estat del localStorage o preferència del sistema
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    applyTheme(localStorage.getItem("theme") === "light" || (!localStorage.getItem("theme") && prefersLight));
 
     toggleBtn.addEventListener('click', () => {
       const isLight = !document.body.classList.contains("light");
