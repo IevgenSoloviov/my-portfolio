@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---------- Navbar: canvi de fons quan hi ha scroll ----------
   const nav = document.querySelector('.navbar');
   let lastScroll = 0;
+
   window.addEventListener('scroll', () => {
     if (Math.abs(window.scrollY - lastScroll) > 10) {
       nav.classList.toggle('scrolled', window.scrollY > 50);
@@ -10,9 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }, { passive: true });
 
   // ---------- Enllaç actiu segons secció visible ----------
-  const hero = document.querySelector('#hero');          // 👈 afegim hero
+  const hero = document.querySelector('#hero');
   const sections = document.querySelectorAll('section'); 
-  const allSections = [hero, ...sections];               // 👈 incloure hero
+  const allSections = [hero, ...sections];
   const links = document.querySelectorAll('.nav-links a');
 
   const setActive = (id) => {
@@ -27,14 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
     entries.forEach(entry => {
       if (entry.isIntersecting) setActive(entry.target.id);
     });
-  }, { rootMargin: "-40% 0px -50% 0px", threshold: 0.2 });
+  }, { rootMargin: "-40% 0px -50% 0px", threshold: 0.3 });
 
-  allSections.forEach(s => ioActive.observe(s));
+  allSections.forEach(s => s && ioActive.observe(s));
 
   // ---------- Animació d’entrada (fade-in) ----------
   const toFade = [...allSections, ...document.querySelectorAll('section article')];
-  toFade.forEach(el => el.classList.add('fade-in'));
-
   const ioFade = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -44,7 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }, { threshold: 0.2 });
 
-  toFade.forEach(el => ioFade.observe(el));
+  toFade.forEach(el => {
+    el.classList.add('fade-in');
+    ioFade.observe(el);
+  });
 
   // ---------- Dark / Light Mode ----------
   const toggleBtn = document.getElementById('theme-toggle');
@@ -56,7 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-    applyTheme(localStorage.getItem("theme") === "light" || (!localStorage.getItem("theme") && prefersLight));
+    const savedTheme = localStorage.getItem("theme");
+    applyTheme(savedTheme === "light" || (!savedTheme && prefersLight));
 
     toggleBtn.addEventListener('click', () => {
       const isLight = !document.body.classList.contains("light");
@@ -68,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---------- Comptadors ----------
   const counters = document.querySelectorAll('.counter');
   const animateCounter = (counter) => {
-    const target = +counter.getAttribute('data-target');
+    const target = +counter.dataset.target;
     let count = 0;
     const step = target / 60;
     const formatter = new Intl.NumberFormat();
