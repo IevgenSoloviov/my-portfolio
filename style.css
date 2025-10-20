@@ -252,3 +252,117 @@ body.light footer { background:#e2e8f0; color:#0f172a; }
   a { color:#000; text-decoration: underline; }
   .header-box { border-radius: 0; box-shadow: none; }
 }
+/* ------------------ VARIABLES ------------------ */
+:root {
+  --bg: #0f172a;
+  --text: #e2e8f0;
+  --accent: #38bdf8;
+  --card: #1e293b;
+  --radius: 18px;
+  --shadow: 0 20px 40px rgba(0,0,0,.25);
+  --transition: all .3s ease;
+  --maxw: 1100px;
+}
+
+/* ... (el teu reset i base tal com el tens) ... */
+
+/* ------------------ TARGETES GENERALS ------------------ */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.6rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 25px 50px rgba(0,0,0,.45);
+}
+.card-head h3 { margin: 0 0 .25rem; }
+.card-head .meta { color:#9fb3c8; font-size:.95rem; }
+.section-subtitle { color:#9fb3c8; margin-top:.25rem; }
+
+/* ------------------ TIMELINE (Experience) ------------------ */
+.timeline { list-style:none; margin:0; padding:0; position:relative; }
+.timeline::before {
+  content:""; position:absolute; left:14px; top:0; bottom:0;
+  width:2px; background: rgba(56,189,248,.35);
+}
+.timeline-item { position:relative; padding-left:44px; margin-bottom:1.4rem; }
+.timeline-dot {
+  position:absolute; left:6px; top:.9rem;
+  width:16px; height:16px; border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 3px rgba(56,189,248,.18);
+}
+
+/* ------------------ GRIDS ------------------ */
+.grid-2 { display:grid; grid-template-columns: 1fr; gap:1.2rem; }
+.grid-2.narrow { gap:.8rem; }
+@media (min-width: 860px){ .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+/* ------------------ SKILLS (xips) ------------------ */
+.skills-chiplist {
+  list-style:none;
+  display:flex; flex-wrap:wrap;
+  gap:.6rem; padding:.2rem 0;
+}
+.chip {
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  padding:.45rem .7rem;
+  border-radius: 999px;
+  font-size:.9rem;
+  font-weight:600;
+}
+
+/* ------------------ BADGES / TAGS ------------------ */
+.tags { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.4rem; }
+.badge {
+  background: rgba(56,189,248,.15);
+  color:#c7ecff;
+  border:1px solid rgba(56,189,248,.35);
+  padding:.3rem .55rem;
+  border-radius:999px;
+  font-size:.85rem;
+  font-weight:600;
+}
+
+/* ------------------ HERO BUTTONS ------------------ */
+.hero-actions {
+  margin-top:1.2rem;
+  display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap;
+}
+.btn {
+  display:inline-block;
+  padding:.65rem 1rem;
+  border-radius:12px;
+  font-weight:700;
+  text-decoration:none;
+  transition: var(--transition);
+}
+.btn-primary {
+  background: var(--accent); color:#0b1220;
+}
+.btn-primary:hover { transform: translateY(-2px); }
+.btn-ghost {
+  border:2px solid rgba(255,255,255,.6); color:#fff;
+}
+.btn-ghost:hover { background: rgba(255,255,255,.12); }
+
+/* ------------------ MODE CLAR ------------------ */
+body.light {
+  --bg: #f8fafc;
+  --text: #0f172a;
+  --card: #ffffff;
+}
+body.light .card { box-shadow: 0 10px 20px rgba(0,0,0,.1); }
+body.light .badge { color:#0f172a; }
+body.light footer { background:#e2e8f0; color:#0f172a; }
+
+/* ------------------ RESPONSIVE ------------------ */
+@media (max-width: 640px){
+  .wrap { padding: 3rem 1rem; }
+  .nav-links { gap: 1rem; font-size:.9rem; }
+  header h1 { font-size:2rem; }
+}
