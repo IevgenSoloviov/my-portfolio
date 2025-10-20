@@ -141,7 +141,12 @@ body {
   .header-box img { margin-right:2rem; }
   .header-box div { flex:1; }
 }
-
+.header-box h1 {
+  color: #ffffff;
+  margin-top: 1rem;  /* separació extra per si queda massa enganxat */
+  z-index: 2;
+  position: relative;
+}
 
 /* ------------------ SECCIONS ------------------ */
 .wrap { max-width: var(--maxw); margin:auto; padding:4rem 2rem; }
@@ -321,8 +326,8 @@ body.light footer { background:#e2e8f0; color:#0f172a; }
   .header-box { border-radius: 0; box-shadow: none; }
 }
 /* Ajustar una mica més el main perquè hi hagi separació neta */
-main {
-  padding-top: 2rem; /* una mica més d'espai sota el hero */
+.header-box {
+  padding: calc(var(--navbar-h) + 4rem) 2rem 4rem;
 }
 
 /* Per evitar que a pantalles petites hi hagi massa padding al hero */
