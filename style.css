@@ -1,6 +1,7 @@
 /* Font: Poppins */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap");
 
+/* ------------------ VARIABLES ------------------ */
 :root {
   --bg: #0f172a;
   --text: #e2e8f0;
@@ -9,25 +10,50 @@
   --radius: 18px;
   --shadow: 0 20px 40px rgba(0,0,0,.25);
   --transition: all .3s ease;
+  --maxw: 1100px;
 }
 
+/* ------------------ RESET BÀSIC ------------------ */
 * { margin:0; padding:0; box-sizing:border-box; }
+html, body { height: 100%; }
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.7;
+  line-height: 1.75;
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* NAVBAR */
+/* Utilitat accessibilitat (ja usada al HTML) */
+.sr-only {
+  position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
+}
+
+/* Focus accessibles */
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* ------------------ NAVBAR ------------------ */
 .navbar {
-  position: fixed; top:0; width:100%;
+  position: fixed; top:0; left:0; right:0;
   background: rgba(15,23,42,.85);
   backdrop-filter: blur(12px);
   box-shadow: 0 4px 12px rgba(0,0,0,.4);
-  z-index:1000;
+  z-index: 1000;
   padding: .9rem 2rem;
+}
+.navbar.scrolled {
+  background: rgba(15,23,42,.95);
+  box-shadow: 0 10px 24px rgba(0,0,0,.45);
+}
+.nav-container {
+  max-width: var(--maxw);
+  margin: 0 auto;
   display:flex; justify-content:space-between; align-items:center;
 }
 .navbar .logo {
@@ -42,8 +68,8 @@ body {
 }
 .nav-links a {
   color:#e2e8f0; text-decoration:none;
-  font-weight:600; transition:var(--transition);
-  position: relative;
+  font-weight:600; position: relative;
+  transition: var(--transition);
 }
 .nav-links a::after {
   content:""; position:absolute; left:0; bottom:-4px;
@@ -52,11 +78,18 @@ body {
 }
 .nav-links a:hover { color: var(--accent); }
 .nav-links a:hover::after { width:100%; }
+/* Actiu via JS */
+.nav-links a.active {
+  color: var(--accent);
+}
+.nav-links a.active::after {
+  width:100%;
+}
 
-/* HEADER / HERO */
+/* ------------------ HEADER / HERO ------------------ */
 .header-box {
   text-align:center;
-  padding: 9rem 2rem 6rem;
+  padding: 9rem 2rem 6rem; /* espai per la navbar */
   background: linear-gradient(135deg,#38bdf8 0%,#0ea5e9 50%,#0f172a 100%);
   background-size: 200% 200%;
   animation: gradientShift 10s ease infinite;
@@ -75,19 +108,22 @@ body {
   margin-bottom:1rem;
   box-shadow: var(--shadow);
   transition: transform .4s ease;
+  object-fit: cover;
 }
 .profile-pic:hover { transform: scale(1.07) rotate(2deg); }
 header h1 {
-  font-size: 3rem; font-weight: 800;
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 800;
   text-shadow: 0 0 15px rgba(56,189,248,.6);
 }
-header p { max-width:700px; margin:auto; opacity:.92; margin-top:.6rem; }
+header p { max-width:700px; margin:.6rem auto 0; opacity:.95; }
 
-/* SECCIONS */
-.wrap { max-width: 1100px; margin:auto; padding:4rem 2rem; }
+/* ------------------ LAYOUT / SECCIONS ------------------ */
+.wrap { max-width: var(--maxw); margin:auto; padding:4rem 2rem; }
 h2 {
-  font-size: 2rem; font-weight: 700;
-  margin-bottom: 1.8rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  margin: 2rem 0 1.8rem;
   color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -98,8 +134,15 @@ h2::after {
   background:var(--accent); margin-top:.4rem;
   border-radius:2px;
 }
+/* espaiats de secció i separadors subtils */
+main section { position:relative; padding-bottom: .5rem; margin-bottom: 2.5rem; }
+main section::after {
+  content:""; position:absolute; left:50%; transform:translateX(-50%);
+  bottom:-10px; width: 55%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56,189,248,.45), transparent);
+}
 
-/* TARGETES */
+/* ------------------ TARGETES ------------------ */
 section article {
   background: var(--card);
   border-radius: var(--radius);
@@ -112,28 +155,28 @@ section article:hover {
   transform: translateY(-8px) scale(1.02) rotateX(1deg);
   box-shadow: 0 25px 50px rgba(0,0,0,.45);
 }
+ul { padding-left: 1.2rem; }
+li { margin:.45rem 0; }
 
-/* PROJECTES en GRID */
+/* ------------------ PROJECTES GRID ------------------ */
 #projects .projects-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
 }
-@media(min-width:800px){
-  #projects .projects-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
 #projects article h3 { color:#fff; margin-bottom:.5rem; }
 #projects a { color: var(--accent); font-weight:700; text-decoration:none; }
 #projects a:hover { text-decoration:underline; }
+@media (min-width: 800px){
+  #projects .projects-grid { grid-template-columns: 1fr 1fr; }
+}
 
-/* CONTACTE */
+/* ------------------ CONTACTE ------------------ */
 #contact p { margin:.4rem 0; }
 #contact a { color: var(--accent); text-decoration:none; }
 #contact a:hover { text-decoration: underline; }
 
-/* FOOTER */
+/* ------------------ FOOTER ------------------ */
 footer {
   background: #1e293b;
   padding: 1.2rem;
@@ -143,51 +186,69 @@ footer {
   border-radius: 22px 22px 0 0;
   margin-top:2rem;
 }
-/* BOTÓ TEMA */
-#theme-toggle {
-  position: fixed;
-  bottom: 1.2rem; left: 1.2rem;
-  background: var(--card);
-  border: none;
-  border-radius: 50%;
-  padding: .6rem .7rem;
-  font-size: 1.2rem;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-  z-index: 1001;
+
+/* ------------------ ANIMACIONS ENTRADA ------------------ */
+.fade-in { opacity:0; transform: translateY(26px); }
+.fade-in.visible { opacity:1; transform:none; transition: opacity .6s ease, transform .6s ease; }
+
+/* ------------------ BOTONS FLOTANTS ------------------ */
+#theme-toggle, #scrollTopBtn{
+  position: fixed; z-index: 1001; border:none; cursor:pointer;
+  border-radius: 50%; padding:.6rem .7rem; font-size:1.2rem;
+  box-shadow: var(--shadow); transition: var(--transition);
 }
+#theme-toggle { bottom: 1.2rem; left: 1.2rem; background: var(--card); color:#fff; }
 #theme-toggle:hover { transform: scale(1.1); }
 
-/* BOTÓ SCROLL TOP */
 #scrollTopBtn {
-  display:none;
-  position: fixed;
   bottom: 1.2rem; right: 1.2rem;
-  background: var(--accent);
-  border:none;
-  border-radius: 50%;
-  padding:.6rem .7rem;
-  font-size:1.2rem;
-  cursor:pointer;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-  z-index:1001;
+  background: var(--accent); color:#0b1220;
+  opacity:0; pointer-events:none;
 }
+#scrollTopBtn.show { opacity:1; pointer-events:auto; }
 #scrollTopBtn:hover { transform: scale(1.1); background:#0ea5e9; }
 
-/* MODE CLAR */
+/* ------------------ MODE CLAR (JS: body.light) ------------------ */
 body.light {
   --bg: #f8fafc;
   --text: #0f172a;
   --card: #ffffff;
 }
-#scrollTopBtn {
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .3s ease;
+body.light .header-box { color:#0f172a; }
+body.light .navbar .logo { color:#0f172a; }
+body.light .nav-links a { color:#0f172a; }
+body.light .nav-links a:hover { color: var(--accent); }
+body.light footer { background:#e2e8f0; color:#0f172a; }
+
+/* ------------------ SCROLLBAR (subtil) ------------------ */
+@media (hover:hover) {
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: rgba(255,255,255,.05); }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(56,189,248,.5);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(56,189,248,.8); }
 }
-#scrollTopBtn.show {
-  opacity:1;
-  pointer-events:auto;
+
+/* ------------------ REDUCCIÓ DE MOVIMENT ------------------ */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* ------------------ RESPONSIVE FINE-TUNE ------------------ */
+@media (max-width: 640px){
+  .nav-links { gap: 1rem; }
+  .wrap { padding: 3.2rem 1.2rem; }
+  header p { padding: 0 .2rem; }
+}
+
+/* ------------------ PRINT ------------------ */
+@media print {
+  .navbar, #theme-toggle, #scrollTopBtn { display:none !important; }
+  body { background: #fff; color:#000; }
+  a { color:#000; text-decoration: underline; }
+  .header-box { border-radius: 0; box-shadow: none; }
 }
