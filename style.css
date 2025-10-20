@@ -112,7 +112,6 @@ body {
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 800;
   text-shadow: 0 0 15px rgba(56,189,248,.6);
-  animation: fadeInDown 1s ease both;
   color: #ffffff;
   margin-top: 1rem;
   z-index: 2;
@@ -122,15 +121,6 @@ body {
   max-width:700px;
   margin:.4rem auto;
   opacity:.95;
-  animation: fadeInUp 1.2s ease both;
-}
-@keyframes fadeInDown {
-  from {opacity:0; transform:translateY(-20px);}
-  to {opacity:1; transform:none;}
-}
-@keyframes fadeInUp {
-  from {opacity:0; transform:translateY(20px);}
-  to {opacity:1; transform:none;}
 }
 @media (min-width: 860px){
   .header-box {
@@ -142,7 +132,7 @@ body {
   .header-box div { flex:1; }
 }
 
-/* ------------------ ABOUT SECTION ------------------ */
+/* ------------------ ABOUT ------------------ */
 #about {
   background: linear-gradient(180deg, rgba(56,189,248,0.1), transparent 90%);
   border-radius: var(--radius);
@@ -150,22 +140,14 @@ body {
   margin-top: 2rem;
   text-align: center;
 }
-#about h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-}
+#about h2 { font-size: 1.8rem; margin-bottom: 1rem; }
 #about p {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  max-width: 800px;
-  margin: 0 auto;
+  font-size: 1.05rem; line-height: 1.8;
+  max-width: 800px; margin: 0 auto;
 }
-#about h2::before {
-  content: "👤";
-  margin-right: .5rem;
-}
+#about h2::before { content: "👤"; margin-right: .5rem; }
 
-/* ------------------ SECCIONS ------------------ */
+/* ------------------ SECCIONS GENERALS ------------------ */
 .wrap { max-width: var(--maxw); margin:auto; padding:4rem 2rem; }
 h2 {
   font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700;
@@ -185,7 +167,7 @@ main section::after {
   background: linear-gradient(90deg, transparent, rgba(56,189,248,.45), transparent);
 }
 
-/* ------------------ TARGETES ------------------ */
+/* ------------------ CARDS ------------------ */
 .card {
   background: var(--card);
   border-radius: var(--radius);
@@ -223,7 +205,12 @@ li { margin:.45rem 0; }
 .grid-2.narrow { gap:.8rem; }
 @media (min-width: 860px){ .grid-2 { grid-template-columns: 1fr 1fr; } }
 
-/* ------------------ SKILLS ------------------ */
+/* ------------------ LANGUAGES / SKILLS ------------------ */
+#languages, #skills {
+  background: linear-gradient(180deg, rgba(14,165,233,0.08), transparent 90%);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+}
 .skills-chiplist {
   list-style:none; display:flex; flex-wrap:wrap; gap:.6rem; padding:.2rem 0;
 }
@@ -262,7 +249,7 @@ li { margin:.45rem 0; }
 .btn-ghost { border:2px solid rgba(255,255,255,.6); color:#fff; }
 .btn-ghost:hover { background: rgba(255,255,255,.12); }
 
-/* ------------------ CONTACTE ------------------ */
+/* ------------------ CONTACT ------------------ */
 #contact p { margin:.4rem 0; }
 #contact a { color: var(--accent); text-decoration:none; }
 #contact a:hover { text-decoration: underline; }
@@ -281,15 +268,20 @@ footer {
 .fade-in.visible { opacity:1; transform:none; transition: opacity .7s ease, transform .7s ease; }
 
 /* ------------------ BOTONS FLOTANTS ------------------ */
-#theme-toggle, #scrollTopBtn{
-  position: fixed; z-index: 1001; border:none; cursor:pointer;
+.floating-controls {
+  position: fixed; bottom: 1.2rem; right: 1.2rem;
+  display: flex; flex-direction: column; gap: .8rem;
+  z-index: 1001;
+}
+#theme-toggle, #scrollTopBtn {
+  border:none; cursor:pointer;
   border-radius: 50%; padding:.6rem .7rem; font-size:1.2rem;
   box-shadow: var(--shadow); transition: var(--transition);
 }
-#theme-toggle { bottom: 1.2rem; left: 1.2rem; background: var(--card); color:#fff; }
+#theme-toggle { background: var(--card); color:#fff; }
 #theme-toggle:hover { transform: scale(1.1); }
 #scrollTopBtn {
-  bottom: 1.2rem; right: 1.2rem; background: var(--accent); color:#0b1220;
+  background: var(--accent); color:#0b1220;
   opacity:0; pointer-events:none;
 }
 #scrollTopBtn.show { opacity:1; pointer-events:auto; }
@@ -333,12 +325,12 @@ body.light footer { background:#e2e8f0; color:#0f172a; }
   .profile-pic { width:130px; height:130px; }
   .header-box h1 { font-size:2rem; }
   .header-box p { padding: 0 .2rem; }
-  #about { padding: 2rem 1rem; }
+  #about, #languages, #skills { padding: 2rem 1rem; }
 }
 
 /* ------------------ PRINT ------------------ */
 @media print {
-  .navbar, #theme-toggle, #scrollTopBtn { display:none !important; }
+  .navbar, .floating-controls { display:none !important; }
   body { background: #fff; color:#000; }
   a { color:#000; text-decoration: underline; }
   .header-box { border-radius: 0; box-shadow: none; }
