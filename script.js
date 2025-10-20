@@ -1,8 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   // ---------- Navbar: canvi de fons quan hi ha scroll ----------
   const nav = document.querySelector('.navbar');
+  let lastScroll = 0;
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 50);
+    if (Math.abs(window.scrollY - lastScroll) > 10) {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+      lastScroll = window.scrollY;
+    }
   });
 
   // ---------- Enllaç actiu segons secció visible ----------
@@ -41,20 +45,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---------- Dark / Light Mode ----------
   const toggleBtn = document.getElementById('theme-toggle');
   if (toggleBtn) {
+    const applyTheme = (light) => {
+      document.body.classList.toggle("light", light);
+      toggleBtn.textContent = light ? "🌙" : "☀️";
+      toggleBtn.setAttribute("aria-pressed", light);
+    };
+
     // carregar estat del localStorage
-    if (localStorage.getItem("theme") === "light") {
-      document.body.classList.add("light");
-      toggleBtn.textContent = "🌙";
-    } else {
-      document.body.classList.remove("light");
-      toggleBtn.textContent = "☀️";
-    }
+    applyTheme(localStorage.getItem("theme") === "light");
 
     toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle("light");
-      const light = document.body.classList.contains("light");
-      toggleBtn.textContent = light ? "🌙" : "☀️";
-      localStorage.setItem("theme", light ? "light" : "dark");
+      const isLight = !document.body.classList.contains("light");
+      applyTheme(isLight);
+      localStorage.setItem("theme", isLight ? "light" : "dark");
     });
   }
 
@@ -64,14 +67,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const target = +counter.getAttribute('data-target');
     let count = 0;
     const step = target / 60; // 60 frames aprox
+    const formatter = new Intl.NumberFormat(); // separadors
 
     const update = () => {
       count += step;
       if (count < target) {
-        counter.textContent = Math.floor(count);
+        counter.textContent = formatter.format(Math.floor(count));
         requestAnimationFrame(update);
       } else {
-        counter.textContent = target;
+        counter.textContent = formatter.format(target);
       }
     };
     update();
