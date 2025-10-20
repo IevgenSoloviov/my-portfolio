@@ -77,19 +77,15 @@ body {
 /* ------------------ HERO ------------------ */
 .header-box {
   text-align:center;
-  /* HERO ocupa tota l’alçada de la finestra menys la navbar */
   min-height: calc(100vh - var(--navbar-h));
-  padding: calc(var(--navbar-h) + 2rem) 2rem 4rem;
+  padding: calc(var(--navbar-h) + 4rem) 2rem 4rem;
   box-sizing: border-box;
-
   background: linear-gradient(135deg,#38bdf8 0%,#0ea5e9 50%,#0f172a 100%);
   background-size: 200% 200%;
   animation: gradientShift 14s ease infinite;
-
   color: #fff;
   border-radius: 0 0 40px 40px;
   box-shadow: var(--shadow);
-
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -113,10 +109,14 @@ body {
   box-shadow:0 15px 40px rgba(0,0,0,.4);
 }
 .header-box h1 {
-  font-size: clamp(2.3rem, 4vw, 3rem);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 800;
   text-shadow: 0 0 15px rgba(56,189,248,.6);
   animation: fadeInDown 1s ease both;
+  color: #ffffff;
+  margin-top: 1rem;
+  z-index: 2;
+  position: relative;
 }
 .header-box p {
   max-width:700px;
@@ -141,11 +141,28 @@ body {
   .header-box img { margin-right:2rem; }
   .header-box div { flex:1; }
 }
-.header-box h1 {
-  color: #ffffff;
-  margin-top: 1rem;  /* separació extra per si queda massa enganxat */
-  z-index: 2;
-  position: relative;
+
+/* ------------------ ABOUT SECTION ------------------ */
+#about {
+  background: linear-gradient(180deg, rgba(56,189,248,0.1), transparent 90%);
+  border-radius: var(--radius);
+  padding: 3rem 2rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+#about h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+#about p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto;
+}
+#about h2::before {
+  content: "👤";
+  margin-right: .5rem;
 }
 
 /* ------------------ SECCIONS ------------------ */
@@ -155,12 +172,12 @@ h2 {
   margin: 2rem 0 1.8rem;
   color: var(--accent); text-transform: uppercase; letter-spacing: 1px;
   position: relative;
-  scroll-margin-top: calc(var(--navbar-h) + 20px);
 }
 h2::after {
   content:""; display:block; width:60px; height:3px;
   background:var(--accent); margin-top:.4rem; border-radius:2px;
 }
+section { scroll-margin-top: calc(var(--navbar-h) + 20px); }
 main section { position:relative; padding-bottom: .5rem; margin-bottom: 2.5rem; }
 main section::after {
   content:""; position:absolute; left:50%; transform:translateX(-50%);
@@ -316,6 +333,7 @@ body.light footer { background:#e2e8f0; color:#0f172a; }
   .profile-pic { width:130px; height:130px; }
   .header-box h1 { font-size:2rem; }
   .header-box p { padding: 0 .2rem; }
+  #about { padding: 2rem 1rem; }
 }
 
 /* ------------------ PRINT ------------------ */
@@ -324,15 +342,4 @@ body.light footer { background:#e2e8f0; color:#0f172a; }
   body { background: #fff; color:#000; }
   a { color:#000; text-decoration: underline; }
   .header-box { border-radius: 0; box-shadow: none; }
-}
-/* Ajustar una mica més el main perquè hi hagi separació neta */
-.header-box {
-  padding: calc(var(--navbar-h) + 4rem) 2rem 4rem;
-}
-
-/* Per evitar que a pantalles petites hi hagi massa padding al hero */
-@media (max-width: 640px){
-  .header-box {
-    padding: calc(var(--navbar-h) + 1.5rem) 1.2rem 3rem;
-  }
 }
