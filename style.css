@@ -320,7 +320,14 @@ body.light footer { background:#e2e8f0; color:#0f172a; }
   a { color:#000; text-decoration: underline; }
   .header-box { border-radius: 0; box-shadow: none; }
 }
-/* ------------------ MAIN WRAP ------------------ */
+/* Ajustar una mica més el main perquè hi hagi separació neta */
 main {
-  padding-top: 1rem; /* perquè no s’enganxi massa a sota del hero */
+  padding-top: 2rem; /* una mica més d'espai sota el hero */
+}
+
+/* Per evitar que a pantalles petites hi hagi massa padding al hero */
+@media (max-width: 640px){
+  .header-box {
+    padding: calc(var(--navbar-h) + 1.5rem) 1.2rem 3rem;
+  }
 }
