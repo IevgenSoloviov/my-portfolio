@@ -1,101 +1,157 @@
 :root {
-  --maxw: 1000px;
-  --main: #2c3e50;
-  --accent: #3498db;
-  --bg-light: #f9f9f9;
+  --maxw: 1100px;
+  --primary: #1a1a2e;
+  --secondary: #16213e;
+  --accent: #0fbcf9;
+  --text-light: #f1f1f1;
+  --text-dark: #222;
+  --bg: #f9f9fb;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  margin:0;
-  font-family: system-ui, Arial, sans-serif;
-  line-height:1.6;
-  color:#333;
-  background:#fdfdfd;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text-dark);
+  line-height: 1.6;
 }
-.wrap { max-width: var(--maxw); margin: auto; padding: 1.5rem; }
 
+/* --- LAYOUT --- */
+.wrap {
+  max-width: var(--maxw);
+  margin: auto;
+  padding: 2rem;
+}
+
+/* --- HEADER --- */
 .header-box {
-  display:flex;
+  display: flex;
   flex-direction: column;
-  align-items:center;
+  align-items: center;
   text-align: center;
-  gap:1rem;
-  background: var(--main);
-  color:#fff;
-  padding:2rem 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: var(--text-light);
+  padding: 3rem 1rem;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
+
 .profile-pic {
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  object-fit:cover;
-  border:3px solid var(--accent);
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid var(--accent);
+  margin-bottom: 1.5rem;
 }
-header h1 { margin:0; font-size: 2rem; }
-header p { margin:0.3rem 0; }
 
+header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+header p {
+  margin: 0.4rem 0;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* --- TITLES --- */
 h2 {
-  margin-top:2rem;
-  border-bottom:2px solid var(--accent);
-  padding-bottom:0.3rem;
+  font-size: 1.6rem;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid var(--accent);
+  display: inline-block;
 }
 
-ul { padding-left:1.2rem; }
-ul li { margin-bottom:0.4rem; }
+/* --- LISTS --- */
+ul {
+  padding-left: 1.5rem;
+}
+ul li {
+  margin-bottom: 0.5rem;
+}
 
 /* --- SKILLS --- */
 #skills ul {
-  list-style: "✔ ";
-  columns: 1;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 2rem;
 }
-@media (min-width: 768px) {
-  #skills ul { columns: 2; }
+#skills li::before {
+  content: "✔";
+  color: var(--accent);
+  margin-right: 0.5rem;
 }
 
 /* --- PROJECTS --- */
 #projects {
-  background: var(--bg-light);
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin-top: 2rem;
 }
 #projects .projects-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 #projects article {
-  background:#fff;
-  padding:1rem 1.5rem;
-  border-radius:10px;
-  border-left:5px solid var(--accent);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  background: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#projects article:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 #projects h3 {
-  margin-top:0;
-  color: var(--main);
+  color: var(--primary);
+  margin-bottom: 0.5rem;
 }
-#projects p em { color:#555; }
 #projects a {
   color: var(--accent);
-  font-weight:bold;
-  text-decoration:none;
+  font-weight: bold;
+  text-decoration: none;
 }
-#projects a:hover { text-decoration:underline; }
+#projects a:hover {
+  text-decoration: underline;
+}
+#projects p em {
+  color: #555;
+}
 
-/* Responsive: dues columnes en pantalles grans */
+/* Responsive grid per a projectes */
 @media (min-width: 768px) {
   #projects .projects-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
+/* --- CONTACT --- */
+#contact p {
+  margin: 0.5rem 0;
+}
+#contact a {
+  color: var(--accent);
+  text-decoration: none;
+}
+#contact a:hover {
+  text-decoration: underline;
+}
+
 /* --- FOOTER --- */
 footer {
-  text-align:center;
-  margin-top:2rem;
-  padding:1rem;
-  background:#f4f4f4;
-  color:#555;
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background: var(--secondary);
+  color: var(--text-light);
+  text-align: center;
+  font-size: 0.9rem;
+  border-radius: 15px 15px 0 0;
 }
