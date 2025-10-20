@@ -19,11 +19,6 @@ Aquí hi trobaràs tota la meva experiència, formació, projectes i habilitats.
 
 ---
 
-## 📸 Preview
-![Preview](img/foto.jpg)
-
----
-
 ## 📫 Contacte
 - 📧 [evgensoloviov12@gmail.com](mailto:evgensoloviov12@gmail.com)  
 - 🔗 [LinkedIn](https://www.linkedin.com/in/ievgen-soloviov-0709bb299)  
