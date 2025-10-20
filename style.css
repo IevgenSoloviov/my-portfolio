@@ -22,6 +22,7 @@ body{
   color:#0b1220;
   line-height:1.65;
   scroll-behavior:smooth;
+  transition:background var(--t), color var(--t);
 }
 
 /* ---------- NAVBAR ---------- */
@@ -63,12 +64,24 @@ body{
   width:180px;height:180px;border-radius:50%;object-fit:cover;
   border:5px solid var(--accent); box-shadow:0 8px 24px rgba(56,189,248,.35);
   margin-bottom:1.25rem;
+  transition:transform .4s ease;
 }
+.profile-pic:hover{ transform:scale(1.05); }
 header h1{ font-size:2.6rem; font-weight:800; }
 header p{ opacity:.9; margin-top:.35rem; }
 
 /* ---------- LAYOUT ---------- */
-.wrap{ max-width:var(--maxw); margin:auto; padding:2rem 1.5rem; }
+.wrap{ max-width:var(--maxw); margin:auto; padding:3rem 1.5rem; }
+
+/* Separadors decoratius */
+section{ position:relative; padding-bottom:2rem; margin-bottom:3rem; }
+section::after{
+  content:"";
+  position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+  width:60%; height:2px;
+  background:linear-gradient(to right, transparent, var(--accent), transparent);
+  opacity:.3;
+}
 
 /* Títols secció */
 h2{
@@ -117,6 +130,17 @@ section article:hover{ transform:translateY(-6px); box-shadow:0 14px 40px rgba(2
   #projects .projects-grid{ grid-template-columns:1fr 1fr; }
 }
 
+/* ---------- HIGHLIGHTS ---------- */
+.highlight-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:2rem; text-align:center; margin:3rem 0;
+}
+.highlight h3{
+  font-size:3rem; color:var(--accent); margin-bottom:.5rem; font-weight:800;
+  transition:color var(--t);
+}
+.highlight p{ font-size:1.1rem; color:var(--muted); }
+
 /* ---------- CONTACT ---------- */
 #contact p{ margin:.3rem 0; }
 #contact a{ color:var(--accent); text-decoration:none; }
@@ -133,10 +157,31 @@ footer{
 .fade-in{ opacity:0; transform:translateY(26px); }
 .fade-in.visible{ opacity:1; transform:none; transition:opacity .6s ease, transform .6s ease; }
 
+/* ---------- BOTONS flotants ---------- */
+#theme-toggle, #scrollTopBtn{
+  position:fixed; z-index:2000; border:none; cursor:pointer;
+  border-radius:50%; padding:.7rem; font-size:1.2rem;
+  box-shadow:var(--shadow); transition:transform .3s ease;
+}
+#theme-toggle{ bottom:1rem; right:1rem; background:var(--accent); }
+#scrollTopBtn{ bottom:1rem; left:1rem; background:var(--primary); color:#fff; display:none; border-radius:8px; }
+#theme-toggle:hover, #scrollTopBtn:hover{ transform:scale(1.1); }
+
 /* ---------- ACCESSIBILITAT ---------- */
 :focus-visible{ outline:3px solid var(--accent); outline-offset:3px; }
 
 /* ---------- PETITES ADAPTACIONS ---------- */
-header p:nth-of-type(3){ /* línia d’emojis/stack */
-  margin-top:.35rem;
+header p:nth-of-type(3){ margin-top:.35rem; }
+
+/* ---------- DARK MODE ---------- */
+.dark-mode{
+  --bg:#0d1117;
+  --card:#161b22;
+  --text:#e5e7eb;
+  --secondary:#111827;
 }
+.dark-mode body{ background:var(--bg); color:var(--text); }
+.dark-mode section article{ background:var(--card); }
+.dark-mode h2, .dark-mode h3, .dark-mode p, 
+.dark-mode ul li, .dark-mode small{ color:var(--text); }
+.dark-mode footer{ background:#111827; }
