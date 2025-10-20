@@ -182,3 +182,12 @@ body.light {
   --text: #0f172a;
   --card: #ffffff;
 }
+#scrollTopBtn {
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease;
+}
+#scrollTopBtn.show {
+  opacity:1;
+  pointer-events:auto;
+}
