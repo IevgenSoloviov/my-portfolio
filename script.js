@@ -10,7 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }, { passive: true });
 
   // ---------- Enllaç actiu segons secció visible ----------
-  const sections = document.querySelectorAll('section'); // 👈 canviat
+  const hero = document.querySelector('#hero');          // 👈 afegim hero
+  const sections = document.querySelectorAll('section'); 
+  const allSections = [hero, ...sections];               // 👈 incloure hero
   const links = document.querySelectorAll('.nav-links a');
 
   const setActive = (id) => {
@@ -27,10 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }, { rootMargin: "-40% 0px -50% 0px", threshold: 0.2 });
 
-  sections.forEach(s => ioActive.observe(s));
+  allSections.forEach(s => ioActive.observe(s));
 
   // ---------- Animació d’entrada (fade-in) ----------
-  const toFade = [...sections, ...document.querySelectorAll('section article')];
+  const toFade = [...allSections, ...document.querySelectorAll('section article')];
   toFade.forEach(el => el.classList.add('fade-in'));
 
   const ioFade = new IntersectionObserver(entries => {
@@ -49,11 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (toggleBtn) {
     const applyTheme = (light) => {
       document.body.classList.toggle("light", light);
-      toggleBtn.textContent = light ? "☀️" : "🌙"; // 👈 més coherent
+      toggleBtn.textContent = light ? "☀️" : "🌙";
       toggleBtn.setAttribute("aria-pressed", String(light));
     };
 
-    // carregar estat del localStorage o preferència del sistema
     const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
     applyTheme(localStorage.getItem("theme") === "light" || (!localStorage.getItem("theme") && prefersLight));
 
@@ -64,12 +65,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ---------- Comptadors (Highlights opcionals) ----------
+  // ---------- Comptadors ----------
   const counters = document.querySelectorAll('.counter');
   const animateCounter = (counter) => {
     const target = +counter.getAttribute('data-target');
     let count = 0;
-    const step = target / 60; // 60 frames aprox
+    const step = target / 60;
     const formatter = new Intl.NumberFormat();
 
     const update = () => {
