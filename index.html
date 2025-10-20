@@ -54,26 +54,25 @@
     </div>
   </header>
 
-  <!-- ABOUT -->
-  <section id="about" class="fade-in wrap">
-    <h2>About Me</h2>
-    <article class="card">
-      <p>
-        Hello! My name is <strong>Ievgen Soloviov</strong>, I’m a Higher VET student in 
-        Networked Computer Systems Administration. I’m passionate about cloud, 
-        DevOps, automation, AI and database administration. My goal is to keep learning 
-        and growing as an IT professional.
-      </p>
-    </article>
-  </section>
-
   <!-- MAIN CONTENT -->
-  <main class="wrap" id="main">
+  <main id="main">
+
+    <!-- ABOUT -->
+    <section id="about" class="fade-in wrap" aria-labelledby="about-title">
+      <h2 id="about-title">About Me</h2>
+      <article class="card">
+        <p>
+          Hello! My name is <strong>Ievgen Soloviov</strong>, I’m a Higher VET student in 
+          Networked Computer Systems Administration. I’m passionate about cloud, 
+          DevOps, automation, AI and database administration. My goal is to keep learning 
+          and growing as an IT professional.
+        </p>
+      </article>
+    </section>
 
     <!-- EXPERIENCE -->
-    <section id="experience" class="fade-in" aria-labelledby="exp-title">
+    <section id="experience" class="fade-in wrap" aria-labelledby="exp-title">
       <h2 id="exp-title">Work Experience</h2>
-
       <ol class="timeline">
         <li class="timeline-item">
           <div class="timeline-dot"></div>
@@ -115,9 +114,8 @@
     </section>
 
     <!-- EDUCATION -->
-    <section id="education" class="fade-in" aria-labelledby="edu-title">
+    <section id="education" class="fade-in wrap" aria-labelledby="edu-title">
       <h2 id="edu-title">Education and Training</h2>
-
       <div class="grid-2">
         <article class="card">
           <header class="card-head">
@@ -145,16 +143,14 @@
     </section>
 
     <!-- LANGUAGES & SKILLS -->
-    <section class="fade-in" aria-labelledby="langskills-title">
+    <section id="langskills" class="fade-in wrap" aria-labelledby="langskills-title">
       <h2 id="langskills-title">Languages & Skills</h2>
-
       <div class="grid-2">
         <article id="languages" class="card">
           <header class="card-head">
             <h3>Language Skills</h3>
             <p class="section-subtitle"><strong>Mother tongue(s):</strong> Spanish | Catalan</p>
           </header>
-
           <div class="grid-2 narrow">
             <div>
               <h4>English</h4>
@@ -198,9 +194,8 @@
     </section>
 
     <!-- PROJECTS -->
-    <section id="projects" class="fade-in" aria-labelledby="proj-title">
+    <section id="projects" class="fade-in wrap" aria-labelledby="proj-title">
       <h2 id="proj-title">Projects</h2>
-
       <div class="projects-grid">
         <article class="card">
           <header class="card-head">
@@ -253,7 +248,7 @@
     </section>
 
     <!-- CONTACT -->
-    <section id="contact" class="fade-in" aria-labelledby="contact-title">
+    <section id="contact" class="fade-in wrap" aria-labelledby="contact-title">
       <h2 id="contact-title">Contact</h2>
       <div class="card contact-card">
         <div class="grid-2 narrow">
@@ -272,7 +267,10 @@
 
   <!-- FOOTER -->
   <footer class="wrap" role="contentinfo">
-    <small>© <span id="year"></span> Ievgen Soloviov · <a href="mailto:evgensoloviov12@gmail.com">Contact</a> · <a href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299" target="_blank">LinkedIn</a></small>
+    <small>© <span id="year"></span> Ievgen Soloviov · 
+      <a href="mailto:evgensoloviov12@gmail.com">Contact</a> · 
+      <a href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299" target="_blank">LinkedIn</a>
+    </small>
   </footer>
 
   <!-- Floating buttons -->
