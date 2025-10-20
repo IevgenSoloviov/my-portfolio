@@ -1,5 +1,5 @@
 :root {
-  --maxw: 900px;
+  --maxw: 1000px;
   --main: #2c3e50;
   --accent: #3498db;
   --bg-light: #f9f9f9;
@@ -17,8 +17,10 @@ body {
 
 .header-box {
   display:flex;
+  flex-direction: column;
   align-items:center;
-  gap:1.5rem;
+  text-align: center;
+  gap:1rem;
   background: var(--main);
   color:#fff;
   padding:2rem 1rem;
@@ -30,7 +32,6 @@ body {
   object-fit:cover;
   border:3px solid var(--accent);
 }
-
 header h1 { margin:0; font-size: 2rem; }
 header p { margin:0.3rem 0; }
 
@@ -43,17 +44,30 @@ h2 {
 ul { padding-left:1.2rem; }
 ul li { margin-bottom:0.4rem; }
 
-/* --- PROJECTS STYLING --- */
+/* --- SKILLS --- */
+#skills ul {
+  list-style: "✔ ";
+  columns: 1;
+}
+@media (min-width: 768px) {
+  #skills ul { columns: 2; }
+}
+
+/* --- PROJECTS --- */
 #projects {
   background: var(--bg-light);
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
+#projects .projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
 #projects article {
   background:#fff;
   padding:1rem 1.5rem;
-  margin-bottom:1.5rem;
   border-radius:10px;
   border-left:5px solid var(--accent);
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -62,16 +76,19 @@ ul li { margin-bottom:0.4rem; }
   margin-top:0;
   color: var(--main);
 }
-#projects p em {
-  color:#555;
-}
+#projects p em { color:#555; }
 #projects a {
   color: var(--accent);
   font-weight:bold;
   text-decoration:none;
 }
-#projects a:hover {
-  text-decoration:underline;
+#projects a:hover { text-decoration:underline; }
+
+/* Responsive: dues columnes en pantalles grans */
+@media (min-width: 768px) {
+  #projects .projects-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 /* --- FOOTER --- */
