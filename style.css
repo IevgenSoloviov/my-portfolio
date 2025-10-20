@@ -143,3 +143,42 @@ footer {
   border-radius: 22px 22px 0 0;
   margin-top:2rem;
 }
+/* BOTÓ TEMA */
+#theme-toggle {
+  position: fixed;
+  bottom: 1.2rem; left: 1.2rem;
+  background: var(--card);
+  border: none;
+  border-radius: 50%;
+  padding: .6rem .7rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  z-index: 1001;
+}
+#theme-toggle:hover { transform: scale(1.1); }
+
+/* BOTÓ SCROLL TOP */
+#scrollTopBtn {
+  display:none;
+  position: fixed;
+  bottom: 1.2rem; right: 1.2rem;
+  background: var(--accent);
+  border:none;
+  border-radius: 50%;
+  padding:.6rem .7rem;
+  font-size:1.2rem;
+  cursor:pointer;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  z-index:1001;
+}
+#scrollTopBtn:hover { transform: scale(1.1); background:#0ea5e9; }
+
+/* MODE CLAR */
+body.light {
+  --bg: #f8fafc;
+  --text: #0f172a;
+  --card: #ffffff;
+}
