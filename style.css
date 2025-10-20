@@ -75,7 +75,58 @@ body {
 .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
 
 /* ------------------ HERO ------------------ */
-/* ------------------ HERO TEXT ------------------ */
+/* ------------------ HERO BASE ------------------ */
+.header-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  min-height: calc(100vh - var(--navbar-h));
+  padding: calc(var(--navbar-h) + 4rem) 2rem 4rem;
+
+  background: linear-gradient(135deg,#38bdf8 0%,#0ea5e9 50%,#0f172a 100%);
+  background-size: 200% 200%;
+  animation: gradientShift 14s ease infinite;
+
+  color: #fff;
+  border-radius: 0 0 40px 40px;
+  box-shadow: var(--shadow);
+  gap: 1.5rem;
+}
+
+@keyframes gradientShift {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
+.profile-pic {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  object-fit: cover;
+  box-shadow: var(--shadow);
+  transition: transform .4s ease, box-shadow .3s ease;
+}
+
+.profile-pic:hover {
+  transform: scale(1.07) rotate(2deg);
+  box-shadow:0 15px 40px rgba(0,0,0,.4);
+}
+
+@media (min-width: 860px){
+  .header-box {
+    flex-direction: row;
+    text-align: left;
+    padding: calc(var(--navbar-h) + 3rem) 4rem;
+  }
+  .header-box img { margin-right: 2rem; }
+  .header-box div { flex: 1; }
+}
+
 /* ------------------ HERO TEXT ------------------ */
 .header-box h1 {
   font-size: clamp(2.6rem, 5vw, 3.8rem);
