@@ -26,7 +26,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Utilitat accessibilitat (ja usada al HTML) */
+/* Utilitat accessibilitat */
 .sr-only {
   position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
 }
@@ -78,18 +78,13 @@ body {
 }
 .nav-links a:hover { color: var(--accent); }
 .nav-links a:hover::after { width:100%; }
-/* Actiu via JS */
-.nav-links a.active {
-  color: var(--accent);
-}
-.nav-links a.active::after {
-  width:100%;
-}
+.nav-links a.active { color: var(--accent); }
+.nav-links a.active::after { width:100%; }
 
 /* ------------------ HEADER / HERO ------------------ */
 .header-box {
   text-align:center;
-  padding: 9rem 2rem 6rem; /* espai per la navbar */
+  padding: 9rem 2rem 6rem;
   background: linear-gradient(135deg,#38bdf8 0%,#0ea5e9 50%,#0f172a 100%);
   background-size: 200% 200%;
   animation: gradientShift 10s ease infinite;
@@ -134,7 +129,6 @@ h2::after {
   background:var(--accent); margin-top:.4rem;
   border-radius:2px;
 }
-/* espaiats de secció i separadors subtils */
 main section { position:relative; padding-bottom: .5rem; margin-bottom: 2.5rem; }
 main section::after {
   content:""; position:absolute; left:50%; transform:translateX(-50%);
@@ -143,7 +137,7 @@ main section::after {
 }
 
 /* ------------------ TARGETES ------------------ */
-section article {
+.card, section article {
   background: var(--card);
   border-radius: var(--radius);
   padding:1.6rem;
@@ -151,138 +145,18 @@ section article {
   box-shadow: var(--shadow);
   transition: var(--transition);
 }
-section article:hover {
-  transform: translateY(-8px) scale(1.02) rotateX(1deg);
-  box-shadow: 0 25px 50px rgba(0,0,0,.45);
-}
-ul { padding-left: 1.2rem; }
-li { margin:.45rem 0; }
-
-/* ------------------ PROJECTES GRID ------------------ */
-#projects .projects-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-}
-#projects article h3 { color:#fff; margin-bottom:.5rem; }
-#projects a { color: var(--accent); font-weight:700; text-decoration:none; }
-#projects a:hover { text-decoration:underline; }
-@media (min-width: 800px){
-  #projects .projects-grid { grid-template-columns: 1fr 1fr; }
-}
-
-/* ------------------ CONTACTE ------------------ */
-#contact p { margin:.4rem 0; }
-#contact a { color: var(--accent); text-decoration:none; }
-#contact a:hover { text-decoration: underline; }
-
-/* ------------------ FOOTER ------------------ */
-footer {
-  background: #1e293b;
-  padding: 1.2rem;
-  text-align:center;
-  font-size:.95rem;
-  color:#94a3b8;
-  border-radius: 22px 22px 0 0;
-  margin-top:2rem;
-}
-
-/* ------------------ ANIMACIONS ENTRADA ------------------ */
-.fade-in { opacity:0; transform: translateY(26px); }
-.fade-in.visible { opacity:1; transform:none; transition: opacity .6s ease, transform .6s ease; }
-
-/* ------------------ BOTONS FLOTANTS ------------------ */
-#theme-toggle, #scrollTopBtn{
-  position: fixed; z-index: 1001; border:none; cursor:pointer;
-  border-radius: 50%; padding:.6rem .7rem; font-size:1.2rem;
-  box-shadow: var(--shadow); transition: var(--transition);
-}
-#theme-toggle { bottom: 1.2rem; left: 1.2rem; background: var(--card); color:#fff; }
-#theme-toggle:hover { transform: scale(1.1); }
-
-#scrollTopBtn {
-  bottom: 1.2rem; right: 1.2rem;
-  background: var(--accent); color:#0b1220;
-  opacity:0; pointer-events:none;
-}
-#scrollTopBtn.show { opacity:1; pointer-events:auto; }
-#scrollTopBtn:hover { transform: scale(1.1); background:#0ea5e9; }
-
-/* ------------------ MODE CLAR (JS: body.light) ------------------ */
-body.light {
-  --bg: #f8fafc;
-  --text: #0f172a;
-  --card: #ffffff;
-}
-body.light .header-box { color:#0f172a; }
-body.light .navbar .logo { color:#0f172a; }
-body.light .nav-links a { color:#0f172a; }
-body.light .nav-links a:hover { color: var(--accent); }
-body.light footer { background:#e2e8f0; color:#0f172a; }
-
-/* ------------------ SCROLLBAR (subtil) ------------------ */
-@media (hover:hover) {
-  ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-track { background: rgba(255,255,255,.05); }
-  ::-webkit-scrollbar-thumb {
-    background: rgba(56,189,248,.5);
-    border-radius: 10px;
-    border: 2px solid transparent;
-    background-clip: padding-box;
-  }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(56,189,248,.8); }
-}
-
-/* ------------------ REDUCCIÓ DE MOVIMENT ------------------ */
-@media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-}
-
-/* ------------------ RESPONSIVE FINE-TUNE ------------------ */
-@media (max-width: 640px){
-  .nav-links { gap: 1rem; }
-  .wrap { padding: 3.2rem 1.2rem; }
-  header p { padding: 0 .2rem; }
-}
-
-/* ------------------ PRINT ------------------ */
-@media print {
-  .navbar, #theme-toggle, #scrollTopBtn { display:none !important; }
-  body { background: #fff; color:#000; }
-  a { color:#000; text-decoration: underline; }
-  .header-box { border-radius: 0; box-shadow: none; }
-}
-/* ------------------ VARIABLES ------------------ */
-:root {
-  --bg: #0f172a;
-  --text: #e2e8f0;
-  --accent: #38bdf8;
-  --card: #1e293b;
-  --radius: 18px;
-  --shadow: 0 20px 40px rgba(0,0,0,.25);
-  --transition: all .3s ease;
-  --maxw: 1100px;
-}
-
-/* ... (el teu reset i base tal com el tens) ... */
-
-/* ------------------ TARGETES GENERALS ------------------ */
-.card {
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 1.6rem;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-}
-.card:hover {
-  transform: translateY(-6px);
+.card:hover, section article:hover {
+  transform: translateY(-6px) scale(1.02);
   box-shadow: 0 25px 50px rgba(0,0,0,.45);
 }
 .card-head h3 { margin: 0 0 .25rem; }
 .card-head .meta { color:#9fb3c8; font-size:.95rem; }
 .section-subtitle { color:#9fb3c8; margin-top:.25rem; }
 
-/* ------------------ TIMELINE (Experience) ------------------ */
+ul { padding-left: 1.2rem; }
+li { margin:.45rem 0; }
+
+/* ------------------ TIMELINE ------------------ */
 .timeline { list-style:none; margin:0; padding:0; position:relative; }
 .timeline::before {
   content:""; position:absolute; left:14px; top:0; bottom:0;
@@ -350,19 +224,100 @@ body.light footer { background:#e2e8f0; color:#0f172a; }
 }
 .btn-ghost:hover { background: rgba(255,255,255,.12); }
 
+/* ------------------ PROJECTES GRID ------------------ */
+#projects .projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+#projects article h3 { color:#fff; margin-bottom:.5rem; }
+#projects a { color: var(--accent); font-weight:700; text-decoration:none; }
+#projects a:hover { text-decoration:underline; }
+@media (min-width: 800px){
+  #projects .projects-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ------------------ CONTACTE ------------------ */
+#contact p { margin:.4rem 0; }
+#contact a { color: var(--accent); text-decoration:none; }
+#contact a:hover { text-decoration: underline; }
+
+/* ------------------ FOOTER ------------------ */
+footer {
+  background: #1e293b;
+  padding: 1.2rem;
+  text-align:center;
+  font-size:.95rem;
+  color:#94a3b8;
+  border-radius: 22px 22px 0 0;
+  margin-top:2rem;
+}
+
+/* ------------------ ANIMACIONS ENTRADA ------------------ */
+.fade-in { opacity:0; transform: translateY(26px); }
+.fade-in.visible { opacity:1; transform:none; transition: opacity .6s ease, transform .6s ease; }
+
+/* ------------------ BOTONS FLOTANTS ------------------ */
+#theme-toggle, #scrollTopBtn{
+  position: fixed; z-index: 1001; border:none; cursor:pointer;
+  border-radius: 50%; padding:.6rem .7rem; font-size:1.2rem;
+  box-shadow: var(--shadow); transition: var(--transition);
+}
+#theme-toggle { bottom: 1.2rem; left: 1.2rem; background: var(--card); color:#fff; }
+#theme-toggle:hover { transform: scale(1.1); }
+
+#scrollTopBtn {
+  bottom: 1.2rem; right: 1.2rem;
+  background: var(--accent); color:#0b1220;
+  opacity:0; pointer-events:none;
+}
+#scrollTopBtn.show { opacity:1; pointer-events:auto; }
+#scrollTopBtn:hover { transform: scale(1.1); background:#0ea5e9; }
+
 /* ------------------ MODE CLAR ------------------ */
 body.light {
   --bg: #f8fafc;
   --text: #0f172a;
   --card: #ffffff;
 }
+body.light .header-box { color:#0f172a; }
+body.light .navbar .logo { color:#0f172a; }
+body.light .nav-links a { color:#0f172a; }
+body.light .nav-links a:hover { color: var(--accent); }
 body.light .card { box-shadow: 0 10px 20px rgba(0,0,0,.1); }
 body.light .badge { color:#0f172a; }
 body.light footer { background:#e2e8f0; color:#0f172a; }
+
+/* ------------------ SCROLLBAR ------------------ */
+@media (hover:hover) {
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: rgba(255,255,255,.05); }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(56,189,248,.5);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(56,189,248,.8); }
+}
+
+/* ------------------ REDUCCIÓ DE MOVIMENT ------------------ */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
 
 /* ------------------ RESPONSIVE ------------------ */
 @media (max-width: 640px){
   .wrap { padding: 3rem 1rem; }
   .nav-links { gap: 1rem; font-size:.9rem; }
   header h1 { font-size:2rem; }
+  header p { padding: 0 .2rem; }
+}
+
+/* ------------------ PRINT ------------------ */
+@media print {
+  .navbar, #theme-toggle, #scrollTopBtn { display:none !important; }
+  body { background: #fff; color:#000; }
+  a { color:#000; text-decoration: underline; }
+  .header-box { border-radius: 0; box-shadow: none; }
 }
