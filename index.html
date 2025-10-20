@@ -4,14 +4,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Ievgen Soloviov - Portfolio & CV</title>
+
+  <!-- SEO basics -->
+  <meta name="description" content="Portfolio & CV of Ievgen Soloviov. Cloud, DevOps, AI, DB Administration. Experience, education, skills, and projects.">
+  <meta name="theme-color" content="#0f172a">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Ievgen Soloviov - Portfolio & CV">
+  <meta property="og:description" content="Cloud • DevOps • AI • Databases. Experience, education, skills, and projects.">
+  <meta property="og:type" content="website">
+
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Skip to content for accessibility -->
+  <a href="#main" class="sr-only" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Skip to main content</a>
 
   <!-- NAVBAR -->
-  <nav class="navbar">
+  <nav class="navbar" role="navigation" aria-label="Primary">
     <div class="nav-container">
-      <h2 class="logo">Ievgen<span>Soloviov</span></h2>
+      <h2 class="logo" aria-label="Ievgen Soloviov brand">Ievgen<span>Soloviov</span></h2>
       <ul class="nav-links">
         <li><a href="#experience">Experience</a></li>
         <li><a href="#education">Education</a></li>
@@ -24,8 +37,8 @@
   </nav>
 
   <!-- HEADER -->
-  <header class="wrap header-box fade-in">
-    <img src="img/foto.jpg" alt="Ievgen Soloviov" class="profile-pic">
+  <header class="wrap header-box fade-in" id="hero" role="banner">
+    <img src="img/foto.jpg" alt="Portrait of Ievgen Soloviov" class="profile-pic" loading="lazy" decoding="async">
     <div>
       <h1>Ievgen Soloviov</h1>
       <p>► Higher VET Student in Networked Computer Systems Administration</p>
@@ -36,12 +49,12 @@
   </header>
 
   <!-- MAIN CONTENT -->
-  <main class="wrap">
+  <main class="wrap" id="main">
+    <section id="experience" class="fade-in" aria-labelledby="exp-title">
+      <h2 id="exp-title">WORK EXPERIENCE</h2>
 
-    <section id="experience" class="fade-in">
-      <h2>WORK EXPERIENCE</h2>
-      <article>
-        <h3> SERHS – PINEDA DE MAR, SPAIN</h3>
+      <article aria-labelledby="serhs-title">
+        <h3 id="serhs-title"> SERHS – PINEDA DE MAR, SPAIN</h3>
         <h4>SERVICE DESK TECHNICIAN (INTERNSHIP) – 11/06/2025 – 20/11/2025</h4>
         <ul>
           <li>Resolved technical incidents in hardware and software.</li>
@@ -55,8 +68,8 @@
         </ul>
       </article>
 
-      <article>
-        <h3> LLORET DE MAR TOWN COUNCIL – LLORET DE MAR, SPAIN</h3>
+      <article aria-labelledby="lloret-title">
+        <h3 id="lloret-title"> LLORET DE MAR TOWN COUNCIL – LLORET DE MAR, SPAIN</h3>
         <h4>IT ASSISTANT (INTERNSHIP) – 04/2023 – 08/2023</h4>
         <ul>
           <li>Managed and updated the content management system (Plone).</li>
@@ -68,23 +81,24 @@
       </article>
     </section>
 
-    <section id="education" class="fade-in">
-      <h2>EDUCATION AND TRAINING</h2>
+    <section id="education" class="fade-in" aria-labelledby="edu-title">
+      <h2 id="edu-title">EDUCATION AND TRAINING</h2>
       <p>09/2024 – CURRENT · Blanes, Spain</p>
       <p><strong>HIGHER TECHNICIAN IN COMPUTER NETWORK SYSTEMS MANAGEMENT</strong> – Institut Sa Palomera</p>
-      <p>Website: <a href="http://www.sapalomera.cat">www.sapalomera.cat</a></p>
+      <p>Website: <a href="http://www.sapalomera.cat" target="_blank" rel="noopener noreferrer">www.sapalomera.cat</a></p>
       <p>Field of study: Information and Communication Technologies</p>
       <p>Level in EQF: EQF level 5</p>
 
       <p>09/2022 – 06/2024 · Blanes, Spain</p>
       <p><strong>TECHNICIAN IN MICROCOMPUTER SYSTEMS AND NETWORKS</strong> – Institut Sa Palomera</p>
-      <p>Website: <a href="http://www.sapalomera.cat">www.sapalomera.cat</a></p>
+      <p>Website: <a href="http://www.sapalomera.cat" target="_blank" rel="noopener noreferrer">www.sapalomera.cat</a></p>
       <p>Field of study: Information and Communication Technologies (ICTs)</p>
     </section>
 
-    <section id="languages" class="fade-in">
-      <h2>LANGUAGE SKILLS</h2>
+    <section id="languages" class="fade-in" aria-labelledby="lang-title">
+      <h2 id="lang-title">LANGUAGE SKILLS</h2>
       <p><strong>Mother tongue(s):</strong> SPANISH | CATALAN</p>
+
       <h3>ENGLISH</h3>
       <ul>
         <li>Listening: B1</li>
@@ -93,6 +107,7 @@
         <li>Spoken interaction: B1</li>
         <li>Writing: B1</li>
       </ul>
+
       <h3>RUSSIAN</h3>
       <ul>
         <li>Listening: A2</li>
@@ -103,8 +118,8 @@
       </ul>
     </section>
 
-    <section id="skills" class="fade-in">
-      <h2>SKILLS</h2>
+    <section id="skills" class="fade-in" aria-labelledby="skills-title">
+      <h2 id="skills-title">SKILLS</h2>
       <ul>
         <li>SQL & Database Administration</li>
         <li>Linux system administration</li>
@@ -125,8 +140,8 @@
       </ul>
     </section>
 
-    <section id="projects" class="fade-in">
-      <h2>PROJECTS</h2>
+    <section id="projects" class="fade-in" aria-labelledby="proj-title">
+      <h2 id="proj-title">PROJECTS</h2>
       <div class="projects-grid">
         <article>
           <h3>03/2025 – 07/2025 · Hotel Management Application (Python & PostgreSQL)</h3>
@@ -141,8 +156,8 @@
             <li>Generated dummy data for performance testing and multilingual support (Cyrillic/Asian scripts).</li>
             <li>Managed task planning and progress tracking using JIRA, following Agile methodology (Scrum/Kanban).</li>
           </ul>
-          <p><strong>Link:</strong> 
-            <a href="https://drive.google.com/drive/folders/1cHo6X1G8EaBOuPj4vm0Qt2R9xkxh8GaB?usp=sharing" target="_blank">Project files</a>
+          <p><strong>Link:</strong>
+            <a href="https://drive.google.com/drive/folders/1cHo6X1G8EaBOuPj4vm0Qt2R9xkxh8GaB?usp=sharing" target="_blank" rel="noopener noreferrer">Project files</a>
           </p>
         </article>
 
@@ -158,31 +173,32 @@
             <li>Ensured network monitoring, storage redundancy, and compliance with GDPR.</li>
             <li>Delivered full project documentation, presentation, budget, and promotional video.</li>
           </ul>
-          <p><strong>Link:</strong> 
-            <a href="https://drive.google.com/drive/folders/1VF-ht9ClLWi4b1KtknwVLrIZdETHP4xI?usp=sharing" target="_blank">Project files</a>
+          <p><strong>Link:</strong>
+            <a href="https://drive.google.com/drive/folders/1VF-ht9ClLWi4b1KtknwVLrIZdETHP4xI?usp=sharing" target="_blank" rel="noopener noreferrer">Project files</a>
           </p>
         </article>
       </div>
     </section>
 
-    <section id="contact" class="fade-in">
-      <h2>CONTACT</h2>
+    <section id="contact" class="fade-in" aria-labelledby="contact-title">
+      <h2 id="contact-title">CONTACT</h2>
       <p><strong>Phone:</strong> +34 646 249 536</p>
       <p><strong>Email:</strong> <a href="mailto:evgensoloviov12@gmail.com">evgensoloviov12@gmail.com</a></p>
-      <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299">www.linkedin.com/in/ievgen-soloviov-0709bb299</a></p>
+      <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299" target="_blank" rel="noopener noreferrer">www.linkedin.com/in/ievgen-soloviov-0709bb299</a></p>
       <p><strong>Address:</strong> Blanes, 17300, Spain</p>
     </section>
   </main>
 
-  <footer class="wrap">
+  <footer class="wrap" role="contentinfo">
     <small>© <span id="year"></span> Ievgen Soloviov</small>
   </footer>
 
-  <!-- Botons extra -->
-  <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
-  <button id="scrollTopBtn" title="Go to top">⬆</button>
+  <!-- Floating buttons -->
+  <button id="theme-toggle" aria-label="Toggle color theme">🌙</button>
+  <button id="scrollTopBtn" title="Go to top" aria-label="Scroll to top">⬆</button>
 
   <script>document.getElementById('year').textContent = new Date().getFullYear()</script>
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
+  <noscript>Your browser has JavaScript disabled. Some animations and interactions are not available.</noscript>
 </body>
 </html>
