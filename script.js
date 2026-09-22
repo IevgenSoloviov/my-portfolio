@@ -1,71 +1,464 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ====================================================== */
-  /* ELEMENTS                                               */
-  /* ====================================================== */
+  "use strict";
 
-  const body = document.body;
 
-  const navbar = document.getElementById("navbar");
+  /* ====================================================================== */
+  /* 01 / CONFIG                                                            */
+  /* ====================================================================== */
+
+  const CONFIG = {
+
+    githubUser: "IevgenSoloviov",
+
+    githubCacheMinutes: 15,
+
+    roles: [
+      "Systems & Network Administration",
+      "Cloud Native Infrastructure",
+      "Docker & Kubernetes",
+      "Infrastructure Automation",
+      "Data & Artificial Intelligence"
+    ],
+
+    typeSpeed: 54,
+    deleteSpeed: 28,
+    rolePause: 1450,
+
+    bootDuration: 2350,
+
+    bootStorageKey: "ievgen-portfolio-boot-seen",
+
+    themeStorageKey: "ievgen-portfolio-theme",
+
+    githubCacheKey: "ievgen-github-profile-cache"
+
+  };
+
+
+  /* ====================================================================== */
+  /* 02 / HELPERS                                                           */
+  /* ====================================================================== */
+
+  const $ = (selector, context = document) =>
+    context.querySelector(selector);
+
+  const $$ = (selector, context = document) =>
+    [...context.querySelectorAll(selector)];
+
+
+  const prefersReducedMotion =
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+
+  const finePointer =
+    window.matchMedia(
+      "(pointer: fine)"
+    ).matches;
+
+
+  const clamp = (value, min, max) =>
+    Math.min(
+      Math.max(value, min),
+      max
+    );
+
+
+  const wait = milliseconds =>
+    new Promise(resolve =>
+      setTimeout(resolve, milliseconds)
+    );
+
+
+  const safeStorageGet = key => {
+
+    try {
+
+      return localStorage.getItem(key);
+
+    } catch {
+
+      return null;
+
+    }
+
+  };
+
+
+  const safeStorageSet = (key, value) => {
+
+    try {
+
+      localStorage.setItem(
+        key,
+        value
+      );
+
+    } catch {
+
+      /* Storage may be disabled. */
+
+    }
+
+  };
+
+
+  const safeSessionGet = key => {
+
+    try {
+
+      return sessionStorage.getItem(key);
+
+    } catch {
+
+      return null;
+
+    }
+
+  };
+
+
+  const safeSessionSet = (key, value) => {
+
+    try {
+
+      sessionStorage.setItem(
+        key,
+        value
+      );
+
+    } catch {
+
+      /* Session storage may be disabled. */
+
+    }
+
+  };
+
+
+  const scrollToTarget = selector => {
+
+    const target =
+      typeof selector === "string"
+        ? $(selector)
+        : selector;
+
+
+    if (!target) {
+      return;
+    }
+
+
+    target.scrollIntoView({
+      behavior:
+        prefersReducedMotion
+          ? "auto"
+          : "smooth",
+
+      block:
+        "start"
+    });
+
+  };
+
+
+  /* ====================================================================== */
+  /* 03 / MAIN ELEMENTS                                                     */
+  /* ====================================================================== */
+
+  const body =
+    document.body;
+
+
+  const root =
+    document.documentElement;
+
+
+  const navbar =
+    $("#navbar");
+
 
   const progressBar =
-    document.getElementById("scrollProgressBar");
+    $("#scrollProgressBar");
+
 
   const scrollTopBtn =
-    document.getElementById("scrollTopBtn");
+    $("#scrollTopBtn");
+
 
   const themeToggle =
-    document.getElementById("themeToggle");
+    $("#themeToggle");
+
 
   const menuToggle =
-    document.getElementById("menuToggle");
+    $("#menuToggle");
+
+
+  const navLinksContainer =
+    $("#navLinks");
+
 
   const navLinks =
-    document.getElementById("navLinks");
+    $$("#navLinks a");
+
+
+  const chapterLinks =
+    $$(".chapter-rail a");
+
 
   const commandPalette =
-    document.getElementById("commandPalette");
+    $("#commandPalette");
+
 
   const commandTrigger =
-    document.getElementById("commandTrigger");
+    $("#commandTrigger");
+
+
+  const commandSearch =
+    $("#commandSearch");
+
+
+  const commandButtons =
+    $$("[data-command-target]");
+
 
   const cursorGlow =
-    document.getElementById("cursorGlow");
+    $("#cursorGlow");
 
 
-  /* ====================================================== */
-  /* YEAR                                                   */
-  /* ====================================================== */
+  const rotatingRole =
+    $("#rotatingRole");
 
-  const year = document.getElementById("year");
 
-  if (year) {
-    year.textContent = new Date().getFullYear();
+  const bootScreen =
+    $("#bootScreen");
+
+
+  const bootProgressBar =
+    $("#bootProgressBar");
+
+
+  const bootPercentage =
+    $("#bootPercentage");
+
+
+  const bootSteps =
+    $$("[data-boot-step]");
+
+
+  /* ====================================================================== */
+  /* 04 / CURRENT YEAR                                                      */
+  /* ====================================================================== */
+
+  const yearElement =
+    $("#year");
+
+
+  if (yearElement) {
+
+    yearElement.textContent =
+      new Date().getFullYear();
+
   }
 
 
-  /* ====================================================== */
-  /* SCROLL SYSTEM                                          */
-  /* ====================================================== */
+  /* ====================================================================== */
+  /* 05 / BOOT SEQUENCE                                                     */
+  /* ====================================================================== */
 
-  const updateScroll = () => {
+  const initializeBootSequence =
+    async () => {
+
+      if (!bootScreen) {
+        return;
+      }
+
+
+      const bootAlreadySeen =
+        safeSessionGet(
+          CONFIG.bootStorageKey
+        );
+
+
+      if (
+        prefersReducedMotion
+        || bootAlreadySeen === "true"
+      ) {
+
+        bootScreen.hidden = true;
+
+        return;
+      }
+
+
+      bootScreen.hidden = false;
+
+      bootScreen.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      body.classList.add(
+        "no-scroll"
+      );
+
+
+      bootSteps.forEach(step => {
+
+        step.style.opacity = ".22";
+
+        step.style.transform =
+          "translateX(-5px)";
+
+        step.style.transition =
+          "opacity .25s ease, transform .25s ease";
+
+      });
+
+
+      if (bootProgressBar) {
+
+        bootProgressBar.style.width =
+          "0%";
+
+      }
+
+
+      const totalSteps =
+        bootSteps.length;
+
+
+      const stepDelay =
+        Math.max(
+          170,
+          CONFIG.bootDuration
+          / Math.max(totalSteps, 1)
+        );
+
+
+      for (
+        let index = 0;
+        index < totalSteps;
+        index++
+      ) {
+
+        const step =
+          bootSteps[index];
+
+
+        const progress =
+          Math.round(
+            ((index + 1) / totalSteps)
+            * 100
+          );
+
+
+        step.style.opacity = "1";
+        step.style.transform = "none";
+
+
+        if (index === totalSteps - 1) {
+
+          step.style.color =
+            "var(--green)";
+
+        }
+
+
+        if (bootProgressBar) {
+
+          bootProgressBar.style.width =
+            `${progress}%`;
+
+        }
+
+
+        if (bootPercentage) {
+
+          bootPercentage.textContent =
+            `${progress}%`;
+
+        }
+
+
+        await wait(stepDelay);
+
+      }
+
+
+      await wait(300);
+
+
+      bootScreen.style.transition =
+        "opacity .45s ease, visibility .45s ease";
+
+
+      bootScreen.style.opacity =
+        "0";
+
+
+      bootScreen.style.visibility =
+        "hidden";
+
+
+      await wait(460);
+
+
+      bootScreen.hidden = true;
+
+
+      body.classList.remove(
+        "no-scroll"
+      );
+
+
+      safeSessionSet(
+        CONFIG.bootStorageKey,
+        "true"
+      );
+
+    };
+
+
+  initializeBootSequence();
+
+
+  /* ====================================================================== */
+  /* 06 / RAF SCROLL ENGINE                                                 */
+  /* ====================================================================== */
+
+  let scrollTicking = false;
+
+
+  const updateScrollSystem = () => {
 
     const scrollY =
       window.scrollY;
 
-    const maxScroll =
+
+    const documentHeight =
       document.documentElement.scrollHeight
       - window.innerHeight;
 
-    const progress =
-      maxScroll > 0
-        ? (scrollY / maxScroll) * 100
+
+    const scrollPercent =
+      documentHeight > 0
+        ? clamp(
+            (scrollY / documentHeight) * 100,
+            0,
+            100
+          )
         : 0;
 
 
     if (progressBar) {
+
       progressBar.style.width =
-        `${progress}%`;
+        `${scrollPercent}%`;
+
     }
 
 
@@ -88,22 +481,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+
+    root.style.setProperty(
+      "--scroll-progress",
+      scrollPercent.toFixed(2)
+    );
+
+
+    scrollTicking = false;
+
   };
 
 
-  updateScroll();
+  const requestScrollUpdate = () => {
+
+    if (scrollTicking) {
+      return;
+    }
+
+
+    scrollTicking = true;
+
+
+    requestAnimationFrame(
+      updateScrollSystem
+    );
+
+  };
+
+
+  updateScrollSystem();
 
 
   window.addEventListener(
     "scroll",
-    updateScroll,
-    { passive: true }
+    requestScrollUpdate,
+    {
+      passive: true
+    }
   );
 
 
-  /* ====================================================== */
-  /* SCROLL TOP                                             */
-  /* ====================================================== */
+  window.addEventListener(
+    "resize",
+    requestScrollUpdate,
+    {
+      passive: true
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 07 / SCROLL TO TOP                                                     */
+  /* ====================================================================== */
 
   if (scrollTopBtn) {
 
@@ -112,8 +542,14 @@ document.addEventListener("DOMContentLoaded", () => {
       () => {
 
         window.scrollTo({
+
           top: 0,
-          behavior: "smooth"
+
+          behavior:
+            prefersReducedMotion
+              ? "auto"
+              : "smooth"
+
         });
 
       }
@@ -122,409 +558,830 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  /* ====================================================== */
-  /* ACTIVE NAVIGATION                                      */
-  /* ====================================================== */
+  /* ====================================================================== */
+  /* 08 / SMOOTH INTERNAL LINKS                                             */
+  /* ====================================================================== */
 
-  const sections =
-    document.querySelectorAll(
-      "section[id]"
+  $$('a[href^="#"]').forEach(link => {
+
+    link.addEventListener(
+      "click",
+      event => {
+
+        const href =
+          link.getAttribute(
+            "href"
+          );
+
+
+        if (
+          !href
+          || href === "#"
+        ) {
+
+          return;
+
+        }
+
+
+        const target =
+          $(href);
+
+
+        if (!target) {
+          return;
+        }
+
+
+        event.preventDefault();
+
+
+        scrollToTarget(target);
+
+
+        if (
+          navLinksContainer
+          && navLinksContainer.classList.contains(
+            "open"
+          )
+        ) {
+
+          closeMobileNavigation();
+
+        }
+
+      }
     );
 
-  const navigationAnchors =
-    document.querySelectorAll(
-      ".nav-links a"
+  });
+
+
+  /* ====================================================================== */
+  /* 09 / ACTIVE SECTION SYSTEM                                             */
+  /* ====================================================================== */
+
+  const trackedSections =
+    $$(
+      [
+        "#identity",
+        "#mission",
+        "#experience",
+        "#flagship",
+        "#projects",
+        "#stack",
+        "#lab",
+        "#education",
+        "#human",
+        "#signal",
+        "#contact"
+      ].join(",")
     );
 
 
-  const updateActiveLink = (id) => {
+  const activateSection = id => {
 
-    navigationAnchors.forEach(link => {
+    [
+      ...navLinks,
+      ...chapterLinks
+    ].forEach(link => {
 
-      const isActive =
+      const active =
         link.getAttribute("href")
         === `#${id}`;
 
+
       link.classList.toggle(
         "active",
-        isActive
+        active
       );
+
+
+      if (active) {
+
+        link.setAttribute(
+          "aria-current",
+          "true"
+        );
+
+      } else {
+
+        link.removeAttribute(
+          "aria-current"
+        );
+
+      }
 
     });
-
-  };
-
-
-  const activeObserver =
-    new IntersectionObserver(
-      entries => {
-
-        entries.forEach(entry => {
-
-          if (entry.isIntersecting) {
-
-            updateActiveLink(
-              entry.target.id
-            );
-
-          }
-
-        });
-
-      },
-      {
-        rootMargin:
-          "-38% 0px -53% 0px",
-
-        threshold:
-          0
-      }
-    );
-
-
-  sections.forEach(section => {
-    activeObserver.observe(section);
-  });
-
-
-  /* ====================================================== */
-  /* MOBILE NAV                                             */
-  /* ====================================================== */
-
-  if (menuToggle && navLinks) {
-
-    menuToggle.addEventListener(
-      "click",
-      () => {
-
-        const open =
-          navLinks.classList.toggle(
-            "open"
-          );
-
-        menuToggle.setAttribute(
-          "aria-expanded",
-          String(open)
-        );
-
-      }
-    );
-
-
-    navigationAnchors.forEach(link => {
-
-      link.addEventListener(
-        "click",
-        () => {
-
-          navLinks.classList.remove(
-            "open"
-          );
-
-          menuToggle.setAttribute(
-            "aria-expanded",
-            "false"
-          );
-
-        }
-      );
-
-    });
-
-  }
-
-
-  /* ====================================================== */
-  /* REVEAL ANIMATIONS                                      */
-  /* ====================================================== */
-
-  const revealElements =
-    document.querySelectorAll(
-      "[data-reveal]"
-    );
-
-
-  const revealObserver =
-    new IntersectionObserver(
-      entries => {
-
-        entries.forEach(entry => {
-
-          if (!entry.isIntersecting) {
-            return;
-          }
-
-
-          entry.target.classList.add(
-            "visible"
-          );
-
-
-          revealObserver.unobserve(
-            entry.target
-          );
-
-        });
-
-      },
-      {
-        threshold: 0.12
-      }
-    );
-
-
-  revealElements.forEach(
-    (element, index) => {
-
-      element.style.transitionDelay =
-        `${Math.min(index % 4, 3) * 70}ms`;
-
-      revealObserver.observe(
-        element
-      );
-
-    }
-  );
-
-
-  /* ====================================================== */
-  /* COUNTERS                                               */
-  /* ====================================================== */
-
-  const counters =
-    document.querySelectorAll(
-      ".counter"
-    );
-
-
-  const animateCounter = counter => {
-
-    const target =
-      Number(
-        counter.dataset.target
-      );
-
-    const duration =
-      900;
-
-    const start =
-      performance.now();
-
-
-    const tick = now => {
-
-      const elapsed =
-        now - start;
-
-      const progress =
-        Math.min(
-          elapsed / duration,
-          1
-        );
-
-      const eased =
-        1 - Math.pow(
-          1 - progress,
-          3
-        );
-
-
-      counter.textContent =
-        Math.round(
-          target * eased
-        );
-
-
-      if (progress < 1) {
-        requestAnimationFrame(tick);
-      }
-
-    };
-
-
-    requestAnimationFrame(tick);
-
-  };
-
-
-  const counterObserver =
-    new IntersectionObserver(
-      entries => {
-
-        entries.forEach(entry => {
-
-          if (!entry.isIntersecting) {
-            return;
-          }
-
-
-          animateCounter(
-            entry.target
-          );
-
-
-          counterObserver.unobserve(
-            entry.target
-          );
-
-        });
-
-      },
-      {
-        threshold: 0.7
-      }
-    );
-
-
-  counters.forEach(counter => {
-    counterObserver.observe(counter);
-  });
-
-
-  /* ====================================================== */
-  /* ROTATING ROLE                                          */
-  /* ====================================================== */
-
-  const rotatingRole =
-    document.getElementById(
-      "rotatingRole"
-    );
-
-
-  const roles = [
-    "Systems Administration",
-    "Cloud Native Infrastructure",
-    "Automation & DevOps",
-    "Data & Artificial Intelligence"
-  ];
-
-
-  let roleIndex = 0;
-  let charIndex = 0;
-  let deleting = false;
-
-
-  const typeRole = () => {
-
-    if (!rotatingRole) {
-      return;
-    }
-
-
-    const current =
-      roles[roleIndex];
-
-
-    if (!deleting) {
-
-      charIndex++;
-
-      rotatingRole.textContent =
-        current.slice(
-          0,
-          charIndex
-        );
-
-
-      if (
-        charIndex
-        === current.length
-      ) {
-
-        deleting = true;
-
-        setTimeout(
-          typeRole,
-          1400
-        );
-
-        return;
-      }
-
-    } else {
-
-      charIndex--;
-
-      rotatingRole.textContent =
-        current.slice(
-          0,
-          charIndex
-        );
-
-
-      if (charIndex === 0) {
-
-        deleting = false;
-
-        roleIndex =
-          (roleIndex + 1)
-          % roles.length;
-
-      }
-
-    }
-
-
-    setTimeout(
-      typeRole,
-      deleting ? 32 : 58
-    );
 
   };
 
 
   if (
-    rotatingRole
-    && !window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches
+    "IntersectionObserver"
+    in window
   ) {
 
-    rotatingRole.textContent = "";
+    const sectionObserver =
+      new IntersectionObserver(
+        entries => {
 
-    setTimeout(
-      typeRole,
-      450
+          const visibleEntries =
+            entries
+              .filter(entry =>
+                entry.isIntersecting
+              )
+              .sort(
+                (a, b) =>
+                  b.intersectionRatio
+                  - a.intersectionRatio
+              );
+
+
+          if (
+            visibleEntries.length
+            === 0
+          ) {
+
+            return;
+
+          }
+
+
+          activateSection(
+            visibleEntries[0]
+              .target
+              .id
+          );
+
+        },
+        {
+
+          rootMargin:
+            "-34% 0px -52% 0px",
+
+          threshold:
+            [
+              0,
+              0.15,
+              0.35,
+              0.55
+            ]
+
+        }
+      );
+
+
+    trackedSections.forEach(
+      section => {
+
+        sectionObserver.observe(
+          section
+        );
+
+      }
     );
 
   }
 
 
-  /* ====================================================== */
-  /* THEME                                                  */
-  /* ====================================================== */
+  /* ====================================================================== */
+  /* 10 / MOBILE NAVIGATION                                                 */
+  /* ====================================================================== */
 
-  const setTheme = light => {
+  const closeMobileNavigation =
+    () => {
 
-    body.classList.toggle(
-      "light",
-      light
+      if (!navLinksContainer) {
+        return;
+      }
+
+
+      navLinksContainer.classList.remove(
+        "open"
+      );
+
+
+      if (menuToggle) {
+
+        menuToggle.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      }
+
+    };
+
+
+  const openMobileNavigation =
+    () => {
+
+      if (!navLinksContainer) {
+        return;
+      }
+
+
+      navLinksContainer.classList.add(
+        "open"
+      );
+
+
+      if (menuToggle) {
+
+        menuToggle.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+
+      }
+
+    };
+
+
+  if (
+    menuToggle
+    && navLinksContainer
+  ) {
+
+    menuToggle.addEventListener(
+      "click",
+      event => {
+
+        event.stopPropagation();
+
+
+        const isOpen =
+          navLinksContainer
+            .classList
+            .contains(
+              "open"
+            );
+
+
+        if (isOpen) {
+
+          closeMobileNavigation();
+
+        } else {
+
+          openMobileNavigation();
+
+        }
+
+      }
     );
 
 
-    if (themeToggle) {
+    document.addEventListener(
+      "click",
+      event => {
 
-      themeToggle.setAttribute(
-        "aria-pressed",
-        String(light)
+        if (
+          !navLinksContainer
+            .classList
+            .contains(
+              "open"
+            )
+        ) {
+
+          return;
+
+        }
+
+
+        const clickedInside =
+          navLinksContainer
+            .contains(
+              event.target
+            )
+          || menuToggle
+            .contains(
+              event.target
+            );
+
+
+        if (!clickedInside) {
+
+          closeMobileNavigation();
+
+        }
+
+      }
+    );
+
+
+    window.addEventListener(
+      "resize",
+      () => {
+
+        if (
+          window.innerWidth
+          > 900
+        ) {
+
+          closeMobileNavigation();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ====================================================================== */
+  /* 11 / REVEAL ENGINE                                                     */
+  /* ====================================================================== */
+
+  const revealElements =
+    $$("[data-reveal]");
+
+
+  if (
+    prefersReducedMotion
+    || !(
+      "IntersectionObserver"
+      in window
+    )
+  ) {
+
+    revealElements.forEach(
+      element => {
+
+        element.classList.add(
+          "visible"
+        );
+
+      }
+    );
+
+  } else {
+
+    const revealObserver =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (
+              !entry.isIntersecting
+            ) {
+
+              return;
+
+            }
+
+
+            entry.target
+              .classList
+              .add(
+                "visible"
+              );
+
+
+            revealObserver.unobserve(
+              entry.target
+            );
+
+          });
+
+        },
+        {
+
+          threshold: 0.1,
+
+          rootMargin:
+            "0px 0px -35px 0px"
+
+        }
       );
 
-      themeToggle.textContent =
-        light ? "☼" : "◐";
+
+    revealElements.forEach(
+      (element, index) => {
+
+        const delay =
+          Math.min(
+            index % 4,
+            3
+          ) * 60;
+
+
+        element.style
+          .transitionDelay =
+            `${delay}ms`;
+
+
+        revealObserver.observe(
+          element
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ====================================================================== */
+  /* 12 / COUNTERS                                                          */
+  /* ====================================================================== */
+
+  const counters =
+    $$(".counter");
+
+
+  const animateCounter =
+    counter => {
+
+      if (
+        counter.dataset
+          .counterStarted
+        === "true"
+      ) {
+
+        return;
+
+      }
+
+
+      counter.dataset
+        .counterStarted =
+          "true";
+
+
+      const target =
+        Number(
+          counter.dataset.target
+        );
+
+
+      if (
+        !Number.isFinite(target)
+      ) {
+
+        return;
+
+      }
+
+
+      if (prefersReducedMotion) {
+
+        counter.textContent =
+          target;
+
+        return;
+
+      }
+
+
+      const duration =
+        1100;
+
+
+      const start =
+        performance.now();
+
+
+      const animate =
+        timestamp => {
+
+          const elapsed =
+            timestamp - start;
+
+
+          const progress =
+            clamp(
+              elapsed / duration,
+              0,
+              1
+            );
+
+
+          const eased =
+            1
+            - Math.pow(
+                1 - progress,
+                3
+              );
+
+
+          counter.textContent =
+            Math.round(
+              target * eased
+            );
+
+
+          if (progress < 1) {
+
+            requestAnimationFrame(
+              animate
+            );
+
+          }
+
+        };
+
+
+      requestAnimationFrame(
+        animate
+      );
+
+    };
+
+
+  if (
+    "IntersectionObserver"
+    in window
+  ) {
+
+    const counterObserver =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (
+              !entry.isIntersecting
+            ) {
+
+              return;
+
+            }
+
+
+            animateCounter(
+              entry.target
+            );
+
+
+            counterObserver
+              .unobserve(
+                entry.target
+              );
+
+          });
+
+        },
+        {
+          threshold: 0.55
+        }
+      );
+
+
+    counters.forEach(counter => {
+
+      counterObserver.observe(
+        counter
+      );
+
+    });
+
+  } else {
+
+    counters.forEach(
+      animateCounter
+    );
+
+  }
+
+
+  /* ====================================================================== */
+  /* 13 / TYPEWRITER                                                        */
+  /* ====================================================================== */
+
+  let roleIndex =
+    0;
+
+
+  let characterIndex =
+    0;
+
+
+  let deleting =
+    false;
+
+
+  let typingTimer =
+    null;
+
+
+  const typeRole =
+    () => {
+
+      if (!rotatingRole) {
+        return;
+      }
+
+
+      const role =
+        CONFIG.roles[
+          roleIndex
+        ];
+
+
+      if (!deleting) {
+
+        characterIndex += 1;
+
+
+        rotatingRole.textContent =
+          role.slice(
+            0,
+            characterIndex
+          );
+
+
+        if (
+          characterIndex
+          >= role.length
+        ) {
+
+          deleting = true;
+
+
+          typingTimer =
+            window.setTimeout(
+              typeRole,
+              CONFIG.rolePause
+            );
+
+
+          return;
+
+        }
+
+
+        typingTimer =
+          window.setTimeout(
+            typeRole,
+            CONFIG.typeSpeed
+          );
+
+
+      } else {
+
+        characterIndex -= 1;
+
+
+        rotatingRole.textContent =
+          role.slice(
+            0,
+            Math.max(
+              characterIndex,
+              0
+            )
+          );
+
+
+        if (
+          characterIndex <= 0
+        ) {
+
+          deleting = false;
+
+
+          roleIndex =
+            (
+              roleIndex + 1
+            )
+            % CONFIG.roles.length;
+
+
+          typingTimer =
+            window.setTimeout(
+              typeRole,
+              280
+            );
+
+
+          return;
+
+        }
+
+
+        typingTimer =
+          window.setTimeout(
+            typeRole,
+            CONFIG.deleteSpeed
+          );
+
+      }
+
+    };
+
+
+  if (rotatingRole) {
+
+    if (prefersReducedMotion) {
+
+      rotatingRole.textContent =
+        CONFIG.roles[0];
+
+    } else {
+
+      rotatingRole.textContent =
+        "";
+
+
+      typingTimer =
+        window.setTimeout(
+          typeRole,
+          550
+        );
 
     }
 
-  };
+  }
 
 
-  const savedTheme =
-    localStorage.getItem(
-      "portfolio-theme"
+  /* ====================================================================== */
+  /* 14 / THEME ENGINE                                                      */
+  /* ====================================================================== */
+
+  const themeMeta =
+    $('meta[name="theme-color"]');
+
+
+  const applyTheme =
+    theme => {
+
+      const light =
+        theme === "light";
+
+
+      body.classList.toggle(
+        "light",
+        light
+      );
+
+
+      body.dataset.theme =
+        light
+          ? "light"
+          : "dark";
+
+
+      if (themeToggle) {
+
+        themeToggle.textContent =
+          light
+            ? "☀"
+            : "◐";
+
+
+        themeToggle.setAttribute(
+          "aria-pressed",
+          String(light)
+        );
+
+
+        themeToggle.setAttribute(
+          "aria-label",
+          light
+            ? "Switch to dark theme"
+            : "Switch to light theme"
+        );
+
+      }
+
+
+      if (themeMeta) {
+
+        themeMeta.setAttribute(
+          "content",
+          light
+            ? "#eef3f8"
+            : "#040711"
+        );
+
+      }
+
+    };
+
+
+  const storedTheme =
+    safeStorageGet(
+      CONFIG.themeStorageKey
     );
 
 
-  setTheme(
-    savedTheme === "light"
+  const systemPrefersLight =
+    window.matchMedia(
+      "(prefers-color-scheme: light)"
+    ).matches;
+
+
+  const initialTheme =
+    storedTheme
+      || (
+        systemPrefersLight
+          ? "light"
+          : "dark"
+      );
+
+
+  applyTheme(
+    initialTheme
   );
 
 
@@ -534,20 +1391,23 @@ document.addEventListener("DOMContentLoaded", () => {
       "click",
       () => {
 
-        const light =
-          !body.classList.contains(
-            "light"
-          );
+        const nextTheme =
+          body.classList
+            .contains(
+              "light"
+            )
+            ? "dark"
+            : "light";
 
 
-        setTheme(light);
+        applyTheme(
+          nextTheme
+        );
 
 
-        localStorage.setItem(
-          "portfolio-theme",
-          light
-            ? "light"
-            : "dark"
+        safeStorageSet(
+          CONFIG.themeStorageKey,
+          nextTheme
         );
 
       }
@@ -556,108 +1416,122 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  /* ====================================================== */
-  /* CURSOR LIGHT                                           */
-  /* ====================================================== */
+  /* ====================================================================== */
+  /* 15 / CURSOR LIGHT                                                      */
+  /* ====================================================================== */
 
   if (
     cursorGlow
-    && window.matchMedia(
-      "(pointer:fine)"
-    ).matches
+    && finePointer
+    && !prefersReducedMotion
   ) {
+
+    let pointerTicking =
+      false;
+
+
+    let pointerX =
+      window.innerWidth / 2;
+
+
+    let pointerY =
+      window.innerHeight / 2;
+
+
+    const updatePointer =
+      () => {
+
+        root.style.setProperty(
+          "--mouse-x",
+          `${pointerX}px`
+        );
+
+
+        root.style.setProperty(
+          "--mouse-y",
+          `${pointerY}px`
+        );
+
+
+        pointerTicking = false;
+
+      };
+
 
     window.addEventListener(
       "pointermove",
       event => {
 
-        document.documentElement
-          .style
-          .setProperty(
-            "--mouse-x",
-            `${event.clientX}px`
-          );
+        pointerX =
+          event.clientX;
 
 
-        document.documentElement
-          .style
-          .setProperty(
-            "--mouse-y",
-            `${event.clientY}px`
+        pointerY =
+          event.clientY;
+
+
+        if (!pointerTicking) {
+
+          pointerTicking = true;
+
+
+          requestAnimationFrame(
+            updatePointer
           );
+
+        }
 
       },
-      { passive: true }
+      {
+        passive: true
+      }
+    );
+
+
+    document.addEventListener(
+      "mouseleave",
+      () => {
+
+        cursorGlow.style.opacity =
+          "0";
+
+      }
+    );
+
+
+    document.addEventListener(
+      "mouseenter",
+      () => {
+
+        cursorGlow.style.opacity =
+          "1";
+
+      }
     );
 
   }
 
 
-  /* ====================================================== */
-  /* TILT CARDS                                             */
-  /* ====================================================== */
+  /* ====================================================================== */
+  /* 16 / EXTREME TILT SYSTEM                                               */
+  /* ====================================================================== */
 
   const tiltCards =
-    document.querySelectorAll(
-      ".tilt-card"
-    );
+    $$(".tilt-card");
 
 
   if (
-    window.matchMedia(
-      "(pointer:fine)"
-    ).matches
-    && !window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches
+    finePointer
+    && !prefersReducedMotion
   ) {
 
     tiltCards.forEach(card => {
 
-      card.addEventListener(
-        "pointermove",
-        event => {
-
-          const rect =
-            card.getBoundingClientRect();
+      let tiltFrame =
+        null;
 
 
-          const x =
-            event.clientX
-            - rect.left;
-
-          const y =
-            event.clientY
-            - rect.top;
-
-
-          const rotateY =
-            ((x / rect.width) - .5)
-            * 5;
-
-
-          const rotateX =
-            ((y / rect.height) - .5)
-            * -5;
-
-
-          card.style.setProperty(
-            "--tilt-x",
-            `${rotateX}deg`
-          );
-
-
-          card.style.setProperty(
-            "--tilt-y",
-            `${rotateY}deg`
-          );
-
-        }
-      );
-
-
-      card.addEventListener(
-        "pointerleave",
+      const resetTilt =
         () => {
 
           card.style.setProperty(
@@ -671,7 +1545,107 @@ document.addEventListener("DOMContentLoaded", () => {
             "0deg"
           );
 
+      };
+
+
+      card.addEventListener(
+        "pointermove",
+        event => {
+
+          if (tiltFrame) {
+
+            cancelAnimationFrame(
+              tiltFrame
+            );
+
+          }
+
+
+          tiltFrame =
+            requestAnimationFrame(
+              () => {
+
+                const rect =
+                  card
+                    .getBoundingClientRect();
+
+
+                const x =
+                  event.clientX
+                  - rect.left;
+
+
+                const y =
+                  event.clientY
+                  - rect.top;
+
+
+                const normalizedX =
+                  x / rect.width
+                  - 0.5;
+
+
+                const normalizedY =
+                  y / rect.height
+                  - 0.5;
+
+
+                const rotateY =
+                  normalizedX * 5;
+
+
+                const rotateX =
+                  normalizedY * -5;
+
+
+                card.style
+                  .setProperty(
+                    "--tilt-x",
+                    `${rotateX.toFixed(2)}deg`
+                  );
+
+
+                card.style
+                  .setProperty(
+                    "--tilt-y",
+                    `${rotateY.toFixed(2)}deg`
+                  );
+
+
+                card.style
+                  .setProperty(
+                    "--pointer-card-x",
+                    `${(
+                      x / rect.width
+                    ) * 100}%`
+                  );
+
+
+                card.style
+                  .setProperty(
+                    "--pointer-card-y",
+                    `${(
+                      y / rect.height
+                    ) * 100}%`
+                  );
+
+              }
+            );
+
         }
+      );
+
+
+      card.addEventListener(
+        "pointerleave",
+        resetTilt
+      );
+
+
+      card.addEventListener(
+        "blur",
+        resetTilt,
+        true
       );
 
     });
@@ -679,56 +1653,256 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  /* ====================================================== */
-  /* COMMAND PALETTE                                        */
-  /* ====================================================== */
+  /* ====================================================================== */
+  /* 17 / FLAGSHIP DETAILS                                                  */
+  /* ====================================================================== */
 
-  const openCommandPalette = () => {
-
-    if (!commandPalette) {
-      return;
-    }
+  const technicalDetails =
+    $$(".tech-details");
 
 
-    commandPalette.classList.add(
-      "open"
+  technicalDetails.forEach(details => {
+
+    details.addEventListener(
+      "toggle",
+      () => {
+
+        if (!details.open) {
+          return;
+        }
+
+
+        technicalDetails.forEach(
+          other => {
+
+            if (
+              other !== details
+              && other.open
+            ) {
+
+              other.open =
+                false;
+
+            }
+
+          }
+        );
+
+      }
     );
 
-
-    commandPalette.setAttribute(
-      "aria-hidden",
-      "false"
-    );
+  });
 
 
-    body.classList.add(
-      "no-scroll"
-    );
+  /* ====================================================================== */
+  /* 18 / COMMAND PALETTE                                                   */
+  /* ====================================================================== */
+
+  let commandIsOpen =
+    false;
+
+
+  let previousFocus =
+    null;
+
+
+  let visibleCommandButtons =
+    [...commandButtons];
+
+
+  let commandActiveIndex =
+    0;
+
+
+  const updateCommandSelection =
+    () => {
+
+      visibleCommandButtons
+        .forEach(
+          (button, index) => {
+
+            const active =
+              index
+              === commandActiveIndex;
+
+
+            button.classList.toggle(
+              "command-active",
+              active
+            );
+
+
+            button.setAttribute(
+              "aria-selected",
+              String(active)
+            );
+
+          }
+        );
+
+
+      const current =
+        visibleCommandButtons[
+          commandActiveIndex
+        ];
+
+
+      current?.scrollIntoView({
+        block: "nearest"
+      });
 
   };
 
 
-  const closeCommandPalette = () => {
+  const filterCommands =
+    query => {
 
-    if (!commandPalette) {
-      return;
-    }
-
-
-    commandPalette.classList.remove(
-      "open"
-    );
+      const normalized =
+        query
+          .trim()
+          .toLowerCase();
 
 
-    commandPalette.setAttribute(
-      "aria-hidden",
-      "true"
-    );
+      visibleCommandButtons =
+        commandButtons
+          .filter(button => {
+
+            const text =
+              button
+                .textContent
+                .toLowerCase();
 
 
-    body.classList.remove(
-      "no-scroll"
-    );
+            const match =
+              normalized === ""
+              || text.includes(
+                normalized
+              );
+
+
+            button.hidden =
+              !match;
+
+
+            return match;
+
+          });
+
+
+      commandActiveIndex =
+        0;
+
+
+      updateCommandSelection();
+
+  };
+
+
+  const openCommandPalette =
+    () => {
+
+      if (
+        !commandPalette
+        || commandIsOpen
+      ) {
+
+        return;
+
+      }
+
+
+      previousFocus =
+        document.activeElement;
+
+
+      commandIsOpen =
+        true;
+
+
+      commandPalette
+        .classList
+        .add(
+          "open"
+        );
+
+
+      commandPalette.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      body.classList.add(
+        "no-scroll"
+      );
+
+
+      if (commandSearch) {
+
+        commandSearch.value =
+          "";
+
+
+        filterCommands("");
+
+
+        window.setTimeout(
+          () => {
+
+            commandSearch.focus();
+
+          },
+          50
+        );
+
+      }
+
+  };
+
+
+  const closeCommandPalette =
+    () => {
+
+      if (
+        !commandPalette
+        || !commandIsOpen
+      ) {
+
+        return;
+
+      }
+
+
+      commandIsOpen =
+        false;
+
+
+      commandPalette
+        .classList
+        .remove(
+          "open"
+        );
+
+
+      commandPalette.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      body.classList.remove(
+        "no-scroll"
+      );
+
+
+      if (
+        previousFocus
+        instanceof HTMLElement
+      ) {
+
+        previousFocus.focus();
+
+      }
 
   };
 
@@ -743,57 +1917,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  document.addEventListener(
-    "keydown",
-    event => {
-
-      const commandShortcut =
-        (
-          event.ctrlKey
-          || event.metaKey
-        )
-        && event.key.toLowerCase()
-        === "k";
-
-
-      if (commandShortcut) {
-
-        event.preventDefault();
-
-
-        if (
-          commandPalette
-          ?.classList
-          .contains("open")
-        ) {
-
-          closeCommandPalette();
-
-        } else {
-
-          openCommandPalette();
-
-        }
-
-      }
-
-
-      if (
-        event.key === "Escape"
-      ) {
-
-        closeCommandPalette();
-
-      }
-
-    }
-  );
-
-
-  document
-    .querySelectorAll(
-      "[data-close-command]"
-    )
+  $$("[data-close-command]")
     .forEach(element => {
 
       element.addEventListener(
@@ -804,37 +1928,758 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-  document
-    .querySelectorAll(
-      "[data-command-target]"
-    )
-    .forEach(button => {
+  if (commandSearch) {
 
-      button.addEventListener(
-        "click",
-        () => {
+    commandSearch.addEventListener(
+      "input",
+      () => {
 
-          const selector =
-            button.dataset.commandTarget;
+        filterCommands(
+          commandSearch.value
+        );
+
+      }
+    );
+
+  }
 
 
-          const target =
-            document.querySelector(
+  commandButtons.forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const selector =
+          button.dataset
+            .commandTarget;
+
+
+        closeCommandPalette();
+
+
+        window.setTimeout(
+          () => {
+
+            scrollToTarget(
               selector
             );
 
+          },
+          60
+        );
+
+      }
+    );
+
+  });
+
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      const key =
+        event.key
+          .toLowerCase();
+
+
+      const commandShortcut =
+        (
+          event.ctrlKey
+          || event.metaKey
+        )
+        && key === "k";
+
+
+      if (commandShortcut) {
+
+        event.preventDefault();
+
+
+        if (commandIsOpen) {
 
           closeCommandPalette();
 
+        } else {
 
-          target?.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
+          openCommandPalette();
+
+        }
+
+
+        return;
+
+      }
+
+
+      if (
+        event.key === "Escape"
+      ) {
+
+        if (commandIsOpen) {
+
+          event.preventDefault();
+
+          closeCommandPalette();
+
+        }
+
+
+        closeMobileNavigation();
+
+
+        return;
+
+      }
+
+
+      if (!commandIsOpen) {
+        return;
+      }
+
+
+      if (
+        event.key === "ArrowDown"
+      ) {
+
+        event.preventDefault();
+
+
+        if (
+          visibleCommandButtons
+            .length === 0
+        ) {
+
+          return;
+
+        }
+
+
+        commandActiveIndex =
+          (
+            commandActiveIndex
+            + 1
+          )
+          % visibleCommandButtons
+              .length;
+
+
+        updateCommandSelection();
+
+      }
+
+
+      if (
+        event.key === "ArrowUp"
+      ) {
+
+        event.preventDefault();
+
+
+        if (
+          visibleCommandButtons
+            .length === 0
+        ) {
+
+          return;
+
+        }
+
+
+        commandActiveIndex =
+          (
+            commandActiveIndex
+            - 1
+            + visibleCommandButtons.length
+          )
+          % visibleCommandButtons
+              .length;
+
+
+        updateCommandSelection();
+
+      }
+
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        if (
+          document.activeElement
+            === commandSearch
+        ) {
+
+          event.preventDefault();
+
+
+          visibleCommandButtons[
+            commandActiveIndex
+          ]?.click();
+
+        }
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 19 / GITHUB LIVE SIGNAL                                                */
+  /* ====================================================================== */
+
+  const githubStatElements = {
+
+    repos:
+      $('[data-github-stat="repos"]'),
+
+    followers:
+      $('[data-github-stat="followers"]'),
+
+    following:
+      $('[data-github-stat="following"]')
+
+  };
+
+
+  const updateGitHubStats =
+    data => {
+
+      if (
+        githubStatElements.repos
+      ) {
+
+        githubStatElements
+          .repos
+          .textContent =
+            data.public_repos
+            ?? "--";
+
+      }
+
+
+      if (
+        githubStatElements.followers
+      ) {
+
+        githubStatElements
+          .followers
+          .textContent =
+            data.followers
+            ?? "--";
+
+      }
+
+
+      if (
+        githubStatElements.following
+      ) {
+
+        githubStatElements
+          .following
+          .textContent =
+            data.following
+            ?? "--";
+
+      }
+
+  };
+
+
+  const getCachedGitHubData =
+    () => {
+
+      const raw =
+        safeStorageGet(
+          CONFIG.githubCacheKey
+        );
+
+
+      if (!raw) {
+        return null;
+      }
+
+
+      try {
+
+        const parsed =
+          JSON.parse(raw);
+
+
+        const maxAge =
+          CONFIG
+            .githubCacheMinutes
+          * 60
+          * 1000;
+
+
+        const fresh =
+          Date.now()
+          - parsed.timestamp
+          < maxAge;
+
+
+        if (
+          !fresh
+          || !parsed.data
+        ) {
+
+          return null;
+
+        }
+
+
+        return parsed.data;
+
+      } catch {
+
+        return null;
+
+      }
+
+    };
+
+
+  const cacheGitHubData =
+    data => {
+
+      safeStorageSet(
+        CONFIG.githubCacheKey,
+        JSON.stringify({
+
+          timestamp:
+            Date.now(),
+
+          data
+
+        })
+      );
+
+    };
+
+
+  const loadGitHubStats =
+    async () => {
+
+      const hasGitHubWidgets =
+        Object.values(
+          githubStatElements
+        ).some(Boolean);
+
+
+      if (!hasGitHubWidgets) {
+        return;
+      }
+
+
+      const cached =
+        getCachedGitHubData();
+
+
+      if (cached) {
+
+        updateGitHubStats(
+          cached
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            `https://api.github.com/users/${CONFIG.githubUser}`,
+            {
+
+              headers: {
+                Accept:
+                  "application/vnd.github+json"
+              }
+
+            }
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            `GitHub API ${response.status}`
+          );
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        updateGitHubStats(
+          data
+        );
+
+
+        cacheGitHubData(
+          data
+        );
+
+
+      } catch (error) {
+
+        console.warn(
+          "GitHub live signal unavailable:",
+          error
+        );
+
+
+        Object.values(
+          githubStatElements
+        ).forEach(element => {
+
+          if (element) {
+
+            element.textContent =
+              "—";
+
+          }
+
+        });
+
+      }
+
+    };
+
+
+  loadGitHubStats();
+
+
+  /* ====================================================================== */
+  /* 20 / CHAPTER RAIL ACTIVE STATE                                         */
+  /* ====================================================================== */
+
+  const chapterMap =
+    new Map();
+
+
+  chapterLinks.forEach(link => {
+
+    const href =
+      link.getAttribute(
+        "href"
+      );
+
+
+    if (!href) {
+      return;
+    }
+
+
+    chapterMap.set(
+      href.substring(1),
+      link
+    );
+
+  });
+
+
+  if (
+    chapterMap.size
+    && "IntersectionObserver"
+       in window
+  ) {
+
+    const railObserver =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (
+              !entry.isIntersecting
+            ) {
+
+              return;
+
+            }
+
+
+            chapterLinks.forEach(
+              link => {
+
+                link.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+
+            chapterMap
+              .get(
+                entry.target.id
+              )
+              ?.classList
+              .add(
+                "active"
+              );
+
           });
+
+        },
+        {
+
+          threshold: 0,
+
+          rootMargin:
+            "-42% 0px -50% 0px"
 
         }
       );
 
-    });
+
+    trackedSections
+      .filter(section =>
+        chapterMap.has(
+          section.id
+        )
+      )
+      .forEach(section => {
+
+        railObserver.observe(
+          section
+        );
+
+      });
+
+  }
+
+
+  /* ====================================================================== */
+  /* 21 / SECTION DEPTH EFFECT                                               */
+  /* ====================================================================== */
+
+  if (
+    finePointer
+    && !prefersReducedMotion
+  ) {
+
+    const depthSections =
+      $$(".section");
+
+
+    const updateSectionDepth =
+      () => {
+
+        const viewportCenter =
+          window.innerHeight / 2;
+
+
+        depthSections.forEach(
+          section => {
+
+            const rect =
+              section
+                .getBoundingClientRect();
+
+
+            const sectionCenter =
+              rect.top
+              + rect.height / 2;
+
+
+            const distance =
+              Math.abs(
+                sectionCenter
+                - viewportCenter
+              );
+
+
+            const visibility =
+              clamp(
+                1
+                - distance
+                / (
+                  window.innerHeight
+                  * 1.6
+                ),
+                0,
+                1
+              );
+
+
+            section.style
+              .setProperty(
+                "--section-focus",
+                visibility
+                  .toFixed(3)
+              );
+
+          }
+        );
+
+      };
+
+
+    let sectionDepthTicking =
+      false;
+
+
+    const requestSectionDepth =
+      () => {
+
+        if (
+          sectionDepthTicking
+        ) {
+
+          return;
+
+        }
+
+
+        sectionDepthTicking =
+          true;
+
+
+        requestAnimationFrame(
+          () => {
+
+            updateSectionDepth();
+
+            sectionDepthTicking =
+              false;
+
+          }
+        );
+
+      };
+
+
+    updateSectionDepth();
+
+
+    window.addEventListener(
+      "scroll",
+      requestSectionDepth,
+      {
+        passive: true
+      }
+    );
+
+  }
+
+
+  /* ====================================================================== */
+  /* 22 / VISIBILITY / PERFORMANCE                                          */
+  /* ====================================================================== */
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (
+        document.hidden
+        && typingTimer
+      ) {
+
+        clearTimeout(
+          typingTimer
+        );
+
+
+        typingTimer =
+          null;
+
+      } else if (
+        !document.hidden
+        && rotatingRole
+        && !prefersReducedMotion
+        && !typingTimer
+      ) {
+
+        typingTimer =
+          window.setTimeout(
+            typeRole,
+            250
+          );
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 23 / KEYBOARD QUALITY OF LIFE                                          */
+  /* ====================================================================== */
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Home"
+        && !event.ctrlKey
+        && !event.metaKey
+        && document.activeElement
+           === body
+      ) {
+
+        window.scrollTo({
+
+          top: 0,
+
+          behavior:
+            prefersReducedMotion
+              ? "auto"
+              : "smooth"
+
+        });
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 24 / SYSTEM READY                                                       */
+  /* ====================================================================== */
+
+  requestAnimationFrame(
+    () => {
+
+      body.classList.add(
+        "system-ready"
+      );
+
+    }
+  );
+
+
+  console.log(
+    "%c IEVGEN // PORTFOLIO SYSTEM ONLINE ",
+    [
+      "background:#38bdf8",
+      "color:#04111a",
+      "font-weight:700",
+      "padding:6px 10px",
+      "border-radius:4px"
+    ].join(";")
+  );
+
+
+  console.log(
+    [
+      "Systems",
+      "Cloud Native",
+      "Automation",
+      "Data",
+      "AI"
+    ].join(" → ")
+  );
 
 });
