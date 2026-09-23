@@ -1144,7 +1144,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
-
   /* ====================================================================== */
   /* 13 / TYPEWRITER                                                        */
   /* ====================================================================== */
@@ -1413,7 +1412,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     );
 
-  }  /* ====================================================================== */
+  }
+
+
+  /* ====================================================================== */
   /* 15 / CURSOR LIGHT                                                      */
   /* ====================================================================== */
 
@@ -2353,7 +2355,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadGitHubStats();
 
-
   /* ====================================================================== */
   /* 20 / CHAPTER RAIL ACTIVE STATE                                         */
   /* ====================================================================== */
@@ -2639,2495 +2640,204 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
     }
-  );  /* ====================================================================== */
-  /* 24 / FLAGSHIP V2 EXTREME INTERACTION ENGINE                            */
-  /* ====================================================================== */
-
-  const flagshipSystem =
-    $(".flagship-live-system");
-
-  const flagshipModeButtons =
-    $$(".flagship-mode");
-
-  const flagshipModeLabel =
-    $("#flagshipModeLabel");
-
-  const runtimeModeValue =
-    $("#runtimeModeValue");
-
-  const platformStages =
-    $$(".platform-stage");
-
-  const flagshipNodes =
-    $$(".topology-node");
-
-  const flagshipPaths =
-    $$(".topology-line");
-
-  const flagshipEventLog =
-    $("#flagshipEventLog");
-
-  const requestPacket =
-    $("#requestPacketPrimary");
-
-  const meshPacket =
-    $("#meshPacketPrimary");
-
-  const observePacket =
-    $("#observePacketPrimary");
-
-
-  const FLAGSHIP = {
-
-    requestRoutes: [
-
-      {
-        name: "PRODUCT REQUEST",
-        nodes: [
-          "client",
-          "ingress",
-          "gateway",
-          "product",
-          "mysql"
-        ],
-        paths: [
-          "path-client-ingress",
-          "path-ingress-gateway",
-          "path-gateway-services",
-          "path-gateway-product",
-          "path-product-mysql"
-        ],
-        events: [
-          "client.request()",
-          "ingress.route()",
-          "gateway.forward(product)",
-          "product.read()",
-          "mysql.query()"
-        ]
-      },
-
-      {
-        name: "ORDER REQUEST",
-        nodes: [
-          "client",
-          "ingress",
-          "gateway",
-          "order",
-          "redis"
-        ],
-        paths: [
-          "path-client-ingress",
-          "path-ingress-gateway",
-          "path-gateway-services",
-          "path-gateway-order",
-          "path-order-redis"
-        ],
-        events: [
-          "client.request()",
-          "ingress.route()",
-          "gateway.forward(order)",
-          "order.process()",
-          "redis.lookup()"
-        ]
-      },
-
-      {
-        name: "USER REQUEST",
-        nodes: [
-          "client",
-          "ingress",
-          "gateway",
-          "user",
-          "rabbitmq"
-        ],
-        paths: [
-          "path-client-ingress",
-          "path-ingress-gateway",
-          "path-gateway-services",
-          "path-gateway-user",
-          "path-user-rabbitmq"
-        ],
-        events: [
-          "client.request()",
-          "ingress.route()",
-          "gateway.forward(user)",
-          "user.auth()",
-          "rabbitmq.publish()"
-        ]
-      }
-
-    ],
-
-    meshRoutes: [
-
-      {
-        name: "PRODUCT → ORDER",
-        nodes: [
-          "product",
-          "order"
-        ],
-        paths: [
-          "path-product-order"
-        ],
-        events: [
-          "istio.route(product→order)",
-          "envoy.retry_policy()",
-          "mesh.telemetry()"
-        ]
-      },
-
-      {
-        name: "ORDER → USER",
-        nodes: [
-          "order",
-          "user"
-        ],
-        paths: [
-          "path-order-user"
-        ],
-        events: [
-          "istio.route(order→user)",
-          "envoy.timeout_policy()",
-          "mesh.telemetry()"
-        ]
-      },
-
-      {
-        name: "PRODUCT → USER",
-        nodes: [
-          "product",
-          "user"
-        ],
-        paths: [
-          "path-product-user"
-        ],
-        events: [
-          "istio.route(product→user)",
-          "envoy.sidecar()",
-          "kiali.trace()"
-        ]
-      }
-
-    ],
-
-    observeRoute: {
-
-      name: "OBSERVABILITY FLOW",
-
-      nodes: [
-        "product",
-        "order",
-        "user",
-        "prometheus",
-        "grafana",
-        "kiali"
-      ],
-
-      paths: [
-        "path-services-prometheus",
-        "path-prometheus-grafana",
-        "path-grafana-kiali"
-      ],
-
-      events: [
-        "prometheus.scrape()",
-        "metrics.store()",
-        "grafana.render()",
-        "kiali.map_mesh()"
-      ]
-
-    }
-
-  };
-
-
-  let flagshipMode =
-    "request";
-
-
-  let flagshipRouteIndex =
-    0;
-
-
-  let flagshipCycleTimer =
-    null;
-
-
-  let flagshipPacketFrame =
-    null;
-
-
-  let flagshipPacketToken =
-    0;
-
-
-  const formatFlagshipTime =
-    () => {
-
-      const now =
-        new Date();
-
-
-      return now
-        .toLocaleTimeString(
-          [],
-          {
-            minute: "2-digit",
-            second: "2-digit"
-          }
-        );
-
-    };
-
-
-  const pushFlagshipEvent =
-    message => {
-
-      if (!flagshipEventLog) {
-        return;
-      }
-
-
-      const eventLine =
-        document.createElement(
-          "p"
-        );
-
-
-      const time =
-        document.createElement(
-          "span"
-        );
-
-
-      time.textContent =
-        formatFlagshipTime();
-
-
-      eventLine.appendChild(
-        time
-      );
-
-
-      eventLine.appendChild(
-        document.createTextNode(
-          message
-        )
-      );
-
-
-      flagshipEventLog.prepend(
-        eventLine
-      );
-
-
-      while (
-        flagshipEventLog.children.length
-        > 6
-      ) {
-
-        flagshipEventLog
-          .lastElementChild
-          ?.remove();
-
-      }
-
-    };
-
-
-  const clearFlagshipFocus =
-    () => {
-
-      flagshipNodes.forEach(node => {
-
-        node.classList.remove(
-          "is-active"
-        );
-
-      });
-
-
-      flagshipPaths.forEach(path => {
-
-        path.classList.remove(
-          "is-active"
-        );
-
-      });
-
-
-      flagshipSystem
-        ?.classList
-        .remove(
-          "has-node-focus"
-        );
-
-    };
-
-
-  const activateFlagshipRoute =
-    route => {
-
-      if (!route) {
-        return;
-      }
-
-
-      clearFlagshipFocus();
-
-
-      flagshipSystem
-        ?.classList
-        .add(
-          "has-node-focus"
-        );
-
-
-      route.nodes
-        .forEach(name => {
-
-          $(
-            `[data-node="${name}"]`
-          )
-            ?.classList
-            .add(
-              "is-active"
-            );
-
-        });
-
-
-      route.paths
-        .forEach(id => {
-
-          document
-            .getElementById(id)
-            ?.classList
-            .add(
-              "is-active"
-            );
-
-        });
-
-    };
-
-
-  const getConnectedPathsForNode =
-    nodeName => {
-
-      const map = {
-
-        client: [
-          "path-client-ingress"
-        ],
-
-        ingress: [
-          "path-client-ingress",
-          "path-ingress-gateway"
-        ],
-
-        gateway: [
-          "path-ingress-gateway",
-          "path-gateway-services",
-          "path-gateway-product",
-          "path-gateway-order",
-          "path-gateway-user"
-        ],
-
-        product: [
-          "path-gateway-product",
-          "path-product-order",
-          "path-product-user",
-          "path-product-mysql",
-          "path-services-prometheus"
-        ],
-
-        order: [
-          "path-gateway-order",
-          "path-product-order",
-          "path-order-user",
-          "path-order-redis",
-          "path-services-prometheus"
-        ],
-
-        user: [
-          "path-gateway-user",
-          "path-order-user",
-          "path-product-user",
-          "path-user-rabbitmq",
-          "path-services-prometheus"
-        ],
-
-        mysql: [
-          "path-product-mysql"
-        ],
-
-        redis: [
-          "path-order-redis"
-        ],
-
-        rabbitmq: [
-          "path-user-rabbitmq"
-        ],
-
-        prometheus: [
-          "path-services-prometheus",
-          "path-prometheus-grafana"
-        ],
-
-        grafana: [
-          "path-prometheus-grafana",
-          "path-grafana-kiali"
-        ],
-
-        kiali: [
-          "path-grafana-kiali"
-        ]
-
-      };
-
-
-      return map[nodeName]
-        || [];
-
-    };
-
-
-  const focusFlagshipNode =
-    node => {
-
-      if (!node) {
-        return;
-      }
-
-
-      const nodeName =
-        node.dataset.node;
-
-
-      clearFlagshipFocus();
-
-
-      flagshipSystem
-        ?.classList
-        .add(
-          "has-node-focus"
-        );
-
-
-      node.classList.add(
-        "is-active"
-      );
-
-
-      getConnectedPathsForNode(
-        nodeName
-      ).forEach(id => {
-
-        document
-          .getElementById(id)
-          ?.classList
-          .add(
-            "is-active"
-          );
-
-      });
-
-    };
-
-
-  const stopFlagshipPacket =
-    () => {
-
-      flagshipPacketToken += 1;
-
-
-      if (
-        flagshipPacketFrame
-        !== null
-      ) {
-
-        cancelAnimationFrame(
-          flagshipPacketFrame
-        );
-
-
-        flagshipPacketFrame =
-          null;
-
-      }
-
-    };
-
-
-  const placePacketOnPath =
-    (
-      packet,
-      path,
-      progress
-    ) => {
-
-      if (
-        !packet
-        || !path
-        || typeof path.getTotalLength
-           !== "function"
-      ) {
-
-        return;
-
-      }
-
-
-      const length =
-        path.getTotalLength();
-
-
-      const point =
-        path.getPointAtLength(
-          length * progress
-        );
-
-
-      packet.setAttribute(
-        "cx",
-        point.x
-      );
-
-
-      packet.setAttribute(
-        "cy",
-        point.y
-      );
-
-    };
-
-
-  const animatePacketAcrossPath =
-    (
-      packet,
-      path,
-      duration = 650,
-      token
-    ) => {
-
-      return new Promise(resolve => {
-
-        if (
-          prefersReducedMotion
-          || !packet
-          || !path
-        ) {
-
-          placePacketOnPath(
-            packet,
-            path,
-            1
-          );
-
-
-          resolve();
-
-          return;
-
-        }
-
-
-        const start =
-          performance.now();
-
-
-        const frame =
-          now => {
-
-            if (
-              token
-              !== flagshipPacketToken
-            ) {
-
-              resolve();
-
-              return;
-
-            }
-
-
-            const progress =
-              clamp(
-                (now - start)
-                / duration,
-                0,
-                1
-              );
-
-
-            const eased =
-              progress
-              * progress
-              * (
-                3
-                - 2 * progress
-              );
-
-
-            placePacketOnPath(
-              packet,
-              path,
-              eased
-            );
-
-
-            if (
-              progress < 1
-            ) {
-
-              flagshipPacketFrame =
-                requestAnimationFrame(
-                  frame
-                );
-
-            } else {
-
-              flagshipPacketFrame =
-                null;
-
-
-              resolve();
-
-            }
-
-          };
-
-
-        flagshipPacketFrame =
-          requestAnimationFrame(
-            frame
-          );
-
-      });
-
-    };
-
-
-  const animateFlagshipRoute =
-    async (
-      route,
-      packet
-    ) => {
-
-      if (
-        !route
-        || !packet
-      ) {
-
-        return;
-      }
-
-
-      stopFlagshipPacket();
-
-
-      const token =
-        flagshipPacketToken;
-
-
-      activateFlagshipRoute(
-        route
-      );
-
-
-      pushFlagshipEvent(
-        route.name
-      );
-
-
-      for (
-        let index = 0;
-        index < route.paths.length;
-        index++
-      ) {
-
-        if (
-          token
-          !== flagshipPacketToken
-        ) {
-
-          return;
-
-        }
-
-
-        const path =
-          document.getElementById(
-            route.paths[index]
-          );
-
-
-        if (!path) {
-          continue;
-        }
-
-
-        path.classList.add(
-          "is-active"
-        );
-
-
-        const eventMessage =
-          route.events[index]
-          || route.events[
-            route.events.length - 1
-          ];
-
-
-        if (eventMessage) {
-
-          pushFlagshipEvent(
-            eventMessage
-          );
-
-        }
-
-
-        await animatePacketAcrossPath(
-          packet,
-          path,
-          560,
-          token
-        );
-
-
-        await wait(
-          prefersReducedMotion
-            ? 0
-            : 90
-        );
-
-      }
-
-    };
-
-
-  const getModeRoute =
-    () => {
-
-      if (
-        flagshipMode
-        === "request"
-      ) {
-
-        return FLAGSHIP
-          .requestRoutes[
-            flagshipRouteIndex
-            % FLAGSHIP
-                .requestRoutes
-                .length
-          ];
-
-      }
-
-
-      if (
-        flagshipMode
-        === "mesh"
-      ) {
-
-        return FLAGSHIP
-          .meshRoutes[
-            flagshipRouteIndex
-            % FLAGSHIP
-                .meshRoutes
-                .length
-          ];
-
-      }
-
-
-      return FLAGSHIP
-        .observeRoute;
-
-    };
-
-
-  const getModePacket =
-    () => {
-
-      if (
-        flagshipMode
-        === "mesh"
-      ) {
-
-        return meshPacket;
-
-      }
-
-
-      if (
-        flagshipMode
-        === "observe"
-      ) {
-
-        return observePacket;
-
-      }
-
-
-      return requestPacket;
-
-    };
-
-
-  const runFlagshipVisualization =
-    async () => {
-
-      const route =
-        getModeRoute();
-
-
-      const packet =
-        getModePacket();
-
-
-      await animateFlagshipRoute(
-        route,
-        packet
-      );
-
-
-      if (
-        flagshipMode
-        !== "observe"
-      ) {
-
-        flagshipRouteIndex += 1;
-
-      }
-
-    };
-
-
-  const stopFlagshipCycle =
-    () => {
-
-      if (flagshipCycleTimer) {
-
-        clearInterval(
-          flagshipCycleTimer
-        );
-
-
-        flagshipCycleTimer =
-          null;
-
-      }
-
-
-      stopFlagshipPacket();
-
-    };
-
-
-  const startFlagshipCycle =
-    () => {
-
-      stopFlagshipCycle();
-
-
-      runFlagshipVisualization();
-
-
-      if (
-        prefersReducedMotion
-        || document.hidden
-      ) {
-
-        return;
-      }
-
-
-      flagshipCycleTimer =
-        window.setInterval(
-          runFlagshipVisualization,
-          flagshipMode === "observe"
-            ? 5200
-            : 4500
-        );
-
-    };  /* ====================================================================== */
-  /* 24 / FLAGSHIP V2 EXTREME INTERACTION ENGINE                            */
-  /* ====================================================================== */
-
-  const flagshipSystem =
-    $(".flagship-live-system");
-
-  const flagshipModeButtons =
-    $$(".flagship-mode");
-
-  const flagshipModeLabel =
-    $("#flagshipModeLabel");
-
-  const runtimeModeValue =
-    $("#runtimeModeValue");
-
-  const platformStages =
-    $$(".platform-stage");
-
-  const flagshipNodes =
-    $$(".topology-node");
-
-  const flagshipPaths =
-    $$(".topology-line");
-
-  const flagshipEventLog =
-    $("#flagshipEventLog");
-
-  const requestPacket =
-    $("#requestPacketPrimary");
-
-  const meshPacket =
-    $("#meshPacketPrimary");
-
-  const observePacket =
-    $("#observePacketPrimary");
-
-
-  const FLAGSHIP = {
-
-    requestRoutes: [
-
-      {
-        name: "PRODUCT REQUEST",
-        nodes: [
-          "client",
-          "ingress",
-          "gateway",
-          "product",
-          "mysql"
-        ],
-        paths: [
-          "path-client-ingress",
-          "path-ingress-gateway",
-          "path-gateway-services",
-          "path-gateway-product",
-          "path-product-mysql"
-        ],
-        events: [
-          "client.request()",
-          "ingress.route()",
-          "gateway.forward(product)",
-          "product.read()",
-          "mysql.query()"
-        ]
-      },
-
-      {
-        name: "ORDER REQUEST",
-        nodes: [
-          "client",
-          "ingress",
-          "gateway",
-          "order",
-          "redis"
-        ],
-        paths: [
-          "path-client-ingress",
-          "path-ingress-gateway",
-          "path-gateway-services",
-          "path-gateway-order",
-          "path-order-redis"
-        ],
-        events: [
-          "client.request()",
-          "ingress.route()",
-          "gateway.forward(order)",
-          "order.process()",
-          "redis.lookup()"
-        ]
-      },
-
-      {
-        name: "USER REQUEST",
-        nodes: [
-          "client",
-          "ingress",
-          "gateway",
-          "user",
-          "rabbitmq"
-        ],
-        paths: [
-          "path-client-ingress",
-          "path-ingress-gateway",
-          "path-gateway-services",
-          "path-gateway-user",
-          "path-user-rabbitmq"
-        ],
-        events: [
-          "client.request()",
-          "ingress.route()",
-          "gateway.forward(user)",
-          "user.auth()",
-          "rabbitmq.publish()"
-        ]
-      }
-
-    ],
-
-    meshRoutes: [
-
-      {
-        name: "PRODUCT → ORDER",
-        nodes: [
-          "product",
-          "order"
-        ],
-        paths: [
-          "path-product-order"
-        ],
-        events: [
-          "istio.route(product→order)",
-          "envoy.retry_policy()",
-          "mesh.telemetry()"
-        ]
-      },
-
-      {
-        name: "ORDER → USER",
-        nodes: [
-          "order",
-          "user"
-        ],
-        paths: [
-          "path-order-user"
-        ],
-        events: [
-          "istio.route(order→user)",
-          "envoy.timeout_policy()",
-          "mesh.telemetry()"
-        ]
-      },
-
-      {
-        name: "PRODUCT → USER",
-        nodes: [
-          "product",
-          "user"
-        ],
-        paths: [
-          "path-product-user"
-        ],
-        events: [
-          "istio.route(product→user)",
-          "envoy.sidecar()",
-          "kiali.trace()"
-        ]
-      }
-
-    ],
-
-    observeRoute: {
-
-      name: "OBSERVABILITY FLOW",
-
-      nodes: [
-        "product",
-        "order",
-        "user",
-        "prometheus",
-        "grafana",
-        "kiali"
-      ],
-
-      paths: [
-        "path-services-prometheus",
-        "path-prometheus-grafana",
-        "path-grafana-kiali"
-      ],
-
-      events: [
-        "prometheus.scrape()",
-        "metrics.store()",
-        "grafana.render()",
-        "kiali.map_mesh()"
-      ]
-
-    }
-
-  };
-
-
-  let flagshipMode =
-    "request";
-
-
-  let flagshipRouteIndex =
-    0;
-
-
-  let flagshipCycleTimer =
-    null;
-
-
-  let flagshipPacketFrame =
-    null;
-
-
-  let flagshipPacketToken =
-    0;
-
-
-  const formatFlagshipTime =
-    () => {
-
-      const now =
-        new Date();
-
-
-      return now
-        .toLocaleTimeString(
-          [],
-          {
-            minute: "2-digit",
-            second: "2-digit"
-          }
-        );
-
-    };
-
-
-  const pushFlagshipEvent =
-    message => {
-
-      if (!flagshipEventLog) {
-        return;
-      }
-
-
-      const eventLine =
-        document.createElement(
-          "p"
-        );
-
-
-      const time =
-        document.createElement(
-          "span"
-        );
-
-
-      time.textContent =
-        formatFlagshipTime();
-
-
-      eventLine.appendChild(
-        time
-      );
-
-
-      eventLine.appendChild(
-        document.createTextNode(
-          message
-        )
-      );
-
-
-      flagshipEventLog.prepend(
-        eventLine
-      );
-
-
-      while (
-        flagshipEventLog.children.length
-        > 6
-      ) {
-
-        flagshipEventLog
-          .lastElementChild
-          ?.remove();
-
-      }
-
-    };
-
-
-  const clearFlagshipFocus =
-    () => {
-
-      flagshipNodes.forEach(node => {
-
-        node.classList.remove(
-          "is-active"
-        );
-
-      });
-
-
-      flagshipPaths.forEach(path => {
-
-        path.classList.remove(
-          "is-active"
-        );
-
-      });
-
-
-      flagshipSystem
-        ?.classList
-        .remove(
-          "has-node-focus"
-        );
-
-    };
-
-
-  const activateFlagshipRoute =
-    route => {
-
-      if (!route) {
-        return;
-      }
-
-
-      clearFlagshipFocus();
-
-
-      flagshipSystem
-        ?.classList
-        .add(
-          "has-node-focus"
-        );
-
-
-      route.nodes
-        .forEach(name => {
-
-          $(
-            `[data-node="${name}"]`
-          )
-            ?.classList
-            .add(
-              "is-active"
-            );
-
-        });
-
-
-      route.paths
-        .forEach(id => {
-
-          document
-            .getElementById(id)
-            ?.classList
-            .add(
-              "is-active"
-            );
-
-        });
-
-    };
-
-
-  const getConnectedPathsForNode =
-    nodeName => {
-
-      const map = {
-
-        client: [
-          "path-client-ingress"
-        ],
-
-        ingress: [
-          "path-client-ingress",
-          "path-ingress-gateway"
-        ],
-
-        gateway: [
-          "path-ingress-gateway",
-          "path-gateway-services",
-          "path-gateway-product",
-          "path-gateway-order",
-          "path-gateway-user"
-        ],
-
-        product: [
-          "path-gateway-product",
-          "path-product-order",
-          "path-product-user",
-          "path-product-mysql",
-          "path-services-prometheus"
-        ],
-
-        order: [
-          "path-gateway-order",
-          "path-product-order",
-          "path-order-user",
-          "path-order-redis",
-          "path-services-prometheus"
-        ],
-
-        user: [
-          "path-gateway-user",
-          "path-order-user",
-          "path-product-user",
-          "path-user-rabbitmq",
-          "path-services-prometheus"
-        ],
-
-        mysql: [
-          "path-product-mysql"
-        ],
-
-        redis: [
-          "path-order-redis"
-        ],
-
-        rabbitmq: [
-          "path-user-rabbitmq"
-        ],
-
-        prometheus: [
-          "path-services-prometheus",
-          "path-prometheus-grafana"
-        ],
-
-        grafana: [
-          "path-prometheus-grafana",
-          "path-grafana-kiali"
-        ],
-
-        kiali: [
-          "path-grafana-kiali"
-        ]
-
-      };
-
-
-      return map[nodeName]
-        || [];
-
-    };
-
-
-  const focusFlagshipNode =
-    node => {
-
-      if (!node) {
-        return;
-      }
-
-
-      const nodeName =
-        node.dataset.node;
-
-
-      clearFlagshipFocus();
-
-
-      flagshipSystem
-        ?.classList
-        .add(
-          "has-node-focus"
-        );
-
-
-      node.classList.add(
-        "is-active"
-      );
-
-
-      getConnectedPathsForNode(
-        nodeName
-      ).forEach(id => {
-
-        document
-          .getElementById(id)
-          ?.classList
-          .add(
-            "is-active"
-          );
-
-      });
-
-    };
-
-
-  const stopFlagshipPacket =
-    () => {
-
-      flagshipPacketToken += 1;
-
-
-      if (
-        flagshipPacketFrame
-        !== null
-      ) {
-
-        cancelAnimationFrame(
-          flagshipPacketFrame
-        );
-
-
-        flagshipPacketFrame =
-          null;
-
-      }
-
-    };
-
-
-  const placePacketOnPath =
-    (
-      packet,
-      path,
-      progress
-    ) => {
-
-      if (
-        !packet
-        || !path
-        || typeof path.getTotalLength
-           !== "function"
-      ) {
-
-        return;
-
-      }
-
-
-      const length =
-        path.getTotalLength();
-
-
-      const point =
-        path.getPointAtLength(
-          length * progress
-        );
-
-
-      packet.setAttribute(
-        "cx",
-        point.x
-      );
-
-
-      packet.setAttribute(
-        "cy",
-        point.y
-      );
-
-    };
-
-
-  const animatePacketAcrossPath =
-    (
-      packet,
-      path,
-      duration = 650,
-      token
-    ) => {
-
-      return new Promise(resolve => {
-
-        if (
-          prefersReducedMotion
-          || !packet
-          || !path
-        ) {
-
-          placePacketOnPath(
-            packet,
-            path,
-            1
-          );
-
-
-          resolve();
-
-          return;
-
-        }
-
-
-        const start =
-          performance.now();
-
-
-        const frame =
-          now => {
-
-            if (
-              token
-              !== flagshipPacketToken
-            ) {
-
-              resolve();
-
-              return;
-
-            }
-
-
-            const progress =
-              clamp(
-                (now - start)
-                / duration,
-                0,
-                1
-              );
-
-
-            const eased =
-              progress
-              * progress
-              * (
-                3
-                - 2 * progress
-              );
-
-
-            placePacketOnPath(
-              packet,
-              path,
-              eased
-            );
-
-
-            if (
-              progress < 1
-            ) {
-
-              flagshipPacketFrame =
-                requestAnimationFrame(
-                  frame
-                );
-
-            } else {
-
-              flagshipPacketFrame =
-                null;
-
-
-              resolve();
-
-            }
-
-          };
-
-
-        flagshipPacketFrame =
-          requestAnimationFrame(
-            frame
-          );
-
-      });
-
-    };
-
-
-  const animateFlagshipRoute =
-    async (
-      route,
-      packet
-    ) => {
-
-      if (
-        !route
-        || !packet
-      ) {
-
-        return;
-      }
-
-
-      stopFlagshipPacket();
-
-
-      const token =
-        flagshipPacketToken;
-
-
-      activateFlagshipRoute(
-        route
-      );
-
-
-      pushFlagshipEvent(
-        route.name
-      );
-
-
-      for (
-        let index = 0;
-        index < route.paths.length;
-        index++
-      ) {
-
-        if (
-          token
-          !== flagshipPacketToken
-        ) {
-
-          return;
-
-        }
-
-
-        const path =
-          document.getElementById(
-            route.paths[index]
-          );
-
-
-        if (!path) {
-          continue;
-        }
-
-
-        path.classList.add(
-          "is-active"
-        );
-
-
-        const eventMessage =
-          route.events[index]
-          || route.events[
-            route.events.length - 1
-          ];
-
-
-        if (eventMessage) {
-
-          pushFlagshipEvent(
-            eventMessage
-          );
-
-        }
-
-
-        await animatePacketAcrossPath(
-          packet,
-          path,
-          560,
-          token
-        );
-
-
-        await wait(
-          prefersReducedMotion
-            ? 0
-            : 90
-        );
-
-      }
-
-    };
-
-
-  const getModeRoute =
-    () => {
-
-      if (
-        flagshipMode
-        === "request"
-      ) {
-
-        return FLAGSHIP
-          .requestRoutes[
-            flagshipRouteIndex
-            % FLAGSHIP
-                .requestRoutes
-                .length
-          ];
-
-      }
-
-
-      if (
-        flagshipMode
-        === "mesh"
-      ) {
-
-        return FLAGSHIP
-          .meshRoutes[
-            flagshipRouteIndex
-            % FLAGSHIP
-                .meshRoutes
-                .length
-          ];
-
-      }
-
-
-      return FLAGSHIP
-        .observeRoute;
-
-    };
-
-
-  const getModePacket =
-    () => {
-
-      if (
-        flagshipMode
-        === "mesh"
-      ) {
-
-        return meshPacket;
-
-      }
-
-
-      if (
-        flagshipMode
-        === "observe"
-      ) {
-
-        return observePacket;
-
-      }
-
-
-      return requestPacket;
-
-    };
-
-
-  const runFlagshipVisualization =
-    async () => {
-
-      const route =
-        getModeRoute();
-
-
-      const packet =
-        getModePacket();
-
-
-      await animateFlagshipRoute(
-        route,
-        packet
-      );
-
-
-      if (
-        flagshipMode
-        !== "observe"
-      ) {
-
-        flagshipRouteIndex += 1;
-
-      }
-
-    };
-
-
-  const stopFlagshipCycle =
-    () => {
-
-      if (flagshipCycleTimer) {
-
-        clearInterval(
-          flagshipCycleTimer
-        );
-
-
-        flagshipCycleTimer =
-          null;
-
-      }
-
-
-      stopFlagshipPacket();
-
-    };
-
-
-  const startFlagshipCycle =
-    () => {
-
-      stopFlagshipCycle();
-
-
-      runFlagshipVisualization();
-
-
-      if (
-        prefersReducedMotion
-        || document.hidden
-      ) {
-
-        return;
-      }
-
-
-      flagshipCycleTimer =
-        window.setInterval(
-          runFlagshipVisualization,
-          flagshipMode === "observe"
-            ? 5200
-            : 4500
-        );
-
-    };  const updateFlagshipModeUI =
-    mode => {
-
-      flagshipModeButtons
-        .forEach(button => {
-
-          const active =
-            button.dataset
-              .flagshipMode
-            === mode;
-
-
-          button.classList.toggle(
-            "is-active",
-            active
-          );
-
-
-          button.setAttribute(
-            "aria-pressed",
-            String(active)
-          );
-
-        });
-
-
-      if (flagshipSystem) {
-
-        flagshipSystem.classList.remove(
-          "mode-request",
-          "mode-mesh",
-          "mode-observe"
-        );
-
-
-        flagshipSystem.classList.add(
-          `mode-${mode}`
-        );
-
-      }
-
-
-      const labels = {
-
-        request:
-          "REQUEST FLOW",
-
-        mesh:
-          "SERVICE MESH",
-
-        observe:
-          "OBSERVABILITY"
-
-      };
-
-
-      const label =
-        labels[mode]
-        || labels.request;
-
-
-      if (flagshipModeLabel) {
-
-        flagshipModeLabel.textContent =
-          label;
-
-      }
-
-
-      if (runtimeModeValue) {
-
-        runtimeModeValue.textContent =
-          label;
-
-      }
-
-
-      $$(".runtime-status-item")
-        .forEach(item => {
-
-          item.classList.remove(
-            "is-active"
-          );
-
-        });
-
-
-      const activeStatuses = {
-
-        request: [
-          "kubernetes",
-          "helm"
-        ],
-
-        mesh: [
-          "kubernetes",
-          "istio",
-          "kiali"
-        ],
-
-        observe: [
-          "prometheus",
-          "grafana",
-          "kiali"
-        ]
-
-      };
-
-
-      (
-        activeStatuses[mode]
-        || []
-      ).forEach(status => {
-
-        $(
-          `[data-runtime-status="${status}"]`
-        )
-          ?.classList
-          .add(
-            "is-active"
-          );
-
-      });
-
-    };
-
-
-  const setFlagshipMode =
-    mode => {
-
-      if (
-        ![
-          "request",
-          "mesh",
-          "observe"
-        ].includes(mode)
-      ) {
-
-        return;
-
-      }
-
-
-      flagshipMode =
-        mode;
-
-
-      flagshipRouteIndex =
-        0;
-
-
-      clearFlagshipFocus();
-
-
-      updateFlagshipModeUI(
-        mode
-      );
-
-
-      pushFlagshipEvent(
-        `view.switch(${mode})`
-      );
-
-
-      startFlagshipCycle();
-
-    };
-
-
-  flagshipModeButtons
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          setFlagshipMode(
-            button.dataset
-              .flagshipMode
-          );
-
-        }
-      );
-
-    });
-
-
-  flagshipNodes
-    .forEach(node => {
-
-      node.addEventListener(
-        "mouseenter",
-        () => {
-
-          if (!finePointer) {
-            return;
-          }
-
-
-          focusFlagshipNode(
-            node
-          );
-
-        }
-      );
-
-
-      node.addEventListener(
-        "mouseleave",
-        () => {
-
-          if (!finePointer) {
-            return;
-          }
-
-
-          clearFlagshipFocus();
-
-        }
-      );
-
-
-      node.addEventListener(
-        "focus",
-        () => {
-
-          focusFlagshipNode(
-            node
-          );
-
-        }
-      );
-
-
-      node.addEventListener(
-        "blur",
-        () => {
-
-          clearFlagshipFocus();
-
-        }
-      );
-
-
-      node.addEventListener(
-        "click",
-        () => {
-
-          focusFlagshipNode(
-            node
-          );
-
-
-          pushFlagshipEvent(
-            `inspect.${node.dataset.node}()`
-          );
-
-        }
-      );
-
-    });
-
-
-  const PLATFORM_STAGE_DATA = {
-
-    compose: {
-      status:
-        "LOCAL STACK",
-
-      message:
-        "compose.stack_ready()"
-    },
-
-    swarm: {
-      status:
-        "ORCHESTRATION",
-
-      message:
-        "swarm.services_scaled()"
-    },
-
-    kubernetes: {
-      status:
-        "PLATFORM ACTIVE",
-
-      message:
-        "kubernetes.cluster_ready()"
-    },
-
-    helm: {
-      status:
-        "RELEASE DEPLOYED",
-
-      message:
-        "helm.release_deployed()"
-    },
-
-    istio: {
-      status:
-        "MESH ONLINE",
-
-      message:
-        "istio.mesh_online()"
-    }
-
-  };
-
-
-  platformStages
-    .forEach(stage => {
-
-      stage.addEventListener(
-        "click",
-        () => {
-
-          platformStages
-            .forEach(item => {
-
-              item.classList.remove(
-                "is-active"
-              );
-
-            });
-
-
-          stage.classList.add(
-            "is-active"
-          );
-
-
-          const stageName =
-            stage.dataset
-              .platformStage;
-
-
-          const data =
-            PLATFORM_STAGE_DATA[
-              stageName
-            ];
-
-
-          if (data) {
-
-            pushFlagshipEvent(
-              data.message
-            );
-
-          }
-
-
-          const linkedRuntime =
-            $(
-              `[data-runtime-status="${stageName}"]`
-            );
-
-
-          if (linkedRuntime) {
-
-            linkedRuntime.classList.add(
-              "is-active"
-            );
-
-
-            window.setTimeout(
-              () => {
-
-                linkedRuntime.classList.remove(
-                  "is-active"
-                );
-
-              },
-              1500
-            );
-
-          }
-
-
-          if (
-            stageName === "istio"
-          ) {
-
-            setFlagshipMode(
-              "mesh"
-            );
-
-          }
-
-
-          if (
-            stageName === "kubernetes"
-          ) {
-
-            setFlagshipMode(
-              "request"
-            );
-
-          }
-
-        }
-      );
-
-    });
-
-
-  if (
-    flagshipSystem
-    && "IntersectionObserver"
-       in window
-  ) {
-
-    const flagshipVisibilityObserver =
-      new IntersectionObserver(
-        entries => {
-
-          entries.forEach(entry => {
-
-            if (
-              entry.isIntersecting
-            ) {
-
-              startFlagshipCycle();
-
-            } else {
-
-              stopFlagshipCycle();
-
-            }
-
-          });
-
-        },
-        {
-          threshold: 0.18
-        }
-      );
-
-
-    flagshipVisibilityObserver
-      .observe(
-        flagshipSystem
-      );
-
-  } else if (
-    flagshipSystem
-  ) {
-
-    startFlagshipCycle();
-
-  }
-
-
-  if (flagshipSystem) {
-
-    updateFlagshipModeUI(
-      "request"
-    );
-
-  }
-
-
-  document.addEventListener(
-    "visibilitychange",
-    () => {
-
-      if (!flagshipSystem) {
-        return;
-      }
-
-
-      if (document.hidden) {
-
-        stopFlagshipCycle();
-
-      } else {
-
-        const rect =
-          flagshipSystem
-            .getBoundingClientRect();
-
-
-        const visible =
-          rect.bottom > 0
-          && rect.top
-             < window.innerHeight;
-
-
-        if (visible) {
-
-          startFlagshipCycle();
-
-        }
-
-      }
-
-    }
   );
 
 
   /* ====================================================================== */
-  /* 25 / PROJECTS V2 INTERACTION ENGINE                                    */
+  /* 24 / FLAGSHIP V2 EXTREME INTERACTION ENGINE                            */
   /* ====================================================================== */
 
-  const hotelSystemMap =
-    $("#hotelSystemMap");
+  const flagshipSystem =
+    $(".flagship-live-system");
 
-  const hotelDataPacket =
-    $("#hotelDataPacket");
+  const flagshipModeButtons =
+    $$(".flagship-mode");
 
-  const techSystemMap =
-    $("#techSystemMap");
+  const flagshipModeLabel =
+    $("#flagshipModeLabel");
 
-  const techNetworkPacket =
-    $("#techNetworkPacket");
+  const runtimeModeValue =
+    $("#runtimeModeValue");
 
-  const hotelProjectCard =
-    $('[data-project-system="hotel"]');
+  const platformStages =
+    $$(".platform-stage");
 
-  const techProjectCard =
-    $('[data-project-system="techsolutions"]');
+  const flagshipNodes =
+    $$(".topology-node");
+
+  const flagshipPaths =
+    $$(".topology-line");
+
+  const flagshipEventLog =
+    $("#flagshipEventLog");
+
+  const requestPacket =
+    $("#requestPacketPrimary");
+
+  const meshPacket =
+    $("#meshPacketPrimary");
+
+  const observePacket =
+    $("#observePacketPrimary");
 
 
-  const projectMapNodes =
-    $$(".project-map-node");
+  const FLAGSHIP = {
 
+    requestRoutes: [
 
-  const projectFlowLines =
-    $$(".project-flow-line");
+      {
+        name: "PRODUCT REQUEST",
+        nodes: [
+          "client",
+          "ingress",
+          "gateway",
+          "product",
+          "mysql"
+        ],
+        paths: [
+          "path-client-ingress",
+          "path-ingress-gateway",
+          "path-gateway-services",
+          "path-gateway-product",
+          "path-product-mysql"
+        ],
+        events: [
+          "client.request()",
+          "ingress.route()",
+          "gateway.forward(product)",
+          "product.read()",
+          "mysql.query()"
+        ]
+      },
 
+      {
+        name: "ORDER REQUEST",
+        nodes: [
+          "client",
+          "ingress",
+          "gateway",
+          "order",
+          "redis"
+        ],
+        paths: [
+          "path-client-ingress",
+          "path-ingress-gateway",
+          "path-gateway-services",
+          "path-gateway-order",
+          "path-order-redis"
+        ],
+        events: [
+          "client.request()",
+          "ingress.route()",
+          "gateway.forward(order)",
+          "order.process()",
+          "redis.lookup()"
+        ]
+      },
 
-  const PROJECTS_V2 = {
+      {
+        name: "USER REQUEST",
+        nodes: [
+          "client",
+          "ingress",
+          "gateway",
+          "user",
+          "rabbitmq"
+        ],
+        paths: [
+          "path-client-ingress",
+          "path-ingress-gateway",
+          "path-gateway-services",
+          "path-gateway-user",
+          "path-user-rabbitmq"
+        ],
+        events: [
+          "client.request()",
+          "ingress.route()",
+          "gateway.forward(user)",
+          "user.auth()",
+          "rabbitmq.publish()"
+        ]
+      }
 
-    hotel: {
+    ],
 
-      card:
-        hotelProjectCard,
+    meshRoutes: [
 
-      map:
-        hotelSystemMap,
+      {
+        name: "PRODUCT → ORDER",
+        nodes: [
+          "product",
+          "order"
+        ],
+        paths: [
+          "path-product-order"
+        ],
+        events: [
+          "istio.route(product→order)",
+          "envoy.retry_policy()",
+          "mesh.telemetry()"
+        ]
+      },
 
-      packet:
-        hotelDataPacket,
+      {
+        name: "ORDER → USER",
+        nodes: [
+          "order",
+          "user"
+        ],
+        paths: [
+          "path-order-user"
+        ],
+        events: [
+          "istio.route(order→user)",
+          "envoy.timeout_policy()",
+          "mesh.telemetry()"
+        ]
+      },
 
-      routes: [
+      {
+        name: "PRODUCT → USER",
+        nodes: [
+          "product",
+          "user"
+        ],
+        paths: [
+          "path-product-user"
+        ],
+        events: [
+          "istio.route(product→user)",
+          "envoy.sidecar()",
+          "kiali.trace()"
+        ]
+      }
 
-        {
-          name:
-            "HOTEL CORE FLOW",
+    ],
 
-          nodes: [
-            "hotel-customers",
-            "hotel-bookings",
-            "hotel-python",
-            "hotel-postgresql"
-          ],
+    observeRoute: {
 
-          paths: [
-            "hotel-path-customers-bookings",
-            "hotel-path-bookings-python",
-            "hotel-path-python-postgres"
-          ]
-        },
+      name: "OBSERVABILITY FLOW",
 
-        {
-          name:
-            "HOTEL API FLOW",
+      nodes: [
+        "product",
+        "order",
+        "user",
+        "prometheus",
+        "grafana",
+        "kiali"
+      ],
 
-          nodes: [
-            "hotel-python",
-            "hotel-api"
-          ],
+      paths: [
+        "path-services-prometheus",
+        "path-prometheus-grafana",
+        "path-grafana-kiali"
+      ],
 
-          paths: [
-            "hotel-path-python-api"
-          ]
-        },
-
-        {
-          name:
-            "HOTEL ANALYTICS FLOW",
-
-          nodes: [
-            "hotel-postgresql",
-            "hotel-powerbi"
-          ],
-
-          paths: [
-            "hotel-path-postgres-powerbi"
-          ]
-        }
-
-      ]
-
-    },
-
-    tech: {
-
-      card:
-        techProjectCard,
-
-      map:
-        techSystemMap,
-
-      packet:
-        techNetworkPacket,
-
-      routes: [
-
-        {
-          name:
-            "TECH WINDOWS FLOW",
-
-          nodes: [
-            "tech-internet",
-            "tech-pfsense",
-            "tech-lan",
-            "tech-windows"
-          ],
-
-          paths: [
-            "tech-path-internet-pfsense",
-            "tech-path-pfsense-lan",
-            "tech-path-lan-windows"
-          ]
-        },
-
-        {
-          name:
-            "TECH LINUX FLOW",
-
-          nodes: [
-            "tech-internet",
-            "tech-pfsense",
-            "tech-lan",
-            "tech-linux"
-          ],
-
-          paths: [
-            "tech-path-internet-pfsense",
-            "tech-path-pfsense-lan",
-            "tech-path-lan-linux"
-          ]
-        },
-
-        {
-          name:
-            "TECH DMZ FLOW",
-
-          nodes: [
-            "tech-internet",
-            "tech-pfsense",
-            "tech-dmz",
-            "tech-services"
-          ],
-
-          paths: [
-            "tech-path-internet-pfsense",
-            "tech-path-pfsense-dmz",
-            "tech-path-dmz-services"
-          ]
-        }
-
+      events: [
+        "prometheus.scrape()",
+        "metrics.store()",
+        "grafana.render()",
+        "kiali.map_mesh()"
       ]
 
     }
@@ -5135,58 +2845,104 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 
-  let hotelProjectRouteIndex =
+  let flagshipMode =
+    "request";
+
+
+  let flagshipRouteIndex =
     0;
 
 
-  let techProjectRouteIndex =
+  let flagshipCycleTimer =
+    null;
+
+
+  let flagshipPacketFrame =
+    null;
+
+
+  let flagshipPacketToken =
     0;
 
 
-  let hotelProjectTimer =
-    null;
+  const formatFlagshipTime =
+    () => {
+
+      const now =
+        new Date();
 
 
-  let techProjectTimer =
-    null;
+      return now
+        .toLocaleTimeString(
+          [],
+          {
+            minute: "2-digit",
+            second: "2-digit"
+          }
+        );
+
+    };
 
 
-  let hotelProjectFrame =
-    null;
+  const pushFlagshipEvent =
+    message => {
 
-
-  let techProjectFrame =
-    null;
-
-
-  let hotelProjectToken =
-    0;
-
-
-  let techProjectToken =
-    0;
-
-
-  let hotelProjectVisible =
-    false;
-
-
-  let techProjectVisible =
-    false;
-
-
-  const clearProjectMapFocus =
-    map => {
-
-      if (!map) {
+      if (!flagshipEventLog) {
         return;
       }
 
 
-      $$(
-        ".project-map-node",
-        map
-      ).forEach(node => {
+      const eventLine =
+        document.createElement(
+          "p"
+        );
+
+
+      const time =
+        document.createElement(
+          "span"
+        );
+
+
+      time.textContent =
+        formatFlagshipTime();
+
+
+      eventLine.appendChild(
+        time
+      );
+
+
+      eventLine.appendChild(
+        document.createTextNode(
+          message
+        )
+      );
+
+
+      flagshipEventLog.prepend(
+        eventLine
+      );
+
+
+      while (
+        flagshipEventLog.children.length
+        > 6
+      ) {
+
+        flagshipEventLog
+          .lastElementChild
+          ?.remove();
+
+      }
+
+    };
+
+
+  const clearFlagshipFocus =
+    () => {
+
+      flagshipNodes.forEach(node => {
 
         node.classList.remove(
           "is-active"
@@ -5195,10 +2951,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
 
-      $$(
-        ".project-flow-line",
-        map
-      ).forEach(path => {
+      flagshipPaths.forEach(path => {
 
         path.classList.remove(
           "is-active"
@@ -5207,71 +2960,606 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
 
-      map.classList.remove(
-        "has-node-focus"
-      );
+      flagshipSystem
+        ?.classList
+        .remove(
+          "has-node-focus"
+        );
 
     };
 
 
-  const activateProjectRoute =
-    (
-      project,
-      route
-    ) => {
+  const activateFlagshipRoute =
+    route => {
 
-      if (
-        !project
-        || !project.map
-        || !route
-      ) {
-
+      if (!route) {
         return;
       }
 
 
-      clearProjectMapFocus(
-        project.map
-      );
+      clearFlagshipFocus();
 
 
-      project.map.classList.add(
-        "has-node-focus"
-      );
+      flagshipSystem
+        ?.classList
+        .add(
+          "has-node-focus"
+        );
 
 
-      route.nodes.forEach(
-        nodeName => {
+      route.nodes
+        .forEach(name => {
 
           $(
-            `[data-project-node="${nodeName}"]`,
-            project.map
+            `[data-node="${name}"]`
           )
             ?.classList
             .add(
               "is-active"
             );
 
-        }
-      );
+        });
 
 
-      route.paths.forEach(
-        pathId => {
+      route.paths
+        .forEach(id => {
 
           document
-            .getElementById(
-              pathId
-            )
+            .getElementById(id)
             ?.classList
             .add(
               "is-active"
             );
 
-        }
+        });
+
+    };
+
+
+  const getConnectedPathsForNode =
+    nodeName => {
+
+      const map = {
+
+        client: [
+          "path-client-ingress"
+        ],
+
+        ingress: [
+          "path-client-ingress",
+          "path-ingress-gateway"
+        ],
+
+        gateway: [
+          "path-ingress-gateway",
+          "path-gateway-services",
+          "path-gateway-product",
+          "path-gateway-order",
+          "path-gateway-user"
+        ],
+
+        product: [
+          "path-gateway-product",
+          "path-product-order",
+          "path-product-user",
+          "path-product-mysql",
+          "path-services-prometheus"
+        ],
+
+        order: [
+          "path-gateway-order",
+          "path-product-order",
+          "path-order-user",
+          "path-order-redis",
+          "path-services-prometheus"
+        ],
+
+        user: [
+          "path-gateway-user",
+          "path-order-user",
+          "path-product-user",
+          "path-user-rabbitmq",
+          "path-services-prometheus"
+        ],
+
+        mysql: [
+          "path-product-mysql"
+        ],
+
+        redis: [
+          "path-order-redis"
+        ],
+
+        rabbitmq: [
+          "path-user-rabbitmq"
+        ],
+
+        prometheus: [
+          "path-services-prometheus",
+          "path-prometheus-grafana"
+        ],
+
+        grafana: [
+          "path-prometheus-grafana",
+          "path-grafana-kiali"
+        ],
+
+        kiali: [
+          "path-grafana-kiali"
+        ]
+
+      };
+
+
+      return map[nodeName]
+        || [];
+
+    };
+
+
+  const focusFlagshipNode =
+    node => {
+
+      if (!node) {
+        return;
+      }
+
+
+      const nodeName =
+        node.dataset.node;
+
+
+      clearFlagshipFocus();
+
+
+      flagshipSystem
+        ?.classList
+        .add(
+          "has-node-focus"
+        );
+
+
+      node.classList.add(
+        "is-active"
+      );
+
+
+      getConnectedPathsForNode(
+        nodeName
+      ).forEach(id => {
+
+        document
+          .getElementById(id)
+          ?.classList
+          .add(
+            "is-active"
+          );
+
+      });
+
+    };
+
+
+  const stopFlagshipPacket =
+    () => {
+
+      flagshipPacketToken += 1;
+
+
+      if (
+        flagshipPacketFrame
+        !== null
+      ) {
+
+        cancelAnimationFrame(
+          flagshipPacketFrame
+        );
+
+
+        flagshipPacketFrame =
+          null;
+
+      }
+
+    };
+
+
+  const placePacketOnPath =
+    (
+      packet,
+      path,
+      progress
+    ) => {
+
+      if (
+        !packet
+        || !path
+        || typeof path.getTotalLength
+           !== "function"
+      ) {
+
+        return;
+
+      }
+
+
+      const length =
+        path.getTotalLength();
+
+
+      const point =
+        path.getPointAtLength(
+          length * progress
+        );
+
+
+      packet.setAttribute(
+        "cx",
+        point.x
+      );
+
+
+      packet.setAttribute(
+        "cy",
+        point.y
       );
 
     };
+
+
+  const animatePacketAcrossPath =
+    (
+      packet,
+      path,
+      duration = 650,
+      token
+    ) => {
+
+      return new Promise(resolve => {
+
+        if (
+          prefersReducedMotion
+          || !packet
+          || !path
+        ) {
+
+          placePacketOnPath(
+            packet,
+            path,
+            1
+          );
+
+
+          resolve();
+
+          return;
+
+        }
+
+
+        const start =
+          performance.now();
+
+
+        const frame =
+          now => {
+
+            if (
+              token
+              !== flagshipPacketToken
+            ) {
+
+              resolve();
+
+              return;
+
+            }
+
+
+            const progress =
+              clamp(
+                (now - start)
+                / duration,
+                0,
+                1
+              );
+
+
+            const eased =
+              progress
+              * progress
+              * (
+                3
+                - 2 * progress
+              );
+
+
+            placePacketOnPath(
+              packet,
+              path,
+              eased
+            );
+
+
+            if (
+              progress < 1
+            ) {
+
+              flagshipPacketFrame =
+                requestAnimationFrame(
+                  frame
+                );
+
+            } else {
+
+              flagshipPacketFrame =
+                null;
+
+
+              resolve();
+
+            }
+
+          };
+
+
+        flagshipPacketFrame =
+          requestAnimationFrame(
+            frame
+          );
+
+      });
+
+    };
+
+
+  const animateFlagshipRoute =
+    async (
+      route,
+      packet
+    ) => {
+
+      if (
+        !route
+        || !packet
+      ) {
+
+        return;
+      }
+
+
+      stopFlagshipPacket();
+
+
+      const token =
+        flagshipPacketToken;
+
+
+      activateFlagshipRoute(
+        route
+      );
+
+
+      pushFlagshipEvent(
+        route.name
+      );
+
+
+      for (
+        let index = 0;
+        index < route.paths.length;
+        index++
+      ) {
+
+        if (
+          token
+          !== flagshipPacketToken
+        ) {
+
+          return;
+
+        }
+
+
+        const path =
+          document.getElementById(
+            route.paths[index]
+          );
+
+
+        if (!path) {
+          continue;
+        }
+
+
+        path.classList.add(
+          "is-active"
+        );
+
+
+        const eventMessage =
+          route.events[index]
+          || route.events[
+            route.events.length - 1
+          ];
+
+
+        if (eventMessage) {
+
+          pushFlagshipEvent(
+            eventMessage
+          );
+
+        }
+
+
+        await animatePacketAcrossPath(
+          packet,
+          path,
+          560,
+          token
+        );
+
+
+        await wait(
+          prefersReducedMotion
+            ? 0
+            : 90
+        );
+
+      }
+
+    };
+
+
+  const getModeRoute =
+    () => {
+
+      if (
+        flagshipMode
+        === "request"
+      ) {
+
+        return FLAGSHIP
+          .requestRoutes[
+            flagshipRouteIndex
+            % FLAGSHIP
+                .requestRoutes
+                .length
+          ];
+
+      }
+
+
+      if (
+        flagshipMode
+        === "mesh"
+      ) {
+
+        return FLAGSHIP
+          .meshRoutes[
+            flagshipRouteIndex
+            % FLAGSHIP
+                .meshRoutes
+                .length
+          ];
+
+      }
+
+
+      return FLAGSHIP
+        .observeRoute;
+
+    };
+
+
+  const getModePacket =
+    () => {
+
+      if (
+        flagshipMode
+        === "mesh"
+      ) {
+
+        return meshPacket;
+
+      }
+
+
+      if (
+        flagshipMode
+        === "observe"
+      ) {
+
+        return observePacket;
+
+      }
+
+
+      return requestPacket;
+
+    };
+
+
+  const runFlagshipVisualization =
+    async () => {
+
+      const route =
+        getModeRoute();
+
+
+      const packet =
+        getModePacket();
+
+
+      await animateFlagshipRoute(
+        route,
+        packet
+      );
+
+
+      if (
+        flagshipMode
+        !== "observe"
+      ) {
+
+        flagshipRouteIndex += 1;
+
+      }
+
+    };
+
+
+  const stopFlagshipCycle =
+    () => {
+
+      if (flagshipCycleTimer) {
+
+        clearInterval(
+          flagshipCycleTimer
+        );
+
+
+        flagshipCycleTimer =
+          null;
+
+      }
+
+
+      stopFlagshipPacket();
+
+    };
+
+
+  const startFlagshipCycle =
+    () => {
+
+      stopFlagshipCycle();
+
+
+      runFlagshipVisualization();
+
+
+      if (
+        prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+      }
+
+
+      flagshipCycleTimer =
+        window.setInterval(
+          runFlagshipVisualization,
+          flagshipMode === "observe"
+            ? 5200
+            : 4500
+        );
+
+    };
+
+
   const updateFlagshipModeUI =
     mode => {
 
@@ -5770,6 +4058,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
 
+
   /* ====================================================================== */
   /* 25 / PROJECTS V2 INTERACTION ENGINE                                    */
   /* ====================================================================== */
@@ -6076,7 +4365,645 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       );
 
-    };  const startHotelProjectCycle =
+    };
+
+
+  const PROJECT_NODE_CONNECTIONS = {
+
+    "hotel-customers": [
+      "hotel-path-customers-bookings"
+    ],
+
+    "hotel-bookings": [
+      "hotel-path-customers-bookings",
+      "hotel-path-bookings-python"
+    ],
+
+    "hotel-python": [
+      "hotel-path-bookings-python",
+      "hotel-path-python-postgres",
+      "hotel-path-python-api"
+    ],
+
+    "hotel-postgresql": [
+      "hotel-path-python-postgres",
+      "hotel-path-postgres-powerbi"
+    ],
+
+    "hotel-api": [
+      "hotel-path-python-api"
+    ],
+
+    "hotel-powerbi": [
+      "hotel-path-postgres-powerbi"
+    ],
+
+    "tech-internet": [
+      "tech-path-internet-pfsense"
+    ],
+
+    "tech-pfsense": [
+      "tech-path-internet-pfsense",
+      "tech-path-pfsense-lan",
+      "tech-path-pfsense-dmz"
+    ],
+
+    "tech-lan": [
+      "tech-path-pfsense-lan",
+      "tech-path-lan-windows",
+      "tech-path-lan-linux"
+    ],
+
+    "tech-windows": [
+      "tech-path-lan-windows"
+    ],
+
+    "tech-linux": [
+      "tech-path-lan-linux"
+    ],
+
+    "tech-dmz": [
+      "tech-path-pfsense-dmz",
+      "tech-path-dmz-services"
+    ],
+
+    "tech-services": [
+      "tech-path-dmz-services"
+    ]
+
+  };
+
+
+  const focusProjectNode =
+    node => {
+
+      if (!node) {
+        return;
+      }
+
+
+      const map =
+        node.closest(
+          ".project-system-map"
+        );
+
+
+      if (!map) {
+        return;
+      }
+
+
+      const nodeName =
+        node.dataset.projectNode;
+
+
+      clearProjectMapFocus(
+        map
+      );
+
+
+      map.classList.add(
+        "has-node-focus"
+      );
+
+
+      node.classList.add(
+        "is-active"
+      );
+
+
+      (
+        PROJECT_NODE_CONNECTIONS[
+          nodeName
+        ]
+        || []
+      ).forEach(pathId => {
+
+        document
+          .getElementById(
+            pathId
+          )
+          ?.classList
+          .add(
+            "is-active"
+          );
+
+      });
+
+    };
+
+
+  const getProjectFrameKey =
+    projectName => {
+
+      return projectName === "hotel"
+        ? "hotel"
+        : "tech";
+
+    };
+
+
+  const stopProjectPacket =
+    projectName => {
+
+      if (
+        projectName
+        === "hotel"
+      ) {
+
+        hotelProjectToken += 1;
+
+
+        if (
+          hotelProjectFrame
+          !== null
+        ) {
+
+          cancelAnimationFrame(
+            hotelProjectFrame
+          );
+
+
+          hotelProjectFrame =
+            null;
+
+        }
+
+      } else {
+
+        techProjectToken += 1;
+
+
+        if (
+          techProjectFrame
+          !== null
+        ) {
+
+          cancelAnimationFrame(
+            techProjectFrame
+          );
+
+
+          techProjectFrame =
+            null;
+
+        }
+
+      }
+
+    };
+
+
+  const placeProjectPacketOnPath =
+    (
+      packet,
+      path,
+      progress
+    ) => {
+
+      if (
+        !packet
+        || !path
+        || typeof path.getTotalLength
+           !== "function"
+      ) {
+
+        return;
+      }
+
+
+      const totalLength =
+        path.getTotalLength();
+
+
+      const point =
+        path.getPointAtLength(
+          totalLength
+          * progress
+        );
+
+
+      packet.setAttribute(
+        "cx",
+        point.x
+      );
+
+
+      packet.setAttribute(
+        "cy",
+        point.y
+      );
+
+    };
+
+
+  const animateProjectPacketAcrossPath =
+    (
+      projectName,
+      packet,
+      path,
+      duration,
+      token
+    ) => {
+
+      return new Promise(resolve => {
+
+        if (
+          prefersReducedMotion
+          || !packet
+          || !path
+        ) {
+
+          placeProjectPacketOnPath(
+            packet,
+            path,
+            1
+          );
+
+
+          resolve();
+
+          return;
+        }
+
+
+        const start =
+          performance.now();
+
+
+        const frame =
+          now => {
+
+            const currentToken =
+              projectName === "hotel"
+                ? hotelProjectToken
+                : techProjectToken;
+
+
+            if (
+              token
+              !== currentToken
+            ) {
+
+              resolve();
+
+              return;
+            }
+
+
+            const progress =
+              clamp(
+                (now - start)
+                / duration,
+                0,
+                1
+              );
+
+
+            const eased =
+              progress
+              * progress
+              * (
+                3
+                - 2 * progress
+              );
+
+
+            placeProjectPacketOnPath(
+              packet,
+              path,
+              eased
+            );
+
+
+            if (
+              progress < 1
+            ) {
+
+              const frameId =
+                requestAnimationFrame(
+                  frame
+                );
+
+
+              if (
+                projectName
+                === "hotel"
+              ) {
+
+                hotelProjectFrame =
+                  frameId;
+
+              } else {
+
+                techProjectFrame =
+                  frameId;
+
+              }
+
+            } else {
+
+              if (
+                projectName
+                === "hotel"
+              ) {
+
+                hotelProjectFrame =
+                  null;
+
+              } else {
+
+                techProjectFrame =
+                  null;
+
+              }
+
+
+              resolve();
+
+            }
+
+          };
+
+
+        const frameId =
+          requestAnimationFrame(
+            frame
+          );
+
+
+        if (
+          projectName
+          === "hotel"
+        ) {
+
+          hotelProjectFrame =
+            frameId;
+
+        } else {
+
+          techProjectFrame =
+            frameId;
+
+        }
+
+      });
+
+    };
+
+
+  const animateProjectRoute =
+    async (
+      projectName,
+      project,
+      route
+    ) => {
+
+      if (
+        !project
+        || !project.map
+        || !project.packet
+        || !route
+      ) {
+
+        return;
+      }
+
+
+      stopProjectPacket(
+        projectName
+      );
+
+
+      const token =
+        projectName === "hotel"
+          ? hotelProjectToken
+          : techProjectToken;
+
+
+      project.card
+        ?.classList
+        .add(
+          "is-running"
+        );
+
+
+      activateProjectRoute(
+        project,
+        route
+      );
+
+
+      for (
+        let index = 0;
+        index < route.paths.length;
+        index++
+      ) {
+
+        const currentToken =
+          projectName === "hotel"
+            ? hotelProjectToken
+            : techProjectToken;
+
+
+        if (
+          token
+          !== currentToken
+        ) {
+
+          return;
+        }
+
+
+        const path =
+          document.getElementById(
+            route.paths[index]
+          );
+
+
+        if (!path) {
+          continue;
+        }
+
+
+        path.classList.add(
+          "is-active"
+        );
+
+
+        await animateProjectPacketAcrossPath(
+          projectName,
+          project.packet,
+          path,
+          projectName === "hotel"
+            ? 720
+            : 760,
+          token
+        );
+
+
+        await wait(
+          prefersReducedMotion
+            ? 0
+            : 90
+        );
+
+      }
+
+
+      await wait(
+        prefersReducedMotion
+          ? 0
+          : 420
+      );
+
+
+      project.card
+        ?.classList
+        .remove(
+          "is-running"
+        );
+
+    };
+
+
+  const runHotelProjectVisualization =
+    async () => {
+
+      const project =
+        PROJECTS_V2.hotel;
+
+
+      if (
+        !project.map
+        || !project.packet
+      ) {
+
+        return;
+      }
+
+
+      const route =
+        project.routes[
+          hotelProjectRouteIndex
+          % project.routes.length
+        ];
+
+
+      hotelProjectRouteIndex +=
+        1;
+
+
+      await animateProjectRoute(
+        "hotel",
+        project,
+        route
+      );
+
+    };
+
+
+  const runTechProjectVisualization =
+    async () => {
+
+      const project =
+        PROJECTS_V2.tech;
+
+
+      if (
+        !project.map
+        || !project.packet
+      ) {
+
+        return;
+      }
+
+
+      const route =
+        project.routes[
+          techProjectRouteIndex
+          % project.routes.length
+        ];
+
+
+      techProjectRouteIndex +=
+        1;
+
+
+      await animateProjectRoute(
+        "tech",
+        project,
+        route
+      );
+
+    };
+
+
+  const stopHotelProjectCycle =
+    () => {
+
+      if (
+        hotelProjectTimer
+      ) {
+
+        clearInterval(
+          hotelProjectTimer
+        );
+
+
+        hotelProjectTimer =
+          null;
+
+      }
+
+
+      stopProjectPacket(
+        "hotel"
+      );
+
+
+      hotelProjectCard
+        ?.classList
+        .remove(
+          "is-running"
+        );
+
+    };
+
+
+  const stopTechProjectCycle =
+    () => {
+
+      if (
+        techProjectTimer
+      ) {
+
+        clearInterval(
+          techProjectTimer
+        );
+
+
+        techProjectTimer =
+          null;
+
+      }
+
+
+      stopProjectPacket(
+        "tech"
+      );
+
+
+      techProjectCard
+        ?.classList
+        .remove(
+          "is-running"
+        );
+
+    };
+
+
+  const startHotelProjectCycle =
     () => {
 
       stopHotelProjectCycle();
