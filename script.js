@@ -1144,6 +1144,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+
   /* ====================================================================== */
   /* 13 / TYPEWRITER                                                        */
   /* ====================================================================== */
@@ -1412,10 +1413,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     );
 
-  }
-
-
-  /* ====================================================================== */
+  }  /* ====================================================================== */
   /* 15 / CURSOR LIGHT                                                      */
   /* ====================================================================== */
 
@@ -2355,6 +2353,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadGitHubStats();
 
+
   /* ====================================================================== */
   /* 20 / CHAPTER RAIL ACTIVE STATE                                         */
   /* ====================================================================== */
@@ -2640,10 +2639,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
     }
-  );
-
-
-  /* ====================================================================== */
+  );  /* ====================================================================== */
   /* 24 / FLAGSHIP V2 EXTREME INTERACTION ENGINE                            */
   /* ====================================================================== */
 
@@ -3557,9 +3553,1725 @@ document.addEventListener("DOMContentLoaded", () => {
             : 4500
         );
 
+    };  /* ====================================================================== */
+  /* 24 / FLAGSHIP V2 EXTREME INTERACTION ENGINE                            */
+  /* ====================================================================== */
+
+  const flagshipSystem =
+    $(".flagship-live-system");
+
+  const flagshipModeButtons =
+    $$(".flagship-mode");
+
+  const flagshipModeLabel =
+    $("#flagshipModeLabel");
+
+  const runtimeModeValue =
+    $("#runtimeModeValue");
+
+  const platformStages =
+    $$(".platform-stage");
+
+  const flagshipNodes =
+    $$(".topology-node");
+
+  const flagshipPaths =
+    $$(".topology-line");
+
+  const flagshipEventLog =
+    $("#flagshipEventLog");
+
+  const requestPacket =
+    $("#requestPacketPrimary");
+
+  const meshPacket =
+    $("#meshPacketPrimary");
+
+  const observePacket =
+    $("#observePacketPrimary");
+
+
+  const FLAGSHIP = {
+
+    requestRoutes: [
+
+      {
+        name: "PRODUCT REQUEST",
+        nodes: [
+          "client",
+          "ingress",
+          "gateway",
+          "product",
+          "mysql"
+        ],
+        paths: [
+          "path-client-ingress",
+          "path-ingress-gateway",
+          "path-gateway-services",
+          "path-gateway-product",
+          "path-product-mysql"
+        ],
+        events: [
+          "client.request()",
+          "ingress.route()",
+          "gateway.forward(product)",
+          "product.read()",
+          "mysql.query()"
+        ]
+      },
+
+      {
+        name: "ORDER REQUEST",
+        nodes: [
+          "client",
+          "ingress",
+          "gateway",
+          "order",
+          "redis"
+        ],
+        paths: [
+          "path-client-ingress",
+          "path-ingress-gateway",
+          "path-gateway-services",
+          "path-gateway-order",
+          "path-order-redis"
+        ],
+        events: [
+          "client.request()",
+          "ingress.route()",
+          "gateway.forward(order)",
+          "order.process()",
+          "redis.lookup()"
+        ]
+      },
+
+      {
+        name: "USER REQUEST",
+        nodes: [
+          "client",
+          "ingress",
+          "gateway",
+          "user",
+          "rabbitmq"
+        ],
+        paths: [
+          "path-client-ingress",
+          "path-ingress-gateway",
+          "path-gateway-services",
+          "path-gateway-user",
+          "path-user-rabbitmq"
+        ],
+        events: [
+          "client.request()",
+          "ingress.route()",
+          "gateway.forward(user)",
+          "user.auth()",
+          "rabbitmq.publish()"
+        ]
+      }
+
+    ],
+
+    meshRoutes: [
+
+      {
+        name: "PRODUCT → ORDER",
+        nodes: [
+          "product",
+          "order"
+        ],
+        paths: [
+          "path-product-order"
+        ],
+        events: [
+          "istio.route(product→order)",
+          "envoy.retry_policy()",
+          "mesh.telemetry()"
+        ]
+      },
+
+      {
+        name: "ORDER → USER",
+        nodes: [
+          "order",
+          "user"
+        ],
+        paths: [
+          "path-order-user"
+        ],
+        events: [
+          "istio.route(order→user)",
+          "envoy.timeout_policy()",
+          "mesh.telemetry()"
+        ]
+      },
+
+      {
+        name: "PRODUCT → USER",
+        nodes: [
+          "product",
+          "user"
+        ],
+        paths: [
+          "path-product-user"
+        ],
+        events: [
+          "istio.route(product→user)",
+          "envoy.sidecar()",
+          "kiali.trace()"
+        ]
+      }
+
+    ],
+
+    observeRoute: {
+
+      name: "OBSERVABILITY FLOW",
+
+      nodes: [
+        "product",
+        "order",
+        "user",
+        "prometheus",
+        "grafana",
+        "kiali"
+      ],
+
+      paths: [
+        "path-services-prometheus",
+        "path-prometheus-grafana",
+        "path-grafana-kiali"
+      ],
+
+      events: [
+        "prometheus.scrape()",
+        "metrics.store()",
+        "grafana.render()",
+        "kiali.map_mesh()"
+      ]
+
+    }
+
+  };
+
+
+  let flagshipMode =
+    "request";
+
+
+  let flagshipRouteIndex =
+    0;
+
+
+  let flagshipCycleTimer =
+    null;
+
+
+  let flagshipPacketFrame =
+    null;
+
+
+  let flagshipPacketToken =
+    0;
+
+
+  const formatFlagshipTime =
+    () => {
+
+      const now =
+        new Date();
+
+
+      return now
+        .toLocaleTimeString(
+          [],
+          {
+            minute: "2-digit",
+            second: "2-digit"
+          }
+        );
+
     };
 
 
+  const pushFlagshipEvent =
+    message => {
+
+      if (!flagshipEventLog) {
+        return;
+      }
+
+
+      const eventLine =
+        document.createElement(
+          "p"
+        );
+
+
+      const time =
+        document.createElement(
+          "span"
+        );
+
+
+      time.textContent =
+        formatFlagshipTime();
+
+
+      eventLine.appendChild(
+        time
+      );
+
+
+      eventLine.appendChild(
+        document.createTextNode(
+          message
+        )
+      );
+
+
+      flagshipEventLog.prepend(
+        eventLine
+      );
+
+
+      while (
+        flagshipEventLog.children.length
+        > 6
+      ) {
+
+        flagshipEventLog
+          .lastElementChild
+          ?.remove();
+
+      }
+
+    };
+
+
+  const clearFlagshipFocus =
+    () => {
+
+      flagshipNodes.forEach(node => {
+
+        node.classList.remove(
+          "is-active"
+        );
+
+      });
+
+
+      flagshipPaths.forEach(path => {
+
+        path.classList.remove(
+          "is-active"
+        );
+
+      });
+
+
+      flagshipSystem
+        ?.classList
+        .remove(
+          "has-node-focus"
+        );
+
+    };
+
+
+  const activateFlagshipRoute =
+    route => {
+
+      if (!route) {
+        return;
+      }
+
+
+      clearFlagshipFocus();
+
+
+      flagshipSystem
+        ?.classList
+        .add(
+          "has-node-focus"
+        );
+
+
+      route.nodes
+        .forEach(name => {
+
+          $(
+            `[data-node="${name}"]`
+          )
+            ?.classList
+            .add(
+              "is-active"
+            );
+
+        });
+
+
+      route.paths
+        .forEach(id => {
+
+          document
+            .getElementById(id)
+            ?.classList
+            .add(
+              "is-active"
+            );
+
+        });
+
+    };
+
+
+  const getConnectedPathsForNode =
+    nodeName => {
+
+      const map = {
+
+        client: [
+          "path-client-ingress"
+        ],
+
+        ingress: [
+          "path-client-ingress",
+          "path-ingress-gateway"
+        ],
+
+        gateway: [
+          "path-ingress-gateway",
+          "path-gateway-services",
+          "path-gateway-product",
+          "path-gateway-order",
+          "path-gateway-user"
+        ],
+
+        product: [
+          "path-gateway-product",
+          "path-product-order",
+          "path-product-user",
+          "path-product-mysql",
+          "path-services-prometheus"
+        ],
+
+        order: [
+          "path-gateway-order",
+          "path-product-order",
+          "path-order-user",
+          "path-order-redis",
+          "path-services-prometheus"
+        ],
+
+        user: [
+          "path-gateway-user",
+          "path-order-user",
+          "path-product-user",
+          "path-user-rabbitmq",
+          "path-services-prometheus"
+        ],
+
+        mysql: [
+          "path-product-mysql"
+        ],
+
+        redis: [
+          "path-order-redis"
+        ],
+
+        rabbitmq: [
+          "path-user-rabbitmq"
+        ],
+
+        prometheus: [
+          "path-services-prometheus",
+          "path-prometheus-grafana"
+        ],
+
+        grafana: [
+          "path-prometheus-grafana",
+          "path-grafana-kiali"
+        ],
+
+        kiali: [
+          "path-grafana-kiali"
+        ]
+
+      };
+
+
+      return map[nodeName]
+        || [];
+
+    };
+
+
+  const focusFlagshipNode =
+    node => {
+
+      if (!node) {
+        return;
+      }
+
+
+      const nodeName =
+        node.dataset.node;
+
+
+      clearFlagshipFocus();
+
+
+      flagshipSystem
+        ?.classList
+        .add(
+          "has-node-focus"
+        );
+
+
+      node.classList.add(
+        "is-active"
+      );
+
+
+      getConnectedPathsForNode(
+        nodeName
+      ).forEach(id => {
+
+        document
+          .getElementById(id)
+          ?.classList
+          .add(
+            "is-active"
+          );
+
+      });
+
+    };
+
+
+  const stopFlagshipPacket =
+    () => {
+
+      flagshipPacketToken += 1;
+
+
+      if (
+        flagshipPacketFrame
+        !== null
+      ) {
+
+        cancelAnimationFrame(
+          flagshipPacketFrame
+        );
+
+
+        flagshipPacketFrame =
+          null;
+
+      }
+
+    };
+
+
+  const placePacketOnPath =
+    (
+      packet,
+      path,
+      progress
+    ) => {
+
+      if (
+        !packet
+        || !path
+        || typeof path.getTotalLength
+           !== "function"
+      ) {
+
+        return;
+
+      }
+
+
+      const length =
+        path.getTotalLength();
+
+
+      const point =
+        path.getPointAtLength(
+          length * progress
+        );
+
+
+      packet.setAttribute(
+        "cx",
+        point.x
+      );
+
+
+      packet.setAttribute(
+        "cy",
+        point.y
+      );
+
+    };
+
+
+  const animatePacketAcrossPath =
+    (
+      packet,
+      path,
+      duration = 650,
+      token
+    ) => {
+
+      return new Promise(resolve => {
+
+        if (
+          prefersReducedMotion
+          || !packet
+          || !path
+        ) {
+
+          placePacketOnPath(
+            packet,
+            path,
+            1
+          );
+
+
+          resolve();
+
+          return;
+
+        }
+
+
+        const start =
+          performance.now();
+
+
+        const frame =
+          now => {
+
+            if (
+              token
+              !== flagshipPacketToken
+            ) {
+
+              resolve();
+
+              return;
+
+            }
+
+
+            const progress =
+              clamp(
+                (now - start)
+                / duration,
+                0,
+                1
+              );
+
+
+            const eased =
+              progress
+              * progress
+              * (
+                3
+                - 2 * progress
+              );
+
+
+            placePacketOnPath(
+              packet,
+              path,
+              eased
+            );
+
+
+            if (
+              progress < 1
+            ) {
+
+              flagshipPacketFrame =
+                requestAnimationFrame(
+                  frame
+                );
+
+            } else {
+
+              flagshipPacketFrame =
+                null;
+
+
+              resolve();
+
+            }
+
+          };
+
+
+        flagshipPacketFrame =
+          requestAnimationFrame(
+            frame
+          );
+
+      });
+
+    };
+
+
+  const animateFlagshipRoute =
+    async (
+      route,
+      packet
+    ) => {
+
+      if (
+        !route
+        || !packet
+      ) {
+
+        return;
+      }
+
+
+      stopFlagshipPacket();
+
+
+      const token =
+        flagshipPacketToken;
+
+
+      activateFlagshipRoute(
+        route
+      );
+
+
+      pushFlagshipEvent(
+        route.name
+      );
+
+
+      for (
+        let index = 0;
+        index < route.paths.length;
+        index++
+      ) {
+
+        if (
+          token
+          !== flagshipPacketToken
+        ) {
+
+          return;
+
+        }
+
+
+        const path =
+          document.getElementById(
+            route.paths[index]
+          );
+
+
+        if (!path) {
+          continue;
+        }
+
+
+        path.classList.add(
+          "is-active"
+        );
+
+
+        const eventMessage =
+          route.events[index]
+          || route.events[
+            route.events.length - 1
+          ];
+
+
+        if (eventMessage) {
+
+          pushFlagshipEvent(
+            eventMessage
+          );
+
+        }
+
+
+        await animatePacketAcrossPath(
+          packet,
+          path,
+          560,
+          token
+        );
+
+
+        await wait(
+          prefersReducedMotion
+            ? 0
+            : 90
+        );
+
+      }
+
+    };
+
+
+  const getModeRoute =
+    () => {
+
+      if (
+        flagshipMode
+        === "request"
+      ) {
+
+        return FLAGSHIP
+          .requestRoutes[
+            flagshipRouteIndex
+            % FLAGSHIP
+                .requestRoutes
+                .length
+          ];
+
+      }
+
+
+      if (
+        flagshipMode
+        === "mesh"
+      ) {
+
+        return FLAGSHIP
+          .meshRoutes[
+            flagshipRouteIndex
+            % FLAGSHIP
+                .meshRoutes
+                .length
+          ];
+
+      }
+
+
+      return FLAGSHIP
+        .observeRoute;
+
+    };
+
+
+  const getModePacket =
+    () => {
+
+      if (
+        flagshipMode
+        === "mesh"
+      ) {
+
+        return meshPacket;
+
+      }
+
+
+      if (
+        flagshipMode
+        === "observe"
+      ) {
+
+        return observePacket;
+
+      }
+
+
+      return requestPacket;
+
+    };
+
+
+  const runFlagshipVisualization =
+    async () => {
+
+      const route =
+        getModeRoute();
+
+
+      const packet =
+        getModePacket();
+
+
+      await animateFlagshipRoute(
+        route,
+        packet
+      );
+
+
+      if (
+        flagshipMode
+        !== "observe"
+      ) {
+
+        flagshipRouteIndex += 1;
+
+      }
+
+    };
+
+
+  const stopFlagshipCycle =
+    () => {
+
+      if (flagshipCycleTimer) {
+
+        clearInterval(
+          flagshipCycleTimer
+        );
+
+
+        flagshipCycleTimer =
+          null;
+
+      }
+
+
+      stopFlagshipPacket();
+
+    };
+
+
+  const startFlagshipCycle =
+    () => {
+
+      stopFlagshipCycle();
+
+
+      runFlagshipVisualization();
+
+
+      if (
+        prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+      }
+
+
+      flagshipCycleTimer =
+        window.setInterval(
+          runFlagshipVisualization,
+          flagshipMode === "observe"
+            ? 5200
+            : 4500
+        );
+
+    };  const updateFlagshipModeUI =
+    mode => {
+
+      flagshipModeButtons
+        .forEach(button => {
+
+          const active =
+            button.dataset
+              .flagshipMode
+            === mode;
+
+
+          button.classList.toggle(
+            "is-active",
+            active
+          );
+
+
+          button.setAttribute(
+            "aria-pressed",
+            String(active)
+          );
+
+        });
+
+
+      if (flagshipSystem) {
+
+        flagshipSystem.classList.remove(
+          "mode-request",
+          "mode-mesh",
+          "mode-observe"
+        );
+
+
+        flagshipSystem.classList.add(
+          `mode-${mode}`
+        );
+
+      }
+
+
+      const labels = {
+
+        request:
+          "REQUEST FLOW",
+
+        mesh:
+          "SERVICE MESH",
+
+        observe:
+          "OBSERVABILITY"
+
+      };
+
+
+      const label =
+        labels[mode]
+        || labels.request;
+
+
+      if (flagshipModeLabel) {
+
+        flagshipModeLabel.textContent =
+          label;
+
+      }
+
+
+      if (runtimeModeValue) {
+
+        runtimeModeValue.textContent =
+          label;
+
+      }
+
+
+      $$(".runtime-status-item")
+        .forEach(item => {
+
+          item.classList.remove(
+            "is-active"
+          );
+
+        });
+
+
+      const activeStatuses = {
+
+        request: [
+          "kubernetes",
+          "helm"
+        ],
+
+        mesh: [
+          "kubernetes",
+          "istio",
+          "kiali"
+        ],
+
+        observe: [
+          "prometheus",
+          "grafana",
+          "kiali"
+        ]
+
+      };
+
+
+      (
+        activeStatuses[mode]
+        || []
+      ).forEach(status => {
+
+        $(
+          `[data-runtime-status="${status}"]`
+        )
+          ?.classList
+          .add(
+            "is-active"
+          );
+
+      });
+
+    };
+
+
+  const setFlagshipMode =
+    mode => {
+
+      if (
+        ![
+          "request",
+          "mesh",
+          "observe"
+        ].includes(mode)
+      ) {
+
+        return;
+
+      }
+
+
+      flagshipMode =
+        mode;
+
+
+      flagshipRouteIndex =
+        0;
+
+
+      clearFlagshipFocus();
+
+
+      updateFlagshipModeUI(
+        mode
+      );
+
+
+      pushFlagshipEvent(
+        `view.switch(${mode})`
+      );
+
+
+      startFlagshipCycle();
+
+    };
+
+
+  flagshipModeButtons
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          setFlagshipMode(
+            button.dataset
+              .flagshipMode
+          );
+
+        }
+      );
+
+    });
+
+
+  flagshipNodes
+    .forEach(node => {
+
+      node.addEventListener(
+        "mouseenter",
+        () => {
+
+          if (!finePointer) {
+            return;
+          }
+
+
+          focusFlagshipNode(
+            node
+          );
+
+        }
+      );
+
+
+      node.addEventListener(
+        "mouseleave",
+        () => {
+
+          if (!finePointer) {
+            return;
+          }
+
+
+          clearFlagshipFocus();
+
+        }
+      );
+
+
+      node.addEventListener(
+        "focus",
+        () => {
+
+          focusFlagshipNode(
+            node
+          );
+
+        }
+      );
+
+
+      node.addEventListener(
+        "blur",
+        () => {
+
+          clearFlagshipFocus();
+
+        }
+      );
+
+
+      node.addEventListener(
+        "click",
+        () => {
+
+          focusFlagshipNode(
+            node
+          );
+
+
+          pushFlagshipEvent(
+            `inspect.${node.dataset.node}()`
+          );
+
+        }
+      );
+
+    });
+
+
+  const PLATFORM_STAGE_DATA = {
+
+    compose: {
+      status:
+        "LOCAL STACK",
+
+      message:
+        "compose.stack_ready()"
+    },
+
+    swarm: {
+      status:
+        "ORCHESTRATION",
+
+      message:
+        "swarm.services_scaled()"
+    },
+
+    kubernetes: {
+      status:
+        "PLATFORM ACTIVE",
+
+      message:
+        "kubernetes.cluster_ready()"
+    },
+
+    helm: {
+      status:
+        "RELEASE DEPLOYED",
+
+      message:
+        "helm.release_deployed()"
+    },
+
+    istio: {
+      status:
+        "MESH ONLINE",
+
+      message:
+        "istio.mesh_online()"
+    }
+
+  };
+
+
+  platformStages
+    .forEach(stage => {
+
+      stage.addEventListener(
+        "click",
+        () => {
+
+          platformStages
+            .forEach(item => {
+
+              item.classList.remove(
+                "is-active"
+              );
+
+            });
+
+
+          stage.classList.add(
+            "is-active"
+          );
+
+
+          const stageName =
+            stage.dataset
+              .platformStage;
+
+
+          const data =
+            PLATFORM_STAGE_DATA[
+              stageName
+            ];
+
+
+          if (data) {
+
+            pushFlagshipEvent(
+              data.message
+            );
+
+          }
+
+
+          const linkedRuntime =
+            $(
+              `[data-runtime-status="${stageName}"]`
+            );
+
+
+          if (linkedRuntime) {
+
+            linkedRuntime.classList.add(
+              "is-active"
+            );
+
+
+            window.setTimeout(
+              () => {
+
+                linkedRuntime.classList.remove(
+                  "is-active"
+                );
+
+              },
+              1500
+            );
+
+          }
+
+
+          if (
+            stageName === "istio"
+          ) {
+
+            setFlagshipMode(
+              "mesh"
+            );
+
+          }
+
+
+          if (
+            stageName === "kubernetes"
+          ) {
+
+            setFlagshipMode(
+              "request"
+            );
+
+          }
+
+        }
+      );
+
+    });
+
+
+  if (
+    flagshipSystem
+    && "IntersectionObserver"
+       in window
+  ) {
+
+    const flagshipVisibilityObserver =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (
+              entry.isIntersecting
+            ) {
+
+              startFlagshipCycle();
+
+            } else {
+
+              stopFlagshipCycle();
+
+            }
+
+          });
+
+        },
+        {
+          threshold: 0.18
+        }
+      );
+
+
+    flagshipVisibilityObserver
+      .observe(
+        flagshipSystem
+      );
+
+  } else if (
+    flagshipSystem
+  ) {
+
+    startFlagshipCycle();
+
+  }
+
+
+  if (flagshipSystem) {
+
+    updateFlagshipModeUI(
+      "request"
+    );
+
+  }
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (!flagshipSystem) {
+        return;
+      }
+
+
+      if (document.hidden) {
+
+        stopFlagshipCycle();
+
+      } else {
+
+        const rect =
+          flagshipSystem
+            .getBoundingClientRect();
+
+
+        const visible =
+          rect.bottom > 0
+          && rect.top
+             < window.innerHeight;
+
+
+        if (visible) {
+
+          startFlagshipCycle();
+
+        }
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 25 / PROJECTS V2 INTERACTION ENGINE                                    */
+  /* ====================================================================== */
+
+  const hotelSystemMap =
+    $("#hotelSystemMap");
+
+  const hotelDataPacket =
+    $("#hotelDataPacket");
+
+  const techSystemMap =
+    $("#techSystemMap");
+
+  const techNetworkPacket =
+    $("#techNetworkPacket");
+
+  const hotelProjectCard =
+    $('[data-project-system="hotel"]');
+
+  const techProjectCard =
+    $('[data-project-system="techsolutions"]');
+
+
+  const projectMapNodes =
+    $$(".project-map-node");
+
+
+  const projectFlowLines =
+    $$(".project-flow-line");
+
+
+  const PROJECTS_V2 = {
+
+    hotel: {
+
+      card:
+        hotelProjectCard,
+
+      map:
+        hotelSystemMap,
+
+      packet:
+        hotelDataPacket,
+
+      routes: [
+
+        {
+          name:
+            "HOTEL CORE FLOW",
+
+          nodes: [
+            "hotel-customers",
+            "hotel-bookings",
+            "hotel-python",
+            "hotel-postgresql"
+          ],
+
+          paths: [
+            "hotel-path-customers-bookings",
+            "hotel-path-bookings-python",
+            "hotel-path-python-postgres"
+          ]
+        },
+
+        {
+          name:
+            "HOTEL API FLOW",
+
+          nodes: [
+            "hotel-python",
+            "hotel-api"
+          ],
+
+          paths: [
+            "hotel-path-python-api"
+          ]
+        },
+
+        {
+          name:
+            "HOTEL ANALYTICS FLOW",
+
+          nodes: [
+            "hotel-postgresql",
+            "hotel-powerbi"
+          ],
+
+          paths: [
+            "hotel-path-postgres-powerbi"
+          ]
+        }
+
+      ]
+
+    },
+
+    tech: {
+
+      card:
+        techProjectCard,
+
+      map:
+        techSystemMap,
+
+      packet:
+        techNetworkPacket,
+
+      routes: [
+
+        {
+          name:
+            "TECH WINDOWS FLOW",
+
+          nodes: [
+            "tech-internet",
+            "tech-pfsense",
+            "tech-lan",
+            "tech-windows"
+          ],
+
+          paths: [
+            "tech-path-internet-pfsense",
+            "tech-path-pfsense-lan",
+            "tech-path-lan-windows"
+          ]
+        },
+
+        {
+          name:
+            "TECH LINUX FLOW",
+
+          nodes: [
+            "tech-internet",
+            "tech-pfsense",
+            "tech-lan",
+            "tech-linux"
+          ],
+
+          paths: [
+            "tech-path-internet-pfsense",
+            "tech-path-pfsense-lan",
+            "tech-path-lan-linux"
+          ]
+        },
+
+        {
+          name:
+            "TECH DMZ FLOW",
+
+          nodes: [
+            "tech-internet",
+            "tech-pfsense",
+            "tech-dmz",
+            "tech-services"
+          ],
+
+          paths: [
+            "tech-path-internet-pfsense",
+            "tech-path-pfsense-dmz",
+            "tech-path-dmz-services"
+          ]
+        }
+
+      ]
+
+    }
+
+  };
+
+
+  let hotelProjectRouteIndex =
+    0;
+
+
+  let techProjectRouteIndex =
+    0;
+
+
+  let hotelProjectTimer =
+    null;
+
+
+  let techProjectTimer =
+    null;
+
+
+  let hotelProjectFrame =
+    null;
+
+
+  let techProjectFrame =
+    null;
+
+
+  let hotelProjectToken =
+    0;
+
+
+  let techProjectToken =
+    0;
+
+
+  let hotelProjectVisible =
+    false;
+
+
+  let techProjectVisible =
+    false;
+
+
+  const clearProjectMapFocus =
+    map => {
+
+      if (!map) {
+        return;
+      }
+
+
+      $$(
+        ".project-map-node",
+        map
+      ).forEach(node => {
+
+        node.classList.remove(
+          "is-active"
+        );
+
+      });
+
+
+      $$(
+        ".project-flow-line",
+        map
+      ).forEach(path => {
+
+        path.classList.remove(
+          "is-active"
+        );
+
+      });
+
+
+      map.classList.remove(
+        "has-node-focus"
+      );
+
+    };
+
+
+  const activateProjectRoute =
+    (
+      project,
+      route
+    ) => {
+
+      if (
+        !project
+        || !project.map
+        || !route
+      ) {
+
+        return;
+      }
+
+
+      clearProjectMapFocus(
+        project.map
+      );
+
+
+      project.map.classList.add(
+        "has-node-focus"
+      );
+
+
+      route.nodes.forEach(
+        nodeName => {
+
+          $(
+            `[data-project-node="${nodeName}"]`,
+            project.map
+          )
+            ?.classList
+            .add(
+              "is-active"
+            );
+
+        }
+      );
+
+
+      route.paths.forEach(
+        pathId => {
+
+          document
+            .getElementById(
+              pathId
+            )
+            ?.classList
+            .add(
+              "is-active"
+            );
+
+        }
+      );
+
+    };
   const updateFlagshipModeUI =
     mode => {
 
@@ -4059,7 +5771,619 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ====================================================================== */
-  /* 25 / SYSTEM READY                                                       */
+  /* 25 / PROJECTS V2 INTERACTION ENGINE                                    */
+  /* ====================================================================== */
+
+  const hotelSystemMap =
+    $("#hotelSystemMap");
+
+  const hotelDataPacket =
+    $("#hotelDataPacket");
+
+  const techSystemMap =
+    $("#techSystemMap");
+
+  const techNetworkPacket =
+    $("#techNetworkPacket");
+
+  const hotelProjectCard =
+    $('[data-project-system="hotel"]');
+
+  const techProjectCard =
+    $('[data-project-system="techsolutions"]');
+
+
+  const projectMapNodes =
+    $$(".project-map-node");
+
+
+  const projectFlowLines =
+    $$(".project-flow-line");
+
+
+  const PROJECTS_V2 = {
+
+    hotel: {
+
+      card:
+        hotelProjectCard,
+
+      map:
+        hotelSystemMap,
+
+      packet:
+        hotelDataPacket,
+
+      routes: [
+
+        {
+          name:
+            "HOTEL CORE FLOW",
+
+          nodes: [
+            "hotel-customers",
+            "hotel-bookings",
+            "hotel-python",
+            "hotel-postgresql"
+          ],
+
+          paths: [
+            "hotel-path-customers-bookings",
+            "hotel-path-bookings-python",
+            "hotel-path-python-postgres"
+          ]
+        },
+
+        {
+          name:
+            "HOTEL API FLOW",
+
+          nodes: [
+            "hotel-python",
+            "hotel-api"
+          ],
+
+          paths: [
+            "hotel-path-python-api"
+          ]
+        },
+
+        {
+          name:
+            "HOTEL ANALYTICS FLOW",
+
+          nodes: [
+            "hotel-postgresql",
+            "hotel-powerbi"
+          ],
+
+          paths: [
+            "hotel-path-postgres-powerbi"
+          ]
+        }
+
+      ]
+
+    },
+
+    tech: {
+
+      card:
+        techProjectCard,
+
+      map:
+        techSystemMap,
+
+      packet:
+        techNetworkPacket,
+
+      routes: [
+
+        {
+          name:
+            "TECH WINDOWS FLOW",
+
+          nodes: [
+            "tech-internet",
+            "tech-pfsense",
+            "tech-lan",
+            "tech-windows"
+          ],
+
+          paths: [
+            "tech-path-internet-pfsense",
+            "tech-path-pfsense-lan",
+            "tech-path-lan-windows"
+          ]
+        },
+
+        {
+          name:
+            "TECH LINUX FLOW",
+
+          nodes: [
+            "tech-internet",
+            "tech-pfsense",
+            "tech-lan",
+            "tech-linux"
+          ],
+
+          paths: [
+            "tech-path-internet-pfsense",
+            "tech-path-pfsense-lan",
+            "tech-path-lan-linux"
+          ]
+        },
+
+        {
+          name:
+            "TECH DMZ FLOW",
+
+          nodes: [
+            "tech-internet",
+            "tech-pfsense",
+            "tech-dmz",
+            "tech-services"
+          ],
+
+          paths: [
+            "tech-path-internet-pfsense",
+            "tech-path-pfsense-dmz",
+            "tech-path-dmz-services"
+          ]
+        }
+
+      ]
+
+    }
+
+  };
+
+
+  let hotelProjectRouteIndex =
+    0;
+
+
+  let techProjectRouteIndex =
+    0;
+
+
+  let hotelProjectTimer =
+    null;
+
+
+  let techProjectTimer =
+    null;
+
+
+  let hotelProjectFrame =
+    null;
+
+
+  let techProjectFrame =
+    null;
+
+
+  let hotelProjectToken =
+    0;
+
+
+  let techProjectToken =
+    0;
+
+
+  let hotelProjectVisible =
+    false;
+
+
+  let techProjectVisible =
+    false;
+
+
+  const clearProjectMapFocus =
+    map => {
+
+      if (!map) {
+        return;
+      }
+
+
+      $$(
+        ".project-map-node",
+        map
+      ).forEach(node => {
+
+        node.classList.remove(
+          "is-active"
+        );
+
+      });
+
+
+      $$(
+        ".project-flow-line",
+        map
+      ).forEach(path => {
+
+        path.classList.remove(
+          "is-active"
+        );
+
+      });
+
+
+      map.classList.remove(
+        "has-node-focus"
+      );
+
+    };
+
+
+  const activateProjectRoute =
+    (
+      project,
+      route
+    ) => {
+
+      if (
+        !project
+        || !project.map
+        || !route
+      ) {
+
+        return;
+      }
+
+
+      clearProjectMapFocus(
+        project.map
+      );
+
+
+      project.map.classList.add(
+        "has-node-focus"
+      );
+
+
+      route.nodes.forEach(
+        nodeName => {
+
+          $(
+            `[data-project-node="${nodeName}"]`,
+            project.map
+          )
+            ?.classList
+            .add(
+              "is-active"
+            );
+
+        }
+      );
+
+
+      route.paths.forEach(
+        pathId => {
+
+          document
+            .getElementById(
+              pathId
+            )
+            ?.classList
+            .add(
+              "is-active"
+            );
+
+        }
+      );
+
+    };  const startHotelProjectCycle =
+    () => {
+
+      stopHotelProjectCycle();
+
+
+      if (
+        !hotelSystemMap
+        || !hotelDataPacket
+      ) {
+
+        return;
+      }
+
+
+      runHotelProjectVisualization();
+
+
+      if (
+        prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+      }
+
+
+      hotelProjectTimer =
+        window.setInterval(
+          runHotelProjectVisualization,
+          4700
+        );
+
+    };
+
+
+  const startTechProjectCycle =
+    () => {
+
+      stopTechProjectCycle();
+
+
+      if (
+        !techSystemMap
+        || !techNetworkPacket
+      ) {
+
+        return;
+      }
+
+
+      runTechProjectVisualization();
+
+
+      if (
+        prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+      }
+
+
+      techProjectTimer =
+        window.setInterval(
+          runTechProjectVisualization,
+          4900
+        );
+
+    };
+
+
+  projectMapNodes
+    .forEach(node => {
+
+      node.addEventListener(
+        "mouseenter",
+        () => {
+
+          if (!finePointer) {
+            return;
+          }
+
+
+          focusProjectNode(
+            node
+          );
+
+        }
+      );
+
+
+      node.addEventListener(
+        "mouseleave",
+        () => {
+
+          if (!finePointer) {
+            return;
+          }
+
+
+          const map =
+            node.closest(
+              ".project-system-map"
+            );
+
+
+          clearProjectMapFocus(
+            map
+          );
+
+        }
+      );
+
+
+      node.addEventListener(
+        "focus",
+        () => {
+
+          focusProjectNode(
+            node
+          );
+
+        }
+      );
+
+
+      node.addEventListener(
+        "blur",
+        () => {
+
+          const map =
+            node.closest(
+              ".project-system-map"
+            );
+
+
+          clearProjectMapFocus(
+            map
+          );
+
+        }
+      );
+
+
+      node.addEventListener(
+        "click",
+        () => {
+
+          focusProjectNode(
+            node
+          );
+
+        }
+      );
+
+    });
+
+
+  if (
+    "IntersectionObserver"
+    in window
+  ) {
+
+    if (hotelProjectCard) {
+
+      const hotelProjectObserver =
+        new IntersectionObserver(
+          entries => {
+
+            entries.forEach(entry => {
+
+              hotelProjectVisible =
+                entry.isIntersecting;
+
+
+              if (
+                entry.isIntersecting
+              ) {
+
+                startHotelProjectCycle();
+
+              } else {
+
+                stopHotelProjectCycle();
+
+              }
+
+            });
+
+          },
+          {
+            threshold:
+              0.14
+          }
+        );
+
+
+      hotelProjectObserver.observe(
+        hotelProjectCard
+      );
+
+    }
+
+
+    if (techProjectCard) {
+
+      const techProjectObserver =
+        new IntersectionObserver(
+          entries => {
+
+            entries.forEach(entry => {
+
+              techProjectVisible =
+                entry.isIntersecting;
+
+
+              if (
+                entry.isIntersecting
+              ) {
+
+                startTechProjectCycle();
+
+              } else {
+
+                stopTechProjectCycle();
+
+              }
+
+            });
+
+          },
+          {
+            threshold:
+              0.14
+          }
+        );
+
+
+      techProjectObserver.observe(
+        techProjectCard
+      );
+
+    }
+
+  } else {
+
+    if (hotelProjectCard) {
+
+      hotelProjectVisible =
+        true;
+
+
+      startHotelProjectCycle();
+
+    }
+
+
+    if (techProjectCard) {
+
+      techProjectVisible =
+        true;
+
+
+      startTechProjectCycle();
+
+    }
+
+  }
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (document.hidden) {
+
+        stopHotelProjectCycle();
+
+        stopTechProjectCycle();
+
+        return;
+      }
+
+
+      if (
+        hotelProjectVisible
+      ) {
+
+        startHotelProjectCycle();
+
+      }
+
+
+      if (
+        techProjectVisible
+      ) {
+
+        startTechProjectCycle();
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 26 / SYSTEM READY                                                       */
   /* ====================================================================== */
 
   requestAnimationFrame(
