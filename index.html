@@ -3586,14 +3586,18 @@
     </section>
 
     <!-- =================================================== -->
-    <!-- 05 / SELECTED PROJECTS                               -->
+    <!-- 05 / PROJECTS V2                                    -->
     <!-- =================================================== -->
 
     <section
-      class="section projects-section"
+      class="section projects-section projects-v2-section"
       id="projects">
 
       <div class="section-shell">
+
+        <!-- ================================================= -->
+        <!-- SECTION HEADER                                    -->
+        <!-- ================================================= -->
 
         <div
           class="section-heading"
@@ -3606,340 +3610,1215 @@
           <div>
 
             <p class="section-label">
-
-              SELECTED SYSTEMS
-
+              SELECTED SYSTEMS / ARCHITECTURE VIEW
             </p>
 
             <h2>
-
               Different problems.
               <br>
               Different architectures.
-
             </h2>
 
           </div>
 
         </div>
 
-        <div class="projects-grid">
+        <!-- ================================================= -->
+        <!-- PROJECTS SYSTEM GRID                              -->
+        <!-- ================================================= -->
+
+        <div class="projects-v2-grid">
 
           <!-- ================================================= -->
-          <!-- HOTEL                                             -->
+          <!-- PROJECT 01 / HOTEL                               -->
           <!-- ================================================= -->
 
           <article
-            class="project-card project-card-data tilt-card"
+            class="project-v2-card project-v2-hotel tilt-card"
+            data-project-system="hotel"
             data-reveal>
 
-            <div class="project-top">
+            <div class="project-v2-topbar">
 
-              <span class="project-number">
-                PROJECT_01
-              </span>
-
-              <span class="project-year">
-                2025
-              </span>
-
-            </div>
-
-            <div class="project-visual project-data">
-
-              <div class="visual-orbit orbit-a"></div>
-              <div class="visual-orbit orbit-b"></div>
-
-              <div class="project-visual-core">
+              <div class="project-v2-id">
 
                 <span>
-                  DATA
+                  PROJECT_01
                 </span>
 
                 <strong>
-                  HOTEL
+                  HOTEL MANAGEMENT
                 </strong>
 
-                <small>
-                  Python / PostgreSQL
-                </small>
+              </div>
+
+              <div class="project-v2-status">
+
+                <span class="project-status-dot"></span>
+
+                SYSTEM ONLINE
 
               </div>
 
             </div>
 
-            <div class="project-content">
+            <div class="project-v2-visual hotel-system-visual">
 
-              <span class="project-date">
-                MAR 2025 → JUL 2025
-              </span>
+              <div class="project-v2-visual-header">
 
-              <h3>
+                <div>
 
-                Hotel Management Platform
+                  <span>
+                    DATA_SYSTEM
+                  </span>
 
-              </h3>
+                  <strong>
+                    OPERATIONAL DATA FLOW
+                  </strong>
 
-              <p>
+                </div>
 
+                <div class="project-v2-visual-state">
+
+                  <i></i>
+
+                  DATA ACTIVE
+
+                </div>
+
+              </div>
+
+              <div
+                class="project-system-map"
+                id="hotelSystemMap">
+
+                <svg
+                  class="project-system-svg hotel-system-svg"
+                  viewBox="0 0 760 460"
+                  role="img"
+                  aria-labelledby="hotelMapTitle hotelMapDesc">
+
+                  <title id="hotelMapTitle">
+                    Hotel Management Platform data flow
+                  </title>
+
+                  <desc id="hotelMapDesc">
+                    Hotel management project using bookings,
+                    a Python application, PostgreSQL,
+                    API integration and Power BI analytics.
+                  </desc>
+
+                  <defs>
+
+                    <linearGradient
+                      id="hotelNodeGradient"
+                      x1="0"
+                      x2="1">
+
+                      <stop
+                        offset="0%"
+                        stop-color="#38bdf8"
+                        stop-opacity=".12">
+                      </stop>
+
+                      <stop
+                        offset="100%"
+                        stop-color="#2dd4bf"
+                        stop-opacity=".05">
+                      </stop>
+
+                    </linearGradient>
+
+                    <linearGradient
+                      id="hotelFlowGradient"
+                      x1="0"
+                      x2="1">
+
+                      <stop
+                        offset="0%"
+                        stop-color="#38bdf8">
+                      </stop>
+
+                      <stop
+                        offset="100%"
+                        stop-color="#2dd4bf">
+                      </stop>
+
+                    </linearGradient>
+
+                    <filter
+                      id="hotelGlow"
+                      x="-100%"
+                      y="-100%"
+                      width="300%"
+                      height="300%">
+
+                      <feGaussianBlur
+                        stdDeviation="5"
+                        result="hotelBlur">
+                      </feGaussianBlur>
+
+                      <feMerge>
+                        <feMergeNode in="hotelBlur"></feMergeNode>
+                        <feMergeNode in="SourceGraphic"></feMergeNode>
+                      </feMerge>
+
+                    </filter>
+
+                  </defs>
+
+                  <g
+                    class="project-map-grid"
+                    aria-hidden="true">
+
+                    <path
+                      d="M40 70H720
+                         M40 140H720
+                         M40 210H720
+                         M40 280H720
+                         M40 350H720
+                         M40 420H720">
+                    </path>
+
+                    <path
+                      d="M80 40V430
+                         M160 40V430
+                         M240 40V430
+                         M320 40V430
+                         M400 40V430
+                         M480 40V430
+                         M560 40V430
+                         M640 40V430">
+                    </path>
+
+                  </g>
+
+                  <g class="hotel-flow-paths">
+
+                    <path
+                      id="hotel-path-customers-bookings"
+                      class="project-flow-line hotel-flow-line"
+                      d="M165 215 L230 215">
+                    </path>
+
+                    <path
+                      id="hotel-path-bookings-python"
+                      class="project-flow-line hotel-flow-line"
+                      d="M330 215 L395 215">
+                    </path>
+
+                    <path
+                      id="hotel-path-python-postgres"
+                      class="project-flow-line hotel-flow-line"
+                      d="M515 215 L620 215">
+                    </path>
+
+                    <path
+                      id="hotel-path-python-api"
+                      class="project-flow-line hotel-api-line"
+                      d="M455 275
+                         C455 320 330 320 300 350">
+                    </path>
+
+                    <path
+                      id="hotel-path-postgres-powerbi"
+                      class="project-flow-line hotel-analytics-line"
+                      d="M675 275
+                         C675 320 575 325 550 350">
+                    </path>
+
+                  </g>
+
+                  <g
+                    class="project-map-node hotel-node"
+                    data-project-node="hotel-customers"
+                    tabindex="0">
+
+                    <rect
+                      x="45"
+                      y="170"
+                      width="120"
+                      height="90"
+                      rx="15">
+                    </rect>
+
+                    <circle
+                      cx="65"
+                      cy="191"
+                      r="4">
+                    </circle>
+
+                    <text
+                      class="map-node-kicker"
+                      x="68"
+                      y="205">
+                      INPUT
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="68"
+                      y="229">
+                      CUSTOMERS
+                    </text>
+
+                    <text
+                      class="map-node-meta"
+                      x="68"
+                      y="246">
+                      guest data
+                    </text>
+
+                  </g>
+
+                  <g
+                    class="project-map-node hotel-node"
+                    data-project-node="hotel-bookings"
+                    tabindex="0">
+
+                    <rect
+                      x="230"
+                      y="170"
+                      width="100"
+                      height="90"
+                      rx="15">
+                    </rect>
+
+                    <circle
+                      cx="250"
+                      cy="191"
+                      r="4">
+                    </circle>
+
+                    <text
+                      class="map-node-kicker"
+                      x="250"
+                      y="205">
+                      OPERATIONS
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="250"
+                      y="229">
+                      BOOKINGS
+                    </text>
+
+                    <text
+                      class="map-node-meta"
+                      x="250"
+                      y="246">
+                      reservations
+                    </text>
+
+                  </g>
+
+                  <g
+                    class="project-map-node hotel-node hotel-main-node"
+                    data-project-node="hotel-python"
+                    tabindex="0">
+
+                    <rect
+                      x="395"
+                      y="155"
+                      width="120"
+                      height="120"
+                      rx="18">
+                    </rect>
+
+                    <circle
+                      class="project-node-health"
+                      cx="491"
+                      cy="178"
+                      r="4">
+                    </circle>
+
+                    <text
+                      class="map-node-kicker"
+                      x="418"
+                      y="190">
+                      APPLICATION
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="418"
+                      y="221">
+                      PYTHON
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="418"
+                      y="239">
+                      APP
+                    </text>
+
+                    <text
+                      class="map-node-runtime"
+                      x="418"
+                      y="258">
+                      RUNNING
+                    </text>
+
+                  </g>
+
+                  <g
+                    class="project-map-node hotel-node hotel-database-node"
+                    data-project-node="hotel-postgresql"
+                    tabindex="0">
+
+                    <rect
+                      x="620"
+                      y="155"
+                      width="110"
+                      height="120"
+                      rx="18">
+                    </rect>
+
+                    <circle
+                      class="project-node-health"
+                      cx="704"
+                      cy="178"
+                      r="4">
+                    </circle>
+
+                    <text
+                      class="map-node-kicker"
+                      x="641"
+                      y="190">
+                      DATABASE
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="641"
+                      y="221">
+                      PostgreSQL
+                    </text>
+
+                    <text
+                      class="map-node-meta"
+                      x="641"
+                      y="241">
+                      operational data
+                    </text>
+
+                    <text
+                      class="map-node-runtime"
+                      x="641"
+                      y="258">
+                      READY
+                    </text>
+
+                  </g>
+
+                  <g
+                    class="project-map-node hotel-node hotel-api-node"
+                    data-project-node="hotel-api"
+                    tabindex="0">
+
+                    <rect
+                      x="235"
+                      y="350"
+                      width="130"
+                      height="70"
+                      rx="14">
+                    </rect>
+
+                    <text
+                      class="map-node-kicker"
+                      x="257"
+                      y="373">
+                      INTEGRATION
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="257"
+                      y="397">
+                      API
+                    </text>
+
+                  </g>
+
+                  <g
+                    class="project-map-node hotel-node hotel-powerbi-node"
+                    data-project-node="hotel-powerbi"
+                    tabindex="0">
+
+                    <rect
+                      x="485"
+                      y="350"
+                      width="130"
+                      height="70"
+                      rx="14">
+                    </rect>
+
+                    <text
+                      class="map-node-kicker"
+                      x="507"
+                      y="373">
+                      ANALYTICS
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="507"
+                      y="397">
+                      POWER BI
+                    </text>
+
+                  </g>
+
+                  <circle
+                    id="hotelDataPacket"
+                    class="project-flow-packet hotel-data-packet"
+                    cx="165"
+                    cy="215"
+                    r="6"
+                    filter="url(#hotelGlow)">
+                  </circle>
+
+                </svg>
+
+              </div>
+
+              <div class="project-v2-system-footer">
+
+                <span>
+                  PYTHON
+                </span>
+
+                <i>→</i>
+
+                <span>
+                  POSTGRESQL
+                </span>
+
+                <i>→</i>
+
+                <span>
+                  API
+                </span>
+
+                <i>→</i>
+
+                <span>
+                  POWER BI
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="project-v2-content">
+
+              <div class="project-v2-content-head">
+
+                <div>
+
+                  <span class="project-date">
+                    MAR 2025 → JUL 2025
+                  </span>
+
+                  <h3>
+                    Hotel Management Platform
+                  </h3>
+
+                </div>
+
+                <span class="project-v2-type">
+                  DATA / APPLICATION
+                </span>
+
+              </div>
+
+              <p class="project-v2-description">
                 Hotel management platform combining
                 Python, PostgreSQL, APIs and Power BI
                 to manage operational and analytical data.
-
               </p>
 
-              <div class="project-capabilities">
+              <div class="project-v2-capabilities">
 
                 <div>
-
-                  <span>
-                    01
-                  </span>
-
-                  Bookings & customers
-
+                  <span>01</span>
+                  <strong>Bookings</strong>
+                  <small>Customers & reservations</small>
                 </div>
 
                 <div>
-
-                  <span>
-                    02
-                  </span>
-
-                  Billing & staff
-
+                  <span>02</span>
+                  <strong>Operations</strong>
+                  <small>Billing & staff</small>
                 </div>
 
                 <div>
-
-                  <span>
-                    03
-                  </span>
-
-                  PostgreSQL administration
-
+                  <span>03</span>
+                  <strong>Database</strong>
+                  <small>PostgreSQL administration</small>
                 </div>
 
                 <div>
-
-                  <span>
-                    04
-                  </span>
-
-                  Backups & replication
-
+                  <span>04</span>
+                  <strong>Resilience</strong>
+                  <small>Backups & replication</small>
                 </div>
 
                 <div>
-
-                  <span>
-                    05
-                  </span>
-
-                  API integration
-
+                  <span>05</span>
+                  <strong>Integration</strong>
+                  <small>API integration</small>
                 </div>
 
                 <div>
-
-                  <span>
-                    06
-                  </span>
-
-                  Power BI analytics
-
+                  <span>06</span>
+                  <strong>Analytics</strong>
+                  <small>Power BI</small>
                 </div>
 
               </div>
 
-              <div class="tags">
+              <div class="project-v2-bottom">
 
-                <span>Python</span>
-                <span>PostgreSQL</span>
-                <span>Power BI</span>
-                <span>APIs</span>
-                <span>JIRA</span>
+                <div class="tags">
+                  <span>Python</span>
+                  <span>PostgreSQL</span>
+                  <span>Power BI</span>
+                  <span>APIs</span>
+                  <span>JIRA</span>
+                </div>
+
+                <a
+                  href="https://drive.google.com/drive/folders/1cHo6X1G8EaBOuPj4vm0Qt2R9xkxh8GaB"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="project-v2-link">
+
+                  Explore project
+
+                  <span>
+                    ↗
+                  </span>
+
+                </a>
 
               </div>
-
-              <a
-                href="https://drive.google.com/drive/folders/1cHo6X1G8EaBOuPj4vm0Qt2R9xkxh8GaB"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="project-link">
-
-                Explore project
-
-                <span>
-                  ↗
-                </span>
-
-              </a>
 
             </div>
 
           </article>
 
           <!-- ================================================= -->
-          <!-- TECHSOLUTIONS                                     -->
+          <!-- PROJECT 02 / TECHSOLUTIONS                         -->
           <!-- ================================================= -->
 
           <article
-            class="project-card project-card-infra tilt-card"
+            class="project-v2-card project-v2-infra tilt-card"
+            data-project-system="techsolutions"
             data-reveal>
 
-            <div class="project-top">
+            <div class="project-v2-topbar">
 
-              <span class="project-number">
-                PROJECT_02
-              </span>
-
-              <span class="project-year">
-                2024
-              </span>
-
-            </div>
-
-            <div class="project-visual project-infra">
-
-              <div class="server-stack">
-
-                <i></i>
-                <i></i>
-                <i></i>
-                <i></i>
-
-              </div>
-
-              <div class="project-visual-core">
+              <div class="project-v2-id">
 
                 <span>
-                  INFRA
+                  PROJECT_02
                 </span>
 
                 <strong>
-                  TECH
+                  TECHSOLUTIONS IS
                 </strong>
 
-                <small>
-                  Systems / Network
-                </small>
+              </div>
+
+              <div class="project-v2-status project-v2-status-purple">
+
+                <span class="project-status-dot"></span>
+
+                NETWORK ONLINE
 
               </div>
 
             </div>
 
-            <div class="project-content">
+            <div class="project-v2-visual tech-system-visual">
 
-              <span class="project-date">
-                FEB 2024 → JUN 2024
-              </span>
+              <div class="project-v2-visual-header">
 
-              <h3>
+                <div>
 
-                TechSolutions IS
+                  <span>
+                    INFRA_SYSTEM
+                  </span>
 
-              </h3>
+                  <strong>
+                    CORPORATE NETWORK MAP
+                  </strong>
 
-              <p>
+                </div>
 
+                <div class="project-v2-visual-state purple">
+
+                  <i></i>
+
+                  FIREWALL ACTIVE
+
+                </div>
+
+              </div>
+
+              <div
+                class="project-system-map"
+                id="techSystemMap">
+
+                <svg
+                  class="project-system-svg tech-system-svg"
+                  viewBox="0 0 760 460"
+                  role="img"
+                  aria-labelledby="techMapTitle techMapDesc">
+
+                  <title id="techMapTitle">
+                    TechSolutions corporate infrastructure
+                  </title>
+
+                  <desc id="techMapDesc">
+                    Corporate infrastructure using
+                    Windows and Linux servers,
+                    Active Directory, DNS, DHCP,
+                    pfSense, LAN and DMZ segmentation
+                    and backup systems.
+                  </desc>
+
+                  <defs>
+
+                    <linearGradient
+                      id="techFlowGradient"
+                      x1="0"
+                      x2="1">
+
+                      <stop
+                        offset="0%"
+                        stop-color="#8b5cf6">
+                      </stop>
+
+                      <stop
+                        offset="100%"
+                        stop-color="#38bdf8">
+                      </stop>
+
+                    </linearGradient>
+
+                    <filter
+                      id="techGlow"
+                      x="-100%"
+                      y="-100%"
+                      width="300%"
+                      height="300%">
+
+                      <feGaussianBlur
+                        stdDeviation="5"
+                        result="techBlur">
+                      </feGaussianBlur>
+
+                      <feMerge>
+                        <feMergeNode in="techBlur"></feMergeNode>
+                        <feMergeNode in="SourceGraphic"></feMergeNode>
+                      </feMerge>
+
+                    </filter>
+
+                  </defs>
+
+                  <g
+                    class="project-map-grid"
+                    aria-hidden="true">
+
+                    <path
+                      d="M40 70H720
+                         M40 140H720
+                         M40 210H720
+                         M40 280H720
+                         M40 350H720
+                         M40 420H720">
+                    </path>
+
+                    <path
+                      d="M80 40V430
+                         M160 40V430
+                         M240 40V430
+                         M320 40V430
+                         M400 40V430
+                         M480 40V430
+                         M560 40V430
+                         M640 40V430">
+                    </path>
+
+                  </g>
+
+                  <rect
+                    class="tech-network-zone tech-lan-zone"
+                    x="60"
+                    y="270"
+                    width="400"
+                    height="155"
+                    rx="22">
+                  </rect>
+
+                  <text
+                    class="tech-zone-label"
+                    x="82"
+                    y="297">
+                    LAN / INTERNAL NETWORK
+                  </text>
+
+                  <rect
+                    class="tech-network-zone tech-dmz-zone"
+                    x="500"
+                    y="270"
+                    width="200"
+                    height="155"
+                    rx="22">
+                  </rect>
+
+                  <text
+                    class="tech-zone-label purple"
+                    x="521"
+                    y="297">
+                    DMZ
+                  </text>
+
+                  <g class="tech-network-paths">
+
+                    <path
+                      id="tech-path-internet-pfsense"
+                      class="project-flow-line tech-flow-line"
+                      d="M380 95 L380 145">
+                    </path>
+
+                    <path
+                      id="tech-path-pfsense-lan"
+                      class="project-flow-line tech-lan-line"
+                      d="M350 215
+                         C330 245 260 245 260 285">
+                    </path>
+
+                    <path
+                      id="tech-path-pfsense-dmz"
+                      class="project-flow-line tech-dmz-line"
+                      d="M410 215
+                         C450 245 590 240 590 285">
+                    </path>
+
+                    <path
+                      id="tech-path-lan-windows"
+                      class="project-flow-line tech-internal-line"
+                      d="M260 335 L170 345">
+                    </path>
+
+                    <path
+                      id="tech-path-lan-linux"
+                      class="project-flow-line tech-internal-line"
+                      d="M260 335 L350 345">
+                    </path>
+
+                    <path
+                      id="tech-path-dmz-services"
+                      class="project-flow-line tech-dmz-line"
+                      d="M590 335 L590 350">
+                    </path>
+
+                  </g>
+
+                  <g
+                    class="project-map-node tech-node"
+                    data-project-node="tech-internet"
+                    tabindex="0">
+
+                    <rect
+                      x="320"
+                      y="45"
+                      width="120"
+                      height="50"
+                      rx="14">
+                    </rect>
+
+                    <circle
+                      cx="340"
+                      cy="70"
+                      r="4">
+                    </circle>
+
+                    <text
+                      class="map-node-title"
+                      x="358"
+                      y="75">
+                      INTERNET
+                    </text>
+
+                  </g>
+
+                  <g
+                    class="project-map-node tech-node tech-firewall-node"
+                    data-project-node="tech-pfsense"
+                    tabindex="0">
+
+                    <rect
+                      x="305"
+                      y="145"
+                      width="150"
+                      height="70"
+                      rx="15">
+                    </rect>
+
+                    <circle
+                      class="project-node-health"
+                      cx="430"
+                      cy="165"
+                      r="4">
+                    </circle>
+
+                    <text
+                      class="map-node-kicker"
+                      x="328"
+                      y="168">
+                      FIREWALL
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="328"
+                      y="194">
+                      pfSense
+                    </text>
+
+                  </g>
+
+                  <g
+                    class="project-map-node tech-node tech-zone-router"
+                    data-project-node="tech-lan"
+                    tabindex="0">
+
+                    <rect
+                      x="205"
+                      y="285"
+                      width="110"
+                      height="50"
+                      rx="12">
+                    </rect>
+
+                    <text
+                      class="map-node-kicker"
+                      x="227"
+                      y="304">
+                      INTERNAL
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="227"
+                      y="322">
+                      LAN
+                    </text>
+
+                  </g>
+
+                  <g
+                    class="project-map-node tech-node"
+                    data-project-node="tech-windows"
+                    tabindex="0">
+
+                    <rect
+                      x="95"
+                      y="345"
+                      width="150"
+                      height="65"
+                      rx="13">
+                    </rect>
+
+                    <text
+                      class="map-node-kicker"
+                      x="115"
+                      y="367">
+                      IDENTITY / NETWORK
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="115"
+                      y="389">
+                      Windows Server
+                    </text>
+
+                    <text
+                      class="map-node-meta"
+                      x="115"
+                      y="403">
+                      AD · DNS · DHCP
+                    </text>
+
+                  </g>
+
+                  <g
+                    class="project-map-node tech-node"
+                    data-project-node="tech-linux"
+                    tabindex="0">
+
+                    <rect
+                      x="285"
+                      y="345"
+                      width="140"
+                      height="65"
+                      rx="13">
+                    </rect>
+
+                    <text
+                      class="map-node-kicker"
+                      x="305"
+                      y="367">
+                      SERVER
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="305"
+                      y="389">
+                      Linux
+                    </text>
+
+                    <text
+                      class="map-node-meta"
+                      x="305"
+                      y="403">
+                      services
+                    </text>
+
+                  </g>
+
+                  <g
+                    class="project-map-node tech-node tech-dmz-router"
+                    data-project-node="tech-dmz"
+                    tabindex="0">
+
+                    <rect
+                      x="535"
+                      y="285"
+                      width="110"
+                      height="50"
+                      rx="12">
+                    </rect>
+
+                    <text
+                      class="map-node-kicker"
+                      x="557"
+                      y="304">
+                      SEGMENT
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="557"
+                      y="322">
+                      DMZ
+                    </text>
+
+                  </g>
+
+                  <g
+                    class="project-map-node tech-node"
+                    data-project-node="tech-services"
+                    tabindex="0">
+
+                    <rect
+                      x="525"
+                      y="350"
+                      width="130"
+                      height="60"
+                      rx="13">
+                    </rect>
+
+                    <text
+                      class="map-node-kicker"
+                      x="546"
+                      y="371">
+                      SERVICES
+                    </text>
+
+                    <text
+                      class="map-node-title"
+                      x="546"
+                      y="394">
+                      SERVER ZONE
+                    </text>
+
+                  </g>
+
+                  <circle
+                    id="techNetworkPacket"
+                    class="project-flow-packet tech-network-packet"
+                    cx="380"
+                    cy="95"
+                    r="6"
+                    filter="url(#techGlow)">
+                  </circle>
+
+                </svg>
+
+              </div>
+
+              <div class="tech-storage-strip">
+
+                <div>
+                  <span>STORAGE</span>
+                  <strong>RAID</strong>
+                </div>
+
+                <i>→</i>
+
+                <div>
+                  <span>RECOVERY</span>
+                  <strong>BACKUPS</strong>
+                </div>
+
+                <i>→</i>
+
+                <div>
+                  <span>NETWORK</span>
+                  <strong>LAN / DMZ</strong>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="project-v2-content">
+
+              <div class="project-v2-content-head">
+
+                <div>
+
+                  <span class="project-date">
+                    FEB 2024 → JUN 2024
+                  </span>
+
+                  <h3>
+                    TechSolutions IS
+                  </h3>
+
+                </div>
+
+                <span class="project-v2-type purple">
+                  SYSTEMS / NETWORK
+                </span>
+
+              </div>
+
+              <p class="project-v2-description">
                 Corporate infrastructure project combining
                 Windows and Linux servers, identity,
                 networking, security and resilient storage.
-
               </p>
 
-              <div class="project-capabilities">
+              <div class="project-v2-capabilities">
 
                 <div>
-
-                  <span>
-                    01
-                  </span>
-
-                  Windows / Linux servers
-
+                  <span>01</span>
+                  <strong>Servers</strong>
+                  <small>Windows / Linux</small>
                 </div>
 
                 <div>
-
-                  <span>
-                    02
-                  </span>
-
-                  Active Directory / LDAP
-
+                  <span>02</span>
+                  <strong>Identity</strong>
+                  <small>Active Directory / LDAP</small>
                 </div>
 
                 <div>
-
-                  <span>
-                    03
-                  </span>
-
-                  DNS / DHCP
-
+                  <span>03</span>
+                  <strong>Network Services</strong>
+                  <small>DNS / DHCP</small>
                 </div>
 
                 <div>
-
-                  <span>
-                    04
-                  </span>
-
-                  pfSense firewall
-
+                  <span>04</span>
+                  <strong>Security</strong>
+                  <small>pfSense firewall</small>
                 </div>
 
                 <div>
-
-                  <span>
-                    05
-                  </span>
-
-                  LAN / DMZ segmentation
-
+                  <span>05</span>
+                  <strong>Segmentation</strong>
+                  <small>LAN / DMZ</small>
                 </div>
 
                 <div>
-
-                  <span>
-                    06
-                  </span>
-
-                  RAID / backups
-
+                  <span>06</span>
+                  <strong>Resilience</strong>
+                  <small>RAID / backups</small>
                 </div>
 
               </div>
 
-              <div class="tags">
+              <div class="project-v2-bottom">
 
-                <span>Windows Server</span>
-                <span>Linux</span>
-                <span>Active Directory</span>
-                <span>pfSense</span>
-                <span>DNS / DHCP</span>
+                <div class="tags">
+                  <span>Windows Server</span>
+                  <span>Linux</span>
+                  <span>Active Directory</span>
+                  <span>pfSense</span>
+                  <span>DNS / DHCP</span>
+                </div>
+
+                <a
+                  href="https://drive.google.com/drive/folders/1VF-ht9ClLWi4b1KtknwVLrIZdETHP4xI"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="project-v2-link">
+
+                  Explore project
+
+                  <span>
+                    ↗
+                  </span>
+
+                </a>
 
               </div>
-
-              <a
-                href="https://drive.google.com/drive/folders/1VF-ht9ClLWi4b1KtknwVLrIZdETHP4xI"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="project-link">
-
-                Explore project
-
-                <span>
-                  ↗
-                </span>
-
-              </a>
 
             </div>
 
           </article>
+
+        </div>
+
+        <!-- ================================================= -->
+        <!-- PROJECTS FOOTER VECTOR                            -->
+        <!-- ================================================= -->
+
+        <div
+          class="projects-v2-vector"
+          data-reveal>
+
+          <span>
+            SYSTEM_01
+          </span>
+
+          <strong>
+            APPLICATION + DATA
+          </strong>
+
+          <i>
+            /
+          </i>
+
+          <span>
+            SYSTEM_02
+          </span>
+
+          <strong>
+            INFRASTRUCTURE + NETWORK
+          </strong>
 
         </div>
 
