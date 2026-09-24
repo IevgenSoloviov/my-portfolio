@@ -109,7 +109,7 @@
 
   <link
     rel="stylesheet"
-    href="style.css?v=stack-v2-fix-20260924-01">
+    href="style.css?v=lab-v2-20260924-01">
 
   <!-- ===================================================== -->
   <!-- STRUCTURED DATA                                       -->
@@ -5916,11 +5916,11 @@
     </section>
 
     <!-- =================================================== -->
-    <!-- 07 / TECHNICAL LAB                                  -->
+    <!-- 07 / TECHNICAL LAB V2 — INTERACTIVE OPERATIONS      -->
     <!-- =================================================== -->
 
     <section
-      class="section lab-section"
+      class="section lab-section lab-v2-section"
       id="lab">
 
       <div class="section-shell">
@@ -5936,210 +5936,572 @@
           <div>
 
             <p class="section-label">
-
-              TECHNICAL LAB
-
+              TECHNICAL LAB / INTERACTIVE OPERATIONS
             </p>
 
             <h2>
-
-              Where systems
+              Skills are useful.
               <br>
-              become experiments.
-
+              Systems prove them.
             </h2>
 
           </div>
 
         </div>
 
-        <div class="lab-console">
+        <article
+          class="lab-v2-shell"
+          id="technicalLabConsole"
+          data-reveal>
 
-          <div
-            class="lab-console-top"
-            data-reveal>
+          <!-- TOP BAR -->
 
-            <div class="window-dots">
+          <div class="lab-v2-topbar">
 
-              <i></i>
-              <i></i>
-              <i></i>
+            <div class="lab-v2-window">
+
+              <div class="window-dots">
+                <i></i>
+                <i></i>
+                <i></i>
+              </div>
+
+              <span>
+                lab://ievgen/operations-console
+              </span>
 
             </div>
 
-            <span>
-              ~/laboratory/modules
-            </span>
+            <div class="lab-v2-runtime">
 
-            <strong>
-              06 ACTIVE AREAS
-            </strong>
+              <span class="lab-v2-chip is-live">
+                <i></i>
+                LAB ONLINE
+              </span>
+
+              <span class="lab-v2-chip">
+                06 ENVIRONMENTS
+              </span>
+
+              <span class="lab-v2-chip">
+                INTERACTIVE
+              </span>
+
+            </div>
 
           </div>
 
-          <div class="lab-grid">
+          <!-- WORKBENCH -->
 
-            <article
-              class="lab-module"
-              data-reveal>
+          <div class="lab-v2-workbench">
 
-              <span>
-                LAB_01
+            <!-- LAB SELECTOR -->
+
+            <aside
+              class="lab-v2-selector"
+              aria-label="Technical lab environments">
+
+              <span class="lab-v2-selector-label">
+                LAB_INDEX
               </span>
 
-              <h3>
-                Container Platforms
-              </h3>
+              <button
+                type="button"
+                class="lab-v2-mode is-active"
+                data-lab-v2-mode="containers"
+                aria-pressed="true">
 
-              <p>
-                Docker · Compose · Swarm · Kubernetes · Helm · Istio
-              </p>
+                <span>01</span>
+
+                <div>
+                  <strong>CONTAINERS</strong>
+                  <small>platform runtime</small>
+                </div>
+
+                <i></i>
+
+              </button>
+
+              <button
+                type="button"
+                class="lab-v2-mode"
+                data-lab-v2-mode="systems"
+                aria-pressed="false">
+
+                <span>02</span>
+
+                <div>
+                  <strong>SYSTEMS</strong>
+                  <small>services + identity</small>
+                </div>
+
+                <i></i>
+
+              </button>
+
+              <button
+                type="button"
+                class="lab-v2-mode"
+                data-lab-v2-mode="network"
+                aria-pressed="false">
+
+                <span>03</span>
+
+                <div>
+                  <strong>NETWORK</strong>
+                  <small>security + routing</small>
+                </div>
+
+                <i></i>
+
+              </button>
+
+              <button
+                type="button"
+                class="lab-v2-mode"
+                data-lab-v2-mode="observe"
+                aria-pressed="false">
+
+                <span>04</span>
+
+                <div>
+                  <strong>OBSERVE</strong>
+                  <small>metrics + visibility</small>
+                </div>
+
+                <i></i>
+
+              </button>
+
+              <button
+                type="button"
+                class="lab-v2-mode"
+                data-lab-v2-mode="services"
+                aria-pressed="false">
+
+                <span>05</span>
+
+                <div>
+                  <strong>SERVICES</strong>
+                  <small>messaging + streaming</small>
+                </div>
+
+                <i></i>
+
+              </button>
+
+              <button
+                type="button"
+                class="lab-v2-mode"
+                data-lab-v2-mode="data"
+                aria-pressed="false">
+
+                <span>06</span>
+
+                <div>
+                  <strong>DATA + AI</strong>
+                  <small>current layer</small>
+                </div>
+
+                <i></i>
+
+              </button>
+
+            </aside>
+
+            <!-- TERMINAL DECK -->
+
+            <div class="lab-v2-terminal-panel">
+
+              <div class="lab-v2-terminal-toolbar">
+
+                <div>
+
+                  <span>
+                    ACTIVE_ENVIRONMENT
+                  </span>
+
+                  <strong id="labV2ModeLabel">
+                    CONTAINER PLATFORM
+                  </strong>
+
+                </div>
+
+                <button
+                  type="button"
+                  class="lab-v2-run"
+                  id="labV2Run"
+                  aria-label="Run current lab sequence">
+
+                  <span>
+                    ▶
+                  </span>
+
+                  RUN_SEQUENCE
+
+                </button>
+
+              </div>
+
+              <div
+                class="lab-v2-terminal"
+                id="labV2Terminal"
+                aria-live="polite">
+
+                <div class="lab-v2-terminal-head">
+
+                  <span>
+                    ievgen@lab:~/containers$
+                  </span>
+
+                  <strong>
+                    READY
+                  </strong>
+
+                </div>
+
+                <div
+                  class="lab-v2-terminal-output"
+                  id="labV2TerminalOutput">
+
+                  <p class="lab-v2-line is-command">
+                    <span>$</span>
+                    docker compose up -d
+                  </p>
+
+                  <p class="lab-v2-line is-ok">
+                    <span>[OK]</span>
+                    services started
+                  </p>
+
+                  <p class="lab-v2-line is-command">
+                    <span>$</span>
+                    kubectl get pods -A
+                  </p>
+
+                  <p class="lab-v2-line">
+                    platform workloads / running
+                  </p>
+
+                  <p class="lab-v2-line is-command">
+                    <span>$</span>
+                    helm list
+                  </p>
+
+                  <p class="lab-v2-line is-ok">
+                    <span>[OK]</span>
+                    release state / ready
+                  </p>
+
+                </div>
+
+                <div class="lab-v2-prompt">
+
+                  <span>
+                    ievgen@lab:~$
+                  </span>
+
+                  <strong id="labV2Prompt">
+                    inspect --platform
+                  </strong>
+
+                  <i class="terminal-cursor">
+                    _
+                  </i>
+
+                </div>
+
+              </div>
+
+              <div class="lab-v2-execution-strip">
+
+                <div>
+                  <span>PHASE_01</span>
+                  <strong>BUILD</strong>
+                </div>
+
+                <i>→</i>
+
+                <div>
+                  <span>PHASE_02</span>
+                  <strong>TEST</strong>
+                </div>
+
+                <i>→</i>
+
+                <div>
+                  <span>PHASE_03</span>
+                  <strong>DEBUG</strong>
+                </div>
+
+                <i>→</i>
+
+                <div>
+                  <span>PHASE_04</span>
+                  <strong>DOCUMENT</strong>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- INSPECTOR -->
+
+            <aside class="lab-v2-inspector">
+
+              <div class="lab-v2-inspector-head">
+
+                <span>
+                  ENV_INSPECTOR
+                </span>
+
+                <i></i>
+
+              </div>
+
+              <div class="lab-v2-inspector-body">
+
+                <span
+                  class="lab-v2-code"
+                  id="labV2Code">
+                  LAB_01
+                </span>
+
+                <h3 id="labV2Title">
+                  Container Platforms
+                </h3>
+
+                <p id="labV2Description">
+                  Containerization, orchestration and cloud-native platform experiments.
+                </p>
+
+                <div class="lab-v2-health">
+
+                  <div>
+
+                    <span>
+                      STATE
+                    </span>
+
+                    <strong
+                      class="is-online"
+                      id="labV2State">
+                      ACTIVE
+                    </strong>
+
+                  </div>
+
+                  <div>
+
+                    <span>
+                      MODE
+                    </span>
+
+                    <strong id="labV2Mode">
+                      PLATFORM
+                    </strong>
+
+                  </div>
+
+                  <div>
+
+                    <span>
+                      TOOLS
+                    </span>
+
+                    <strong id="labV2ToolCount">
+                      06
+                    </strong>
+
+                  </div>
+
+                </div>
+
+                <span class="lab-v2-inspector-label">
+                  TOOLSET
+                </span>
+
+                <div
+                  class="lab-v2-tools"
+                  id="labV2Tools">
+
+                  <span>Docker</span>
+                  <span>Compose</span>
+                  <span>Swarm</span>
+                  <span>Kubernetes</span>
+                  <span>Helm</span>
+                  <span>Istio</span>
+
+                </div>
+
+                <span class="lab-v2-inspector-label">
+                  EXECUTION_LOG
+                </span>
+
+                <div
+                  class="lab-v2-event-log"
+                  id="labV2EventLog">
+
+                  <p>
+                    <span>19:42</span>
+                    environment.select(containers)
+                  </p>
+
+                  <p>
+                    <span>19:42</span>
+                    sequence.ready()
+                  </p>
+
+                  <p>
+                    <span>19:42</span>
+                    toolchain.loaded()
+                  </p>
+
+                </div>
+
+              </div>
+
+            </aside>
+
+          </div>
+
+          <!-- ENVIRONMENT BANK -->
+
+          <div class="lab-v2-bank">
+
+            <article
+              class="lab-v2-bank-card is-active"
+              data-lab-v2-bank="containers">
+
+              <span>01</span>
+
+              <div>
+                <strong>CONTAINER PLATFORM</strong>
+                <small>Docker → Kubernetes → Istio</small>
+              </div>
+
+              <i class="is-online"></i>
 
             </article>
 
             <article
-              class="lab-module"
-              data-reveal>
+              class="lab-v2-bank-card"
+              data-lab-v2-bank="systems">
 
-              <span>
-                LAB_02
-              </span>
+              <span>02</span>
 
-              <h3>
-                Infrastructure
-              </h3>
+              <div>
+                <strong>SYSTEMS SERVICES</strong>
+                <small>Linux → AD → DNS / DHCP</small>
+              </div>
 
-              <p>
-                Linux · Windows Server · AD · DNS · DHCP
-              </p>
+              <i></i>
 
             </article>
 
             <article
-              class="lab-module"
-              data-reveal>
+              class="lab-v2-bank-card"
+              data-lab-v2-bank="network">
 
-              <span>
-                LAB_03
-              </span>
+              <span>03</span>
 
-              <h3>
-                Security & Connectivity
-              </h3>
+              <div>
+                <strong>SECURITY + NETWORK</strong>
+                <small>VLAN → pfSense → Firewall</small>
+              </div>
 
-              <p>
-                pfSense · VLAN · Firewalls · Suricata · iptables
-              </p>
+              <i></i>
 
             </article>
 
             <article
-              class="lab-module"
-              data-reveal>
+              class="lab-v2-bank-card"
+              data-lab-v2-bank="observe">
 
-              <span>
-                LAB_04
-              </span>
+              <span>04</span>
 
-              <h3>
-                Monitoring
-              </h3>
+              <div>
+                <strong>OBSERVABILITY</strong>
+                <small>Prometheus → Grafana → Kiali</small>
+              </div>
 
-              <p>
-                Zabbix · Prometheus · Grafana · Kiali · SNMP
-              </p>
+              <i></i>
 
             </article>
 
             <article
-              class="lab-module"
-              data-reveal>
+              class="lab-v2-bank-card"
+              data-lab-v2-bank="services">
 
-              <span>
-                LAB_05
-              </span>
+              <span>05</span>
 
-              <h3>
-                Network Services
-              </h3>
+              <div>
+                <strong>NETWORK SERVICES</strong>
+                <small>Matrix → Nginx → HLS</small>
+              </div>
 
-              <p>
-                Matrix · Synapse · Element · Nginx · RTMP · HLS
-              </p>
+              <i></i>
 
             </article>
 
             <article
-              class="lab-module lab-module-current"
-              data-reveal>
+              class="lab-v2-bank-card"
+              data-lab-v2-bank="data">
 
-              <span>
-                LAB_06 / CURRENT
-              </span>
+              <span>06</span>
 
-              <h3>
-                Intelligence
-              </h3>
+              <div>
+                <strong>DATA + AI</strong>
+                <small>Python → Data → AI</small>
+              </div>
 
-              <p>
-                Python · Data Processing · Big Data · AI
-              </p>
+              <i></i>
 
             </article>
 
           </div>
 
-          <div
-            class="lab-process"
-            data-reveal>
+          <!-- FOOTER VECTOR -->
+
+          <div class="lab-v2-footer">
 
             <span>
               BUILD
             </span>
 
-            <i>
-              →
-            </i>
+            <i>→</i>
 
             <span>
               BREAK
             </span>
 
-            <i>
-              →
-            </i>
+            <i>→</i>
 
             <span>
               DEBUG
             </span>
 
-            <i>
-              →
-            </i>
+            <i>→</i>
 
             <span>
               DOCUMENT
             </span>
 
-            <i>
-              →
-            </i>
+            <i>→</i>
 
-            <span>
+            <span class="is-current">
               IMPROVE
             </span>
 
-            <i>
-              →
-            </i>
+            <i>→</i>
 
-            <span class="lab-process-repeat">
+            <span>
               REPEAT
             </span>
 
           </div>
 
-        </div>
+        </article>
 
       </div>
 
@@ -7477,7 +7839,7 @@
   <!-- ===================================================== -->
 
   <script
-    src="script.js?v=stack-v2-fix-20260924-01"
+    src="script.js?v=lab-v2-20260924-01"
     defer>
   </script>
 
