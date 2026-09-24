@@ -5309,8 +5309,1389 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
 
+
   /* ====================================================================== */
-  /* 26 / SYSTEM READY                                                       */
+  /* 26 / STACK V2 — TECHNICAL UNIVERSE INTERACTION ENGINE                  */
+  /* ====================================================================== */
+
+  const stackV2Shell =
+    $(".stack-v2-shell");
+
+  const stackV2Map =
+    $("#stackUniverseMap");
+
+  const stackV2DomainButtons =
+    $$(".stack-domain-button");
+
+  const stackV2DomainNodes =
+    $$(".stack-domain-node");
+
+  const stackV2TechNodes =
+    $$(".stack-tech-node");
+
+  const stackV2Edges =
+    $$(".stack-edge");
+
+  const stackV2SatelliteGroups =
+    $$(".stack-satellite-group");
+
+  const stackV2BankCards =
+    $$(".stack-bank-card");
+
+  const stackV2PulsePrimary =
+    $("#stackPulsePrimary");
+
+  const stackV2PulseSecondary =
+    $("#stackPulseSecondary");
+
+  const stackV2ModeLabel =
+    $("#stackUniverseMode");
+
+  const stackV2ActivePath =
+    $("#stackActivePath");
+
+  const stackV2InspectorCode =
+    $("#stackInspectorCode");
+
+  const stackV2InspectorTitle =
+    $("#stackInspectorTitle");
+
+  const stackV2InspectorDescription =
+    $("#stackInspectorDescription");
+
+  const stackV2InspectorDomain =
+    $("#stackInspectorDomain");
+
+  const stackV2InspectorCount =
+    $("#stackInspectorCount");
+
+  const stackV2InspectorTechs =
+    $("#stackInspectorTechs");
+
+  const stackV2InspectorRelation =
+    $("#stackInspectorRelation");
+
+
+  const STACK_V2_DATA = {
+
+    systems: {
+      code: "DOMAIN_01",
+      title: "Systems",
+      label: "SYSTEMS",
+      mode: "SYSTEMS FOUNDATION",
+      count: "07",
+      description:
+        "Foundation layer for services, users and workloads.",
+      relation:
+        "FOUNDATION → PLATFORM",
+      path:
+        "SYSTEMS → CLOUD → NETWORK",
+      techs: [
+        "Linux",
+        "Ubuntu",
+        "Windows Server",
+        "Active Directory",
+        "DNS",
+        "DHCP",
+        "Virtualization"
+      ]
+    },
+
+    cloud: {
+      code: "DOMAIN_02",
+      title: "Cloud Native",
+      label: "CLOUD",
+      mode: "CLOUD-NATIVE PLATFORM",
+      count: "06",
+      description:
+        "Containerization, orchestration, lifecycle and service-mesh tooling.",
+      relation:
+        "CONTAINERS → ORCHESTRATION",
+      path:
+        "DOCKER → KUBERNETES → ISTIO",
+      techs: [
+        "Docker",
+        "Compose",
+        "Swarm",
+        "Kubernetes",
+        "Helm",
+        "Istio"
+      ]
+    },
+
+    network: {
+      code: "DOMAIN_03",
+      title: "Networking",
+      label: "NETWORK",
+      mode: "NETWORK CONNECTIVITY",
+      count: "07",
+      description:
+        "Connectivity, segmentation, routing and network-service foundations.",
+      relation:
+        "CONNECTIVITY → SEGMENTATION",
+      path:
+        "TCP/IP → VLAN → ROUTING → PFSENSE",
+      techs: [
+        "TCP/IP",
+        "Subnetting",
+        "VLAN",
+        "Routing",
+        "Switching",
+        "LAN / DMZ",
+        "pfSense"
+      ]
+    },
+
+    security: {
+      code: "DOMAIN_04",
+      title: "Security",
+      label: "SECURITY",
+      mode: "SECURITY CONTROL",
+      count: "05",
+      description:
+        "Protection, traffic control and defensive network tooling.",
+      relation:
+        "CONTROL → DETECTION",
+      path:
+        "FIREWALL → IDS / IPS → SSL / TLS",
+      techs: [
+        "Firewall",
+        "Suricata",
+        "IDS / IPS",
+        "iptables",
+        "SSL / TLS"
+      ]
+    },
+
+    observe: {
+      code: "DOMAIN_05",
+      title: "Observability",
+      label: "OBSERVE",
+      mode: "OBSERVABILITY SIGNAL",
+      count: "05",
+      description:
+        "Monitoring and visibility across systems and cloud-native platforms.",
+      relation:
+        "METRICS → VISIBILITY",
+      path:
+        "PROMETHEUS → GRAFANA → KIALI",
+      techs: [
+        "Prometheus",
+        "Grafana",
+        "Kiali",
+        "Zabbix",
+        "SNMP"
+      ]
+    },
+
+    automation: {
+      code: "DOMAIN_06",
+      title: "Automation",
+      label: "AUTOMATION",
+      mode: "AUTOMATED OPERATIONS",
+      count: "06",
+      description:
+        "Scripting, configuration and versioned operational workflows.",
+      relation:
+        "SCRIPT → CONFIGURE → VERSION",
+      path:
+        "BASH → ANSIBLE → GIT → GITHUB",
+      techs: [
+        "Bash",
+        "PowerShell",
+        "Ansible",
+        "YAML",
+        "Git",
+        "GitHub"
+      ]
+    },
+
+    data: {
+      code: "DOMAIN_07",
+      title: "Data + AI",
+      label: "DATA + AI",
+      mode: "DATA + INTELLIGENCE",
+      count: "08",
+      description:
+        "Programming, databases, analysis, Big Data and Artificial Intelligence.",
+      relation:
+        "DATA → ANALYSIS → AI",
+      path:
+        "PYTHON → SQL → BIG DATA → AI",
+      techs: [
+        "Python",
+        "SQL",
+        "PostgreSQL",
+        "MySQL",
+        "Redis",
+        "Big Data",
+        "Data Analysis",
+        "Artificial Intelligence"
+      ]
+    },
+
+    digital: {
+      code: "DOMAIN_08",
+      title: "Digital",
+      label: "DIGITAL",
+      mode: "WEB + CRM WORKFLOWS",
+      count: "06",
+      description:
+        "Web platforms, CRM systems, content and digital workflows.",
+      relation:
+        "CONTENT → CRM → WEB",
+      path:
+        "WORDPRESS → ZOHO CRM → HTML / CSS",
+      techs: [
+        "WordPress",
+        "Zoho CRM",
+        "Photoshop",
+        "HTML",
+        "CSS",
+        "Plone CMS"
+      ]
+    }
+
+  };
+
+
+  const STACK_V2_DOMAIN_ORDER = [
+    "systems",
+    "cloud",
+    "network",
+    "security",
+    "observe",
+    "data",
+    "automation",
+    "digital"
+  ];
+
+
+  const STACK_V2_PULSE_ROUTE = [
+    "stack-edge-systems-cloud",
+    "stack-edge-cloud-network",
+    "stack-edge-network-security",
+    "stack-edge-security-observe",
+    "stack-edge-observe-data",
+    "stack-edge-data-automation",
+    "stack-edge-automation-systems",
+    "stack-edge-automation-cloud",
+    "stack-edge-cloud-observe",
+    "stack-edge-systems-data",
+    "stack-edge-data-digital",
+    "stack-edge-digital-cloud"
+  ];
+
+
+  let stackV2ActiveDomain =
+    "systems";
+
+
+  let stackV2DomainIndex =
+    0;
+
+
+  let stackV2CycleTimer =
+    null;
+
+
+  let stackV2PulseFramePrimary =
+    null;
+
+
+  let stackV2PulseFrameSecondary =
+    null;
+
+
+  let stackV2PulseToken =
+    0;
+
+
+  let stackV2Visible =
+    false;
+
+
+  let stackV2UserHoldUntil =
+    0;
+
+
+  const updateStackV2Inspector =
+    domain => {
+
+      const data =
+        STACK_V2_DATA[domain];
+
+
+      if (!data) {
+        return;
+      }
+
+
+      if (stackV2ModeLabel) {
+        stackV2ModeLabel.textContent =
+          data.mode;
+      }
+
+
+      if (stackV2ActivePath) {
+        stackV2ActivePath.textContent =
+          data.path;
+      }
+
+
+      if (stackV2InspectorCode) {
+        stackV2InspectorCode.textContent =
+          data.code;
+      }
+
+
+      if (stackV2InspectorTitle) {
+        stackV2InspectorTitle.textContent =
+          data.title;
+      }
+
+
+      if (stackV2InspectorDescription) {
+        stackV2InspectorDescription.textContent =
+          data.description;
+      }
+
+
+      if (stackV2InspectorDomain) {
+        stackV2InspectorDomain.textContent =
+          data.label;
+      }
+
+
+      if (stackV2InspectorCount) {
+        stackV2InspectorCount.textContent =
+          data.count;
+      }
+
+
+      if (stackV2InspectorRelation) {
+        stackV2InspectorRelation.textContent =
+          data.relation;
+      }
+
+
+      if (stackV2InspectorTechs) {
+
+        stackV2InspectorTechs.innerHTML =
+          "";
+
+
+        data.techs.forEach(tech => {
+
+          const item =
+            document.createElement(
+              "span"
+            );
+
+
+          item.textContent =
+            tech;
+
+
+          stackV2InspectorTechs.appendChild(
+            item
+          );
+
+        });
+
+      }
+
+    };
+
+
+  const clearStackV2Focus =
+    () => {
+
+      stackV2DomainButtons
+        .forEach(button => {
+
+          button.classList.remove(
+            "is-active"
+          );
+
+
+          button.setAttribute(
+            "aria-pressed",
+            "false"
+          );
+
+        });
+
+
+      stackV2DomainNodes
+        .forEach(node => {
+
+          node.classList.remove(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2Edges
+        .forEach(edge => {
+
+          edge.classList.remove(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2SatelliteGroups
+        .forEach(group => {
+
+          group.classList.remove(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2BankCards
+        .forEach(card => {
+
+          card.classList.remove(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2Map
+        ?.classList
+        .remove(
+          "has-domain-focus"
+        );
+
+    };
+
+
+  const activateStackV2Domain =
+    (
+      domain,
+      userInitiated = false
+    ) => {
+
+      const data =
+        STACK_V2_DATA[domain];
+
+
+      if (!data) {
+        return;
+      }
+
+
+      stackV2ActiveDomain =
+        domain;
+
+
+      stackV2DomainIndex =
+        Math.max(
+          STACK_V2_DOMAIN_ORDER.indexOf(
+            domain
+          ),
+          0
+        );
+
+
+      if (userInitiated) {
+
+        stackV2UserHoldUntil =
+          Date.now() + 8500;
+
+      }
+
+
+      clearStackV2Focus();
+
+
+      stackV2Map
+        ?.classList
+        .add(
+          "has-domain-focus"
+        );
+
+
+      stackV2DomainButtons
+        .filter(button =>
+          button.dataset.stackDomain
+          === domain
+        )
+        .forEach(button => {
+
+          button.classList.add(
+            "is-active"
+          );
+
+
+          button.setAttribute(
+            "aria-pressed",
+            "true"
+          );
+
+        });
+
+
+      stackV2DomainNodes
+        .filter(node =>
+          node.dataset.stackNode
+          === domain
+        )
+        .forEach(node => {
+
+          node.classList.add(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2SatelliteGroups
+        .filter(group =>
+          group.dataset.stackDomainRef
+          === domain
+        )
+        .forEach(group => {
+
+          group.classList.add(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2Edges
+        .filter(edge => {
+
+          const edgeDomains =
+            (
+              edge.dataset.stackEdge
+              || ""
+            )
+              .split(" ");
+
+
+          return edgeDomains.includes(
+            domain
+          );
+
+        })
+        .forEach(edge => {
+
+          edge.classList.add(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2BankCards
+        .filter(card =>
+          card.dataset.stackBank
+          === domain
+        )
+        .forEach(card => {
+
+          card.classList.add(
+            "is-active"
+          );
+
+        });
+
+
+      updateStackV2Inspector(
+        domain
+      );
+
+    };
+
+
+  const inspectStackV2Technology =
+    node => {
+
+      if (!node) {
+        return;
+      }
+
+
+      const tech =
+        node.dataset.stackTech;
+
+
+      const domain =
+        node.dataset.stackDomainRef;
+
+
+      if (
+        !tech
+        || !domain
+        || !STACK_V2_DATA[domain]
+      ) {
+        return;
+      }
+
+
+      activateStackV2Domain(
+        domain,
+        true
+      );
+
+
+      stackV2TechNodes
+        .forEach(item => {
+
+          item.classList.toggle(
+            "is-active",
+            item === node
+          );
+
+        });
+
+
+      if (stackV2InspectorTitle) {
+        stackV2InspectorTitle.textContent =
+          tech;
+      }
+
+
+      if (stackV2InspectorDescription) {
+        stackV2InspectorDescription.textContent =
+          `${tech} / ${STACK_V2_DATA[domain].title}`;
+      }
+
+    };
+
+
+  const placeStackV2PulseOnPath =
+    (
+      pulse,
+      path,
+      progress
+    ) => {
+
+      if (
+        !pulse
+        || !path
+        || typeof path.getTotalLength
+           !== "function"
+      ) {
+        return;
+      }
+
+
+      const totalLength =
+        path.getTotalLength();
+
+
+      const point =
+        path.getPointAtLength(
+          totalLength * progress
+        );
+
+
+      pulse.setAttribute(
+        "cx",
+        point.x
+      );
+
+
+      pulse.setAttribute(
+        "cy",
+        point.y
+      );
+
+    };
+
+
+  const stopStackV2PulseFrames =
+    () => {
+
+      stackV2PulseToken += 1;
+
+
+      if (
+        stackV2PulseFramePrimary
+        !== null
+      ) {
+
+        cancelAnimationFrame(
+          stackV2PulseFramePrimary
+        );
+
+
+        stackV2PulseFramePrimary =
+          null;
+
+      }
+
+
+      if (
+        stackV2PulseFrameSecondary
+        !== null
+      ) {
+
+        cancelAnimationFrame(
+          stackV2PulseFrameSecondary
+        );
+
+
+        stackV2PulseFrameSecondary =
+          null;
+
+      }
+
+    };
+
+
+  const animateStackV2Pulse =
+    (
+      pulse,
+      path,
+      duration,
+      token,
+      frameSlot
+    ) => {
+
+      return new Promise(resolve => {
+
+        if (
+          prefersReducedMotion
+          || !pulse
+          || !path
+        ) {
+
+          placeStackV2PulseOnPath(
+            pulse,
+            path,
+            1
+          );
+
+
+          resolve();
+
+          return;
+
+        }
+
+
+        const start =
+          performance.now();
+
+
+        const frame =
+          now => {
+
+            if (
+              token
+              !== stackV2PulseToken
+            ) {
+
+              resolve();
+
+              return;
+
+            }
+
+
+            const progress =
+              clamp(
+                (now - start) / duration,
+                0,
+                1
+              );
+
+
+            const eased =
+              progress
+              * progress
+              * (3 - 2 * progress);
+
+
+            placeStackV2PulseOnPath(
+              pulse,
+              path,
+              eased
+            );
+
+
+            if (progress < 1) {
+
+              const id =
+                requestAnimationFrame(
+                  frame
+                );
+
+
+              if (frameSlot === "primary") {
+                stackV2PulseFramePrimary = id;
+              } else {
+                stackV2PulseFrameSecondary = id;
+              }
+
+            } else {
+
+              if (frameSlot === "primary") {
+                stackV2PulseFramePrimary = null;
+              } else {
+                stackV2PulseFrameSecondary = null;
+              }
+
+
+              resolve();
+
+            }
+
+          };
+
+
+        const id =
+          requestAnimationFrame(
+            frame
+          );
+
+
+        if (frameSlot === "primary") {
+          stackV2PulseFramePrimary = id;
+        } else {
+          stackV2PulseFrameSecondary = id;
+        }
+
+      });
+
+    };
+
+
+  const getStackV2DomainEdges =
+    domain =>
+      stackV2Edges.filter(edge =>
+        (
+          edge.dataset.stackEdge
+          || ""
+        )
+          .split(" ")
+          .includes(domain)
+      );
+
+
+  const runStackV2PulseSequence =
+    async () => {
+
+      if (
+        !stackV2Shell
+        || !stackV2Map
+      ) {
+        return;
+      }
+
+
+      stopStackV2PulseFrames();
+
+
+      const token =
+        stackV2PulseToken;
+
+
+      stackV2Shell.classList.add(
+        "is-running"
+      );
+
+
+      const activeEdges =
+        getStackV2DomainEdges(
+          stackV2ActiveDomain
+        );
+
+
+      const primaryPath =
+        activeEdges[0]
+        || document.getElementById(
+          STACK_V2_PULSE_ROUTE[0]
+        );
+
+
+      const secondaryPath =
+        activeEdges[1]
+        || document.getElementById(
+          STACK_V2_PULSE_ROUTE[1]
+        );
+
+
+      const jobs = [];
+
+
+      if (
+        stackV2PulsePrimary
+        && primaryPath
+      ) {
+
+        jobs.push(
+          animateStackV2Pulse(
+            stackV2PulsePrimary,
+            primaryPath,
+            1200,
+            token,
+            "primary"
+          )
+        );
+
+      }
+
+
+      if (
+        stackV2PulseSecondary
+        && secondaryPath
+      ) {
+
+        jobs.push(
+          wait(260)
+            .then(() =>
+              animateStackV2Pulse(
+                stackV2PulseSecondary,
+                secondaryPath,
+                1450,
+                token,
+                "secondary"
+              )
+            )
+        );
+
+      }
+
+
+      await Promise.all(jobs);
+
+
+      stackV2Shell.classList.remove(
+        "is-running"
+      );
+
+    };
+
+
+  const stopStackV2Cycle =
+    () => {
+
+      if (stackV2CycleTimer) {
+
+        clearInterval(
+          stackV2CycleTimer
+        );
+
+
+        stackV2CycleTimer =
+          null;
+
+      }
+
+
+      stopStackV2PulseFrames();
+
+
+      stackV2Shell
+        ?.classList
+        .remove(
+          "is-running"
+        );
+
+    };
+
+
+  const advanceStackV2Domain =
+    () => {
+
+      if (
+        Date.now()
+        < stackV2UserHoldUntil
+      ) {
+
+        runStackV2PulseSequence();
+
+        return;
+
+      }
+
+
+      stackV2DomainIndex =
+        (
+          stackV2DomainIndex + 1
+        )
+        % STACK_V2_DOMAIN_ORDER.length;
+
+
+      activateStackV2Domain(
+        STACK_V2_DOMAIN_ORDER[
+          stackV2DomainIndex
+        ]
+      );
+
+
+      runStackV2PulseSequence();
+
+    };
+
+
+  const startStackV2Cycle =
+    () => {
+
+      stopStackV2Cycle();
+
+
+      if (!stackV2Shell) {
+        return;
+      }
+
+
+      activateStackV2Domain(
+        stackV2ActiveDomain
+      );
+
+
+      runStackV2PulseSequence();
+
+
+      if (
+        prefersReducedMotion
+        || document.hidden
+      ) {
+        return;
+      }
+
+
+      stackV2CycleTimer =
+        window.setInterval(
+          advanceStackV2Domain,
+          4300
+        );
+
+    };
+
+
+  stackV2DomainButtons
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          activateStackV2Domain(
+            button.dataset.stackDomain,
+            true
+          );
+
+
+          runStackV2PulseSequence();
+
+        }
+      );
+
+
+      button.addEventListener(
+        "mouseenter",
+        () => {
+
+          if (!finePointer) {
+            return;
+          }
+
+
+          activateStackV2Domain(
+            button.dataset.stackDomain,
+            true
+          );
+
+        }
+      );
+
+    });
+
+
+  stackV2DomainNodes
+    .forEach(node => {
+
+      const activateNode =
+        () => {
+
+          activateStackV2Domain(
+            node.dataset.stackNode,
+            true
+          );
+
+
+          runStackV2PulseSequence();
+
+        };
+
+
+      node.addEventListener(
+        "click",
+        activateNode
+      );
+
+
+      node.addEventListener(
+        "focus",
+        activateNode
+      );
+
+
+      node.addEventListener(
+        "mouseenter",
+        () => {
+
+          if (finePointer) {
+            activateNode();
+          }
+
+        }
+      );
+
+    });
+
+
+  stackV2TechNodes
+    .forEach(node => {
+
+      const inspectTech =
+        () => {
+          inspectStackV2Technology(node);
+        };
+
+
+      node.addEventListener(
+        "click",
+        inspectTech
+      );
+
+
+      node.addEventListener(
+        "focus",
+        inspectTech
+      );
+
+
+      node.addEventListener(
+        "mouseenter",
+        () => {
+
+          if (finePointer) {
+            inspectTech();
+          }
+
+        }
+      );
+
+
+      node.addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key === "Enter"
+            || event.key === " "
+          ) {
+
+            event.preventDefault();
+            inspectTech();
+
+          }
+
+        }
+      );
+
+    });
+
+
+  stackV2BankCards
+    .forEach(card => {
+
+      const inspectBank =
+        () => {
+
+          activateStackV2Domain(
+            card.dataset.stackBank,
+            true
+          );
+
+
+          runStackV2PulseSequence();
+
+        };
+
+
+      card.addEventListener(
+        "click",
+        inspectBank
+      );
+
+
+      card.addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key === "Enter"
+            || event.key === " "
+          ) {
+
+            event.preventDefault();
+            inspectBank();
+
+          }
+
+        }
+      );
+
+    });
+
+
+  stackV2DomainButtons
+    .forEach(
+      (
+        button,
+        index
+      ) => {
+
+        button.addEventListener(
+          "keydown",
+          event => {
+
+            if (
+              event.key !== "ArrowDown"
+              && event.key !== "ArrowRight"
+              && event.key !== "ArrowUp"
+              && event.key !== "ArrowLeft"
+            ) {
+              return;
+            }
+
+
+            event.preventDefault();
+
+
+            const direction =
+              (
+                event.key === "ArrowDown"
+                || event.key === "ArrowRight"
+              )
+                ? 1
+                : -1;
+
+
+            const nextIndex =
+              (
+                index
+                + direction
+                + stackV2DomainButtons.length
+              )
+              % stackV2DomainButtons.length;
+
+
+            stackV2DomainButtons[
+              nextIndex
+            ]?.focus();
+
+          }
+        );
+
+      }
+    );
+
+
+  if (
+    stackV2Shell
+    && "IntersectionObserver"
+       in window
+  ) {
+
+    const stackV2Observer =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            stackV2Visible =
+              entry.isIntersecting;
+
+
+            if (entry.isIntersecting) {
+
+              startStackV2Cycle();
+
+            } else {
+
+              stopStackV2Cycle();
+
+            }
+
+          });
+
+        },
+        {
+          threshold: .15
+        }
+      );
+
+
+    stackV2Observer.observe(
+      stackV2Shell
+    );
+
+  } else if (stackV2Shell) {
+
+    stackV2Visible =
+      true;
+
+
+    startStackV2Cycle();
+
+  }
+
+
+  if (stackV2Shell) {
+
+    activateStackV2Domain(
+      "systems"
+    );
+
+  }
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (!stackV2Shell) {
+        return;
+      }
+
+
+      if (document.hidden) {
+
+        stopStackV2Cycle();
+
+        return;
+
+      }
+
+
+      if (stackV2Visible) {
+
+        startStackV2Cycle();
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 27 / SYSTEM READY                                                       */
   /* ====================================================================== */
 
   requestAnimationFrame(
