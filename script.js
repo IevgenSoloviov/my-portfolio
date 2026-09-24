@@ -1,7486 +1,6730 @@
-<!doctype html>
+document.addEventListener("DOMContentLoaded", () => {
 
-<html lang="en">
+  "use strict";
 
-<head>
 
-  <!-- ===================================================== -->
-  <!-- CORE                                                  -->
-  <!-- ===================================================== -->
+  /* ====================================================================== */
+  /* 01 / CONFIG                                                            */
+  /* ====================================================================== */
 
-  <meta charset="utf-8">
+  const CONFIG = {
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover">
+    githubUser: "IevgenSoloviov",
 
-  <title>
-    Ievgen Soloviov — Systems · Cloud Native · Data · AI
-  </title>
+    githubCacheMinutes: 15,
 
-  <!-- ===================================================== -->
-  <!-- SEO                                                   -->
-  <!-- ===================================================== -->
-
-  <meta
-    name="description"
-    content="Technical portfolio of Ievgen Soloviov. Systems Administration, Networking, Linux, Docker, Kubernetes, Cloud Native, Automation, Data and Artificial Intelligence.">
-
-  <meta
-    name="author"
-    content="Ievgen Soloviov">
-
-  <meta
-    name="robots"
-    content="index, follow">
-
-  <meta
-    name="theme-color"
-    content="#050816">
-
-  <link
-    rel="canonical"
-    href="https://ievgensoloviov.github.io/my-portfolio/">
-
-  <!-- ===================================================== -->
-  <!-- OPEN GRAPH                                            -->
-  <!-- ===================================================== -->
-
-  <meta
-    property="og:type"
-    content="website">
-
-  <meta
-    property="og:title"
-    content="Ievgen Soloviov — Technical Portfolio">
-
-  <meta
-    property="og:description"
-    content="Systems · Cloud Native · Automation · Data · AI">
-
-  <meta
-    property="og:url"
-    content="https://ievgensoloviov.github.io/my-portfolio/">
-
-  <meta
-    property="og:image"
-    content="img/preview.png">
-
-  <meta
-    property="og:image:alt"
-    content="Ievgen Soloviov technical portfolio preview">
-
-  <!-- ===================================================== -->
-  <!-- SOCIAL PREVIEW                                        -->
-  <!-- ===================================================== -->
-
-  <meta
-    name="twitter:card"
-    content="summary_large_image">
-
-  <meta
-    name="twitter:title"
-    content="Ievgen Soloviov — Technical Portfolio">
-
-  <meta
-    name="twitter:description"
-    content="Systems · Cloud Native · Automation · Data · AI">
-
-  <meta
-    name="twitter:image"
-    content="img/preview.png">
-
-  <!-- ===================================================== -->
-  <!-- PERFORMANCE                                           -->
-  <!-- ===================================================== -->
-
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com">
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin>
-
-  <!-- ===================================================== -->
-  <!-- STYLES                                                -->
-  <!-- ===================================================== -->
-
-  <link
-    rel="stylesheet"
-    href="style.css">
-
-  <!-- ===================================================== -->
-  <!-- STRUCTURED DATA                                       -->
-  <!-- ===================================================== -->
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Ievgen Soloviov",
-    "url": "https://ievgensoloviov.github.io/my-portfolio/",
-    "image": "https://ievgensoloviov.github.io/my-portfolio/img/foto.png",
-    "jobTitle": "Systems & Network Administrator",
-    "sameAs": [
-      "https://github.com/IevgenSoloviov",
-      "https://www.linkedin.com/in/ievgen-soloviov-0709bb299"
+    roles: [
+      "Systems & Network Administration",
+      "Cloud Native Infrastructure",
+      "Docker & Kubernetes",
+      "Infrastructure Automation",
+      "Data & Artificial Intelligence"
     ],
-    "knowsAbout": [
-      "Systems Administration",
-      "Linux",
-      "Networking",
-      "Docker",
-      "Kubernetes",
+
+    typeSpeed: 54,
+    deleteSpeed: 28,
+    rolePause: 1450,
+
+    bootDuration: 2350,
+
+    bootStorageKey: "ievgen-portfolio-boot-seen",
+
+    themeStorageKey: "ievgen-portfolio-theme",
+
+    githubCacheKey: "ievgen-github-profile-cache"
+
+  };
+
+
+  /* ====================================================================== */
+  /* 02 / HELPERS                                                           */
+  /* ====================================================================== */
+
+  const $ = (selector, context = document) =>
+    context.querySelector(selector);
+
+  const $$ = (selector, context = document) =>
+    [...context.querySelectorAll(selector)];
+
+
+  const prefersReducedMotion =
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+
+  const finePointer =
+    window.matchMedia(
+      "(pointer: fine)"
+    ).matches;
+
+
+  const clamp = (value, min, max) =>
+    Math.min(
+      Math.max(value, min),
+      max
+    );
+
+
+  const wait = milliseconds =>
+    new Promise(resolve =>
+      setTimeout(resolve, milliseconds)
+    );
+
+
+  const safeStorageGet = key => {
+
+    try {
+
+      return localStorage.getItem(key);
+
+    } catch {
+
+      return null;
+
+    }
+
+  };
+
+
+  const safeStorageSet = (key, value) => {
+
+    try {
+
+      localStorage.setItem(
+        key,
+        value
+      );
+
+    } catch {
+
+      /* Storage may be disabled. */
+
+    }
+
+  };
+
+
+  const safeSessionGet = key => {
+
+    try {
+
+      return sessionStorage.getItem(key);
+
+    } catch {
+
+      return null;
+
+    }
+
+  };
+
+
+  const safeSessionSet = (key, value) => {
+
+    try {
+
+      sessionStorage.setItem(
+        key,
+        value
+      );
+
+    } catch {
+
+      /* Session storage may be disabled. */
+
+    }
+
+  };
+
+
+  const scrollToTarget = selector => {
+
+    const target =
+      typeof selector === "string"
+        ? $(selector)
+        : selector;
+
+
+    if (!target) {
+      return;
+    }
+
+
+    target.scrollIntoView({
+      behavior:
+        prefersReducedMotion
+          ? "auto"
+          : "smooth",
+
+      block:
+        "start"
+    });
+
+  };
+
+
+  /* ====================================================================== */
+  /* 03 / MAIN ELEMENTS                                                     */
+  /* ====================================================================== */
+
+  const body =
+    document.body;
+
+
+  const root =
+    document.documentElement;
+
+
+  const navbar =
+    $("#navbar");
+
+
+  const progressBar =
+    $("#scrollProgressBar");
+
+
+  const scrollTopBtn =
+    $("#scrollTopBtn");
+
+
+  const themeToggle =
+    $("#themeToggle");
+
+
+  const menuToggle =
+    $("#menuToggle");
+
+
+  const navLinksContainer =
+    $("#navLinks");
+
+
+  const navLinks =
+    $$("#navLinks a");
+
+
+  const chapterLinks =
+    $$(".chapter-rail a");
+
+
+  const commandPalette =
+    $("#commandPalette");
+
+
+  const commandTrigger =
+    $("#commandTrigger");
+
+
+  const commandSearch =
+    $("#commandSearch");
+
+
+  const commandButtons =
+    $$("[data-command-target]");
+
+
+  const cursorGlow =
+    $("#cursorGlow");
+
+
+  const rotatingRole =
+    $("#rotatingRole");
+
+
+  const bootScreen =
+    $("#bootScreen");
+
+
+  const bootProgressBar =
+    $("#bootProgressBar");
+
+
+  const bootPercentage =
+    $("#bootPercentage");
+
+
+  const bootSteps =
+    $$("[data-boot-step]");
+
+
+  /* ====================================================================== */
+  /* 04 / CURRENT YEAR                                                      */
+  /* ====================================================================== */
+
+  const yearElement =
+    $("#year");
+
+
+  if (yearElement) {
+
+    yearElement.textContent =
+      new Date().getFullYear();
+
+  }
+
+
+  /* ====================================================================== */
+  /* 05 / BOOT SEQUENCE                                                     */
+  /* ====================================================================== */
+
+  const initializeBootSequence =
+    async () => {
+
+      if (!bootScreen) {
+        return;
+      }
+
+
+      const bootAlreadySeen =
+        safeSessionGet(
+          CONFIG.bootStorageKey
+        );
+
+
+      if (
+        prefersReducedMotion
+        || bootAlreadySeen === "true"
+      ) {
+
+        bootScreen.hidden = true;
+
+        return;
+      }
+
+
+      bootScreen.hidden = false;
+
+      bootScreen.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      body.classList.add(
+        "no-scroll"
+      );
+
+
+      bootSteps.forEach(step => {
+
+        step.style.opacity = ".22";
+
+        step.style.transform =
+          "translateX(-5px)";
+
+        step.style.transition =
+          "opacity .25s ease, transform .25s ease";
+
+      });
+
+
+      if (bootProgressBar) {
+
+        bootProgressBar.style.width =
+          "0%";
+
+      }
+
+
+      const totalSteps =
+        bootSteps.length;
+
+
+      const stepDelay =
+        Math.max(
+          170,
+          CONFIG.bootDuration
+          / Math.max(totalSteps, 1)
+        );
+
+
+      for (
+        let index = 0;
+        index < totalSteps;
+        index++
+      ) {
+
+        const step =
+          bootSteps[index];
+
+
+        const progress =
+          Math.round(
+            ((index + 1) / totalSteps)
+            * 100
+          );
+
+
+        step.style.opacity = "1";
+        step.style.transform = "none";
+
+
+        if (index === totalSteps - 1) {
+
+          step.style.color =
+            "var(--green)";
+
+        }
+
+
+        if (bootProgressBar) {
+
+          bootProgressBar.style.width =
+            `${progress}%`;
+
+        }
+
+
+        if (bootPercentage) {
+
+          bootPercentage.textContent =
+            `${progress}%`;
+
+        }
+
+
+        await wait(stepDelay);
+
+      }
+
+
+      await wait(300);
+
+
+      bootScreen.style.transition =
+        "opacity .45s ease, visibility .45s ease";
+
+
+      bootScreen.style.opacity =
+        "0";
+
+
+      bootScreen.style.visibility =
+        "hidden";
+
+
+      await wait(460);
+
+
+      bootScreen.hidden = true;
+
+
+      body.classList.remove(
+        "no-scroll"
+      );
+
+
+      safeSessionSet(
+        CONFIG.bootStorageKey,
+        "true"
+      );
+
+    };
+
+
+  initializeBootSequence();
+
+
+  /* ====================================================================== */
+  /* 06 / RAF SCROLL ENGINE                                                 */
+  /* ====================================================================== */
+
+  let scrollTicking = false;
+
+
+  const updateScrollSystem = () => {
+
+    const scrollY =
+      window.scrollY;
+
+
+    const documentHeight =
+      document.documentElement.scrollHeight
+      - window.innerHeight;
+
+
+    const scrollPercent =
+      documentHeight > 0
+        ? clamp(
+            (scrollY / documentHeight) * 100,
+            0,
+            100
+          )
+        : 0;
+
+
+    if (progressBar) {
+
+      progressBar.style.width =
+        `${scrollPercent}%`;
+
+    }
+
+
+    if (navbar) {
+
+      navbar.classList.toggle(
+        "scrolled",
+        scrollY > 30
+      );
+
+    }
+
+
+    if (scrollTopBtn) {
+
+      scrollTopBtn.classList.toggle(
+        "visible",
+        scrollY > 500
+      );
+
+    }
+
+
+    root.style.setProperty(
+      "--scroll-progress",
+      scrollPercent.toFixed(2)
+    );
+
+
+    scrollTicking = false;
+
+  };
+
+
+  const requestScrollUpdate = () => {
+
+    if (scrollTicking) {
+      return;
+    }
+
+
+    scrollTicking = true;
+
+
+    requestAnimationFrame(
+      updateScrollSystem
+    );
+
+  };
+
+
+  updateScrollSystem();
+
+
+  window.addEventListener(
+    "scroll",
+    requestScrollUpdate,
+    {
+      passive: true
+    }
+  );
+
+
+  window.addEventListener(
+    "resize",
+    requestScrollUpdate,
+    {
+      passive: true
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 07 / SCROLL TO TOP                                                     */
+  /* ====================================================================== */
+
+  if (scrollTopBtn) {
+
+    scrollTopBtn.addEventListener(
+      "click",
+      () => {
+
+        window.scrollTo({
+
+          top: 0,
+
+          behavior:
+            prefersReducedMotion
+              ? "auto"
+              : "smooth"
+
+        });
+
+      }
+    );
+
+  }
+
+
+  /* ====================================================================== */
+  /* 08 / SMOOTH INTERNAL LINKS                                             */
+  /* ====================================================================== */
+
+  $$('a[href^="#"]').forEach(link => {
+
+    link.addEventListener(
+      "click",
+      event => {
+
+        const href =
+          link.getAttribute(
+            "href"
+          );
+
+
+        if (
+          !href
+          || href === "#"
+        ) {
+
+          return;
+
+        }
+
+
+        const target =
+          $(href);
+
+
+        if (!target) {
+          return;
+        }
+
+
+        event.preventDefault();
+
+
+        scrollToTarget(target);
+
+
+        if (
+          navLinksContainer
+          && navLinksContainer.classList.contains(
+            "open"
+          )
+        ) {
+
+          closeMobileNavigation();
+
+        }
+
+      }
+    );
+
+  });
+
+
+  /* ====================================================================== */
+  /* 09 / ACTIVE SECTION SYSTEM                                             */
+  /* ====================================================================== */
+
+  const trackedSections =
+    $$(
+      [
+        "#identity",
+        "#mission",
+        "#experience",
+        "#flagship",
+        "#projects",
+        "#stack",
+        "#lab",
+        "#education",
+        "#human",
+        "#signal",
+        "#contact"
+      ].join(",")
+    );
+
+
+  const activateSection = id => {
+
+    [
+      ...navLinks,
+      ...chapterLinks
+    ].forEach(link => {
+
+      const active =
+        link.getAttribute("href")
+        === `#${id}`;
+
+
+      link.classList.toggle(
+        "active",
+        active
+      );
+
+
+      if (active) {
+
+        link.setAttribute(
+          "aria-current",
+          "true"
+        );
+
+      } else {
+
+        link.removeAttribute(
+          "aria-current"
+        );
+
+      }
+
+    });
+
+  };
+
+
+  if (
+    "IntersectionObserver"
+    in window
+  ) {
+
+    const sectionObserver =
+      new IntersectionObserver(
+        entries => {
+
+          const visibleEntries =
+            entries
+              .filter(entry =>
+                entry.isIntersecting
+              )
+              .sort(
+                (a, b) =>
+                  b.intersectionRatio
+                  - a.intersectionRatio
+              );
+
+
+          if (
+            visibleEntries.length
+            === 0
+          ) {
+
+            return;
+
+          }
+
+
+          activateSection(
+            visibleEntries[0]
+              .target
+              .id
+          );
+
+        },
+        {
+
+          rootMargin:
+            "-34% 0px -52% 0px",
+
+          threshold:
+            [
+              0,
+              0.15,
+              0.35,
+              0.55
+            ]
+
+        }
+      );
+
+
+    trackedSections.forEach(
+      section => {
+
+        sectionObserver.observe(
+          section
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ====================================================================== */
+  /* 10 / MOBILE NAVIGATION                                                 */
+  /* ====================================================================== */
+
+  const closeMobileNavigation =
+    () => {
+
+      if (!navLinksContainer) {
+        return;
+      }
+
+
+      navLinksContainer.classList.remove(
+        "open"
+      );
+
+
+      if (menuToggle) {
+
+        menuToggle.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      }
+
+    };
+
+
+  const openMobileNavigation =
+    () => {
+
+      if (!navLinksContainer) {
+        return;
+      }
+
+
+      navLinksContainer.classList.add(
+        "open"
+      );
+
+
+      if (menuToggle) {
+
+        menuToggle.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+
+      }
+
+    };
+
+
+  if (
+    menuToggle
+    && navLinksContainer
+  ) {
+
+    menuToggle.addEventListener(
+      "click",
+      event => {
+
+        event.stopPropagation();
+
+
+        const isOpen =
+          navLinksContainer
+            .classList
+            .contains(
+              "open"
+            );
+
+
+        if (isOpen) {
+
+          closeMobileNavigation();
+
+        } else {
+
+          openMobileNavigation();
+
+        }
+
+      }
+    );
+
+
+    document.addEventListener(
+      "click",
+      event => {
+
+        if (
+          !navLinksContainer
+            .classList
+            .contains(
+              "open"
+            )
+        ) {
+
+          return;
+
+        }
+
+
+        const clickedInside =
+          navLinksContainer
+            .contains(
+              event.target
+            )
+          || menuToggle
+            .contains(
+              event.target
+            );
+
+
+        if (!clickedInside) {
+
+          closeMobileNavigation();
+
+        }
+
+      }
+    );
+
+
+    window.addEventListener(
+      "resize",
+      () => {
+
+        if (
+          window.innerWidth
+          > 900
+        ) {
+
+          closeMobileNavigation();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ====================================================================== */
+  /* 11 / REVEAL ENGINE                                                     */
+  /* ====================================================================== */
+
+  const revealElements =
+    $$("[data-reveal]");
+
+
+  if (
+    prefersReducedMotion
+    || !(
+      "IntersectionObserver"
+      in window
+    )
+  ) {
+
+    revealElements.forEach(
+      element => {
+
+        element.classList.add(
+          "visible"
+        );
+
+      }
+    );
+
+  } else {
+
+    const revealObserver =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (
+              !entry.isIntersecting
+            ) {
+
+              return;
+
+            }
+
+
+            entry.target
+              .classList
+              .add(
+                "visible"
+              );
+
+
+            revealObserver.unobserve(
+              entry.target
+            );
+
+          });
+
+        },
+        {
+
+          threshold: 0.1,
+
+          rootMargin:
+            "0px 0px -35px 0px"
+
+        }
+      );
+
+
+    revealElements.forEach(
+      (element, index) => {
+
+        const delay =
+          Math.min(
+            index % 4,
+            3
+          ) * 60;
+
+
+        element.style
+          .transitionDelay =
+            `${delay}ms`;
+
+
+        revealObserver.observe(
+          element
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ====================================================================== */
+  /* 12 / COUNTERS                                                          */
+  /* ====================================================================== */
+
+  const counters =
+    $$(".counter");
+
+
+  const animateCounter =
+    counter => {
+
+      if (
+        counter.dataset
+          .counterStarted
+        === "true"
+      ) {
+
+        return;
+
+      }
+
+
+      counter.dataset
+        .counterStarted =
+          "true";
+
+
+      const target =
+        Number(
+          counter.dataset.target
+        );
+
+
+      if (
+        !Number.isFinite(target)
+      ) {
+
+        return;
+
+      }
+
+
+      if (prefersReducedMotion) {
+
+        counter.textContent =
+          target;
+
+        return;
+
+      }
+
+
+      const duration =
+        1100;
+
+
+      const start =
+        performance.now();
+
+
+      const animate =
+        timestamp => {
+
+          const elapsed =
+            timestamp - start;
+
+
+          const progress =
+            clamp(
+              elapsed / duration,
+              0,
+              1
+            );
+
+
+          const eased =
+            1
+            - Math.pow(
+                1 - progress,
+                3
+              );
+
+
+          counter.textContent =
+            Math.round(
+              target * eased
+            );
+
+
+          if (progress < 1) {
+
+            requestAnimationFrame(
+              animate
+            );
+
+          }
+
+        };
+
+
+      requestAnimationFrame(
+        animate
+      );
+
+    };
+
+
+  if (
+    "IntersectionObserver"
+    in window
+  ) {
+
+    const counterObserver =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (
+              !entry.isIntersecting
+            ) {
+
+              return;
+
+            }
+
+
+            animateCounter(
+              entry.target
+            );
+
+
+            counterObserver
+              .unobserve(
+                entry.target
+              );
+
+          });
+
+        },
+        {
+          threshold: 0.55
+        }
+      );
+
+
+    counters.forEach(counter => {
+
+      counterObserver.observe(
+        counter
+      );
+
+    });
+
+  } else {
+
+    counters.forEach(
+      animateCounter
+    );
+
+  }
+
+  /* ====================================================================== */
+  /* 13 / TYPEWRITER                                                        */
+  /* ====================================================================== */
+
+  let roleIndex =
+    0;
+
+
+  let characterIndex =
+    0;
+
+
+  let deleting =
+    false;
+
+
+  let typingTimer =
+    null;
+
+
+  const typeRole =
+    () => {
+
+      if (!rotatingRole) {
+        return;
+      }
+
+
+      const role =
+        CONFIG.roles[
+          roleIndex
+        ];
+
+
+      if (!deleting) {
+
+        characterIndex += 1;
+
+
+        rotatingRole.textContent =
+          role.slice(
+            0,
+            characterIndex
+          );
+
+
+        if (
+          characterIndex
+          >= role.length
+        ) {
+
+          deleting = true;
+
+
+          typingTimer =
+            window.setTimeout(
+              typeRole,
+              CONFIG.rolePause
+            );
+
+
+          return;
+
+        }
+
+
+        typingTimer =
+          window.setTimeout(
+            typeRole,
+            CONFIG.typeSpeed
+          );
+
+
+      } else {
+
+        characterIndex -= 1;
+
+
+        rotatingRole.textContent =
+          role.slice(
+            0,
+            Math.max(
+              characterIndex,
+              0
+            )
+          );
+
+
+        if (
+          characterIndex <= 0
+        ) {
+
+          deleting = false;
+
+
+          roleIndex =
+            (
+              roleIndex + 1
+            )
+            % CONFIG.roles.length;
+
+
+          typingTimer =
+            window.setTimeout(
+              typeRole,
+              280
+            );
+
+
+          return;
+
+        }
+
+
+        typingTimer =
+          window.setTimeout(
+            typeRole,
+            CONFIG.deleteSpeed
+          );
+
+      }
+
+    };
+
+
+  if (rotatingRole) {
+
+    if (prefersReducedMotion) {
+
+      rotatingRole.textContent =
+        CONFIG.roles[0];
+
+    } else {
+
+      rotatingRole.textContent =
+        "";
+
+
+      typingTimer =
+        window.setTimeout(
+          typeRole,
+          550
+        );
+
+    }
+
+  }
+
+
+  /* ====================================================================== */
+  /* 14 / THEME ENGINE                                                      */
+  /* ====================================================================== */
+
+  const themeMeta =
+    $('meta[name="theme-color"]');
+
+
+  const applyTheme =
+    theme => {
+
+      const light =
+        theme === "light";
+
+
+      body.classList.toggle(
+        "light",
+        light
+      );
+
+
+      body.dataset.theme =
+        light
+          ? "light"
+          : "dark";
+
+
+      if (themeToggle) {
+
+        themeToggle.textContent =
+          light
+            ? "☀"
+            : "◐";
+
+
+        themeToggle.setAttribute(
+          "aria-pressed",
+          String(light)
+        );
+
+
+        themeToggle.setAttribute(
+          "aria-label",
+          light
+            ? "Switch to dark theme"
+            : "Switch to light theme"
+        );
+
+      }
+
+
+      if (themeMeta) {
+
+        themeMeta.setAttribute(
+          "content",
+          light
+            ? "#eef3f8"
+            : "#040711"
+        );
+
+      }
+
+    };
+
+
+  const storedTheme =
+    safeStorageGet(
+      CONFIG.themeStorageKey
+    );
+
+
+  const systemPrefersLight =
+    window.matchMedia(
+      "(prefers-color-scheme: light)"
+    ).matches;
+
+
+  const initialTheme =
+    storedTheme
+      || (
+        systemPrefersLight
+          ? "light"
+          : "dark"
+      );
+
+
+  applyTheme(
+    initialTheme
+  );
+
+
+  if (themeToggle) {
+
+    themeToggle.addEventListener(
+      "click",
+      () => {
+
+        const nextTheme =
+          body.classList
+            .contains(
+              "light"
+            )
+            ? "dark"
+            : "light";
+
+
+        applyTheme(
+          nextTheme
+        );
+
+
+        safeStorageSet(
+          CONFIG.themeStorageKey,
+          nextTheme
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ====================================================================== */
+  /* 15 / CURSOR LIGHT                                                      */
+  /* ====================================================================== */
+
+  if (
+    cursorGlow
+    && finePointer
+    && !prefersReducedMotion
+  ) {
+
+    let pointerTicking =
+      false;
+
+
+    let pointerX =
+      window.innerWidth / 2;
+
+
+    let pointerY =
+      window.innerHeight / 2;
+
+
+    const updatePointer =
+      () => {
+
+        root.style.setProperty(
+          "--mouse-x",
+          `${pointerX}px`
+        );
+
+
+        root.style.setProperty(
+          "--mouse-y",
+          `${pointerY}px`
+        );
+
+
+        pointerTicking = false;
+
+      };
+
+
+    window.addEventListener(
+      "pointermove",
+      event => {
+
+        pointerX =
+          event.clientX;
+
+
+        pointerY =
+          event.clientY;
+
+
+        if (!pointerTicking) {
+
+          pointerTicking = true;
+
+
+          requestAnimationFrame(
+            updatePointer
+          );
+
+        }
+
+      },
+      {
+        passive: true
+      }
+    );
+
+
+    document.addEventListener(
+      "mouseleave",
+      () => {
+
+        cursorGlow.style.opacity =
+          "0";
+
+      }
+    );
+
+
+    document.addEventListener(
+      "mouseenter",
+      () => {
+
+        cursorGlow.style.opacity =
+          "1";
+
+      }
+    );
+
+  }
+
+
+  /* ====================================================================== */
+  /* 16 / EXTREME TILT SYSTEM                                               */
+  /* ====================================================================== */
+
+  const tiltCards =
+    $$(".tilt-card");
+
+
+  if (
+    finePointer
+    && !prefersReducedMotion
+  ) {
+
+    tiltCards.forEach(card => {
+
+      let tiltFrame =
+        null;
+
+
+      const resetTilt =
+        () => {
+
+          card.style.setProperty(
+            "--tilt-x",
+            "0deg"
+          );
+
+
+          card.style.setProperty(
+            "--tilt-y",
+            "0deg"
+          );
+
+      };
+
+
+      card.addEventListener(
+        "pointermove",
+        event => {
+
+          if (tiltFrame) {
+
+            cancelAnimationFrame(
+              tiltFrame
+            );
+
+          }
+
+
+          tiltFrame =
+            requestAnimationFrame(
+              () => {
+
+                const rect =
+                  card
+                    .getBoundingClientRect();
+
+
+                const x =
+                  event.clientX
+                  - rect.left;
+
+
+                const y =
+                  event.clientY
+                  - rect.top;
+
+
+                const normalizedX =
+                  x / rect.width
+                  - 0.5;
+
+
+                const normalizedY =
+                  y / rect.height
+                  - 0.5;
+
+
+                const rotateY =
+                  normalizedX * 5;
+
+
+                const rotateX =
+                  normalizedY * -5;
+
+
+                card.style
+                  .setProperty(
+                    "--tilt-x",
+                    `${rotateX.toFixed(2)}deg`
+                  );
+
+
+                card.style
+                  .setProperty(
+                    "--tilt-y",
+                    `${rotateY.toFixed(2)}deg`
+                  );
+
+
+                card.style
+                  .setProperty(
+                    "--pointer-card-x",
+                    `${(
+                      x / rect.width
+                    ) * 100}%`
+                  );
+
+
+                card.style
+                  .setProperty(
+                    "--pointer-card-y",
+                    `${(
+                      y / rect.height
+                    ) * 100}%`
+                  );
+
+              }
+            );
+
+        }
+      );
+
+
+      card.addEventListener(
+        "pointerleave",
+        resetTilt
+      );
+
+
+      card.addEventListener(
+        "blur",
+        resetTilt,
+        true
+      );
+
+    });
+
+  }
+
+
+  /* ====================================================================== */
+  /* 17 / FLAGSHIP DETAILS                                                  */
+  /* ====================================================================== */
+
+  const technicalDetails =
+    $$(".tech-details");
+
+
+  technicalDetails.forEach(details => {
+
+    details.addEventListener(
+      "toggle",
+      () => {
+
+        if (!details.open) {
+          return;
+        }
+
+
+        technicalDetails.forEach(
+          other => {
+
+            if (
+              other !== details
+              && other.open
+            ) {
+
+              other.open =
+                false;
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+  });
+
+
+  /* ====================================================================== */
+  /* 18 / COMMAND PALETTE                                                   */
+  /* ====================================================================== */
+
+  let commandIsOpen =
+    false;
+
+
+  let previousFocus =
+    null;
+
+
+  let visibleCommandButtons =
+    [...commandButtons];
+
+
+  let commandActiveIndex =
+    0;
+
+
+  const updateCommandSelection =
+    () => {
+
+      visibleCommandButtons
+        .forEach(
+          (button, index) => {
+
+            const active =
+              index
+              === commandActiveIndex;
+
+
+            button.classList.toggle(
+              "command-active",
+              active
+            );
+
+
+            button.setAttribute(
+              "aria-selected",
+              String(active)
+            );
+
+          }
+        );
+
+
+      const current =
+        visibleCommandButtons[
+          commandActiveIndex
+        ];
+
+
+      current?.scrollIntoView({
+        block: "nearest"
+      });
+
+  };
+
+
+  const filterCommands =
+    query => {
+
+      const normalized =
+        query
+          .trim()
+          .toLowerCase();
+
+
+      visibleCommandButtons =
+        commandButtons
+          .filter(button => {
+
+            const text =
+              button
+                .textContent
+                .toLowerCase();
+
+
+            const match =
+              normalized === ""
+              || text.includes(
+                normalized
+              );
+
+
+            button.hidden =
+              !match;
+
+
+            return match;
+
+          });
+
+
+      commandActiveIndex =
+        0;
+
+
+      updateCommandSelection();
+
+  };
+
+
+  const openCommandPalette =
+    () => {
+
+      if (
+        !commandPalette
+        || commandIsOpen
+      ) {
+
+        return;
+
+      }
+
+
+      previousFocus =
+        document.activeElement;
+
+
+      commandIsOpen =
+        true;
+
+
+      commandPalette
+        .classList
+        .add(
+          "open"
+        );
+
+
+      commandPalette.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      body.classList.add(
+        "no-scroll"
+      );
+
+
+      if (commandSearch) {
+
+        commandSearch.value =
+          "";
+
+
+        filterCommands("");
+
+
+        window.setTimeout(
+          () => {
+
+            commandSearch.focus();
+
+          },
+          50
+        );
+
+      }
+
+  };
+
+
+  const closeCommandPalette =
+    () => {
+
+      if (
+        !commandPalette
+        || !commandIsOpen
+      ) {
+
+        return;
+
+      }
+
+
+      commandIsOpen =
+        false;
+
+
+      commandPalette
+        .classList
+        .remove(
+          "open"
+        );
+
+
+      commandPalette.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      body.classList.remove(
+        "no-scroll"
+      );
+
+
+      if (
+        previousFocus
+        instanceof HTMLElement
+      ) {
+
+        previousFocus.focus();
+
+      }
+
+  };
+
+
+  if (commandTrigger) {
+
+    commandTrigger.addEventListener(
+      "click",
+      openCommandPalette
+    );
+
+  }
+
+
+  $$("[data-close-command]")
+    .forEach(element => {
+
+      element.addEventListener(
+        "click",
+        closeCommandPalette
+      );
+
+    });
+
+
+  if (commandSearch) {
+
+    commandSearch.addEventListener(
+      "input",
+      () => {
+
+        filterCommands(
+          commandSearch.value
+        );
+
+      }
+    );
+
+  }
+
+
+  commandButtons.forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const selector =
+          button.dataset
+            .commandTarget;
+
+
+        closeCommandPalette();
+
+
+        window.setTimeout(
+          () => {
+
+            scrollToTarget(
+              selector
+            );
+
+          },
+          60
+        );
+
+      }
+    );
+
+  });
+
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      const key =
+        event.key
+          .toLowerCase();
+
+
+      const commandShortcut =
+        (
+          event.ctrlKey
+          || event.metaKey
+        )
+        && key === "k";
+
+
+      if (commandShortcut) {
+
+        event.preventDefault();
+
+
+        if (commandIsOpen) {
+
+          closeCommandPalette();
+
+        } else {
+
+          openCommandPalette();
+
+        }
+
+
+        return;
+
+      }
+
+
+      if (
+        event.key === "Escape"
+      ) {
+
+        if (commandIsOpen) {
+
+          event.preventDefault();
+
+          closeCommandPalette();
+
+        }
+
+
+        closeMobileNavigation();
+
+
+        return;
+
+      }
+
+
+      if (!commandIsOpen) {
+        return;
+      }
+
+
+      if (
+        event.key === "ArrowDown"
+      ) {
+
+        event.preventDefault();
+
+
+        if (
+          visibleCommandButtons
+            .length === 0
+        ) {
+
+          return;
+
+        }
+
+
+        commandActiveIndex =
+          (
+            commandActiveIndex
+            + 1
+          )
+          % visibleCommandButtons
+              .length;
+
+
+        updateCommandSelection();
+
+      }
+
+
+      if (
+        event.key === "ArrowUp"
+      ) {
+
+        event.preventDefault();
+
+
+        if (
+          visibleCommandButtons
+            .length === 0
+        ) {
+
+          return;
+
+        }
+
+
+        commandActiveIndex =
+          (
+            commandActiveIndex
+            - 1
+            + visibleCommandButtons.length
+          )
+          % visibleCommandButtons
+              .length;
+
+
+        updateCommandSelection();
+
+      }
+
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        if (
+          document.activeElement
+            === commandSearch
+        ) {
+
+          event.preventDefault();
+
+
+          visibleCommandButtons[
+            commandActiveIndex
+          ]?.click();
+
+        }
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 19 / GITHUB LIVE SIGNAL                                                */
+  /* ====================================================================== */
+
+  const githubStatElements = {
+
+    repos:
+      $('[data-github-stat="repos"]'),
+
+    followers:
+      $('[data-github-stat="followers"]'),
+
+    following:
+      $('[data-github-stat="following"]')
+
+  };
+
+
+  const updateGitHubStats =
+    data => {
+
+      if (
+        githubStatElements.repos
+      ) {
+
+        githubStatElements
+          .repos
+          .textContent =
+            data.public_repos
+            ?? "--";
+
+      }
+
+
+      if (
+        githubStatElements.followers
+      ) {
+
+        githubStatElements
+          .followers
+          .textContent =
+            data.followers
+            ?? "--";
+
+      }
+
+
+      if (
+        githubStatElements.following
+      ) {
+
+        githubStatElements
+          .following
+          .textContent =
+            data.following
+            ?? "--";
+
+      }
+
+  };
+
+
+  const getCachedGitHubData =
+    () => {
+
+      const raw =
+        safeStorageGet(
+          CONFIG.githubCacheKey
+        );
+
+
+      if (!raw) {
+        return null;
+      }
+
+
+      try {
+
+        const parsed =
+          JSON.parse(raw);
+
+
+        const maxAge =
+          CONFIG
+            .githubCacheMinutes
+          * 60
+          * 1000;
+
+
+        const fresh =
+          Date.now()
+          - parsed.timestamp
+          < maxAge;
+
+
+        if (
+          !fresh
+          || !parsed.data
+        ) {
+
+          return null;
+
+        }
+
+
+        return parsed.data;
+
+      } catch {
+
+        return null;
+
+      }
+
+    };
+
+
+  const cacheGitHubData =
+    data => {
+
+      safeStorageSet(
+        CONFIG.githubCacheKey,
+        JSON.stringify({
+
+          timestamp:
+            Date.now(),
+
+          data
+
+        })
+      );
+
+    };
+
+
+  const loadGitHubStats =
+    async () => {
+
+      const hasGitHubWidgets =
+        Object.values(
+          githubStatElements
+        ).some(Boolean);
+
+
+      if (!hasGitHubWidgets) {
+        return;
+      }
+
+
+      const cached =
+        getCachedGitHubData();
+
+
+      if (cached) {
+
+        updateGitHubStats(
+          cached
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            `https://api.github.com/users/${CONFIG.githubUser}`,
+            {
+
+              headers: {
+                Accept:
+                  "application/vnd.github+json"
+              }
+
+            }
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            `GitHub API ${response.status}`
+          );
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        updateGitHubStats(
+          data
+        );
+
+
+        cacheGitHubData(
+          data
+        );
+
+
+      } catch (error) {
+
+        console.warn(
+          "GitHub live signal unavailable:",
+          error
+        );
+
+
+        Object.values(
+          githubStatElements
+        ).forEach(element => {
+
+          if (element) {
+
+            element.textContent =
+              "—";
+
+          }
+
+        });
+
+      }
+
+    };
+
+
+  loadGitHubStats();
+
+  /* ====================================================================== */
+  /* 20 / CHAPTER RAIL ACTIVE STATE                                         */
+  /* ====================================================================== */
+
+  const chapterMap =
+    new Map();
+
+
+  chapterLinks.forEach(link => {
+
+    const href =
+      link.getAttribute(
+        "href"
+      );
+
+
+    if (!href) {
+      return;
+    }
+
+
+    chapterMap.set(
+      href.substring(1),
+      link
+    );
+
+  });
+
+
+  if (
+    chapterMap.size
+    && "IntersectionObserver"
+       in window
+  ) {
+
+    const railObserver =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (
+              !entry.isIntersecting
+            ) {
+
+              return;
+
+            }
+
+
+            chapterLinks.forEach(
+              link => {
+
+                link.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+
+            chapterMap
+              .get(
+                entry.target.id
+              )
+              ?.classList
+              .add(
+                "active"
+              );
+
+          });
+
+        },
+        {
+
+          threshold: 0,
+
+          rootMargin:
+            "-42% 0px -50% 0px"
+
+        }
+      );
+
+
+    trackedSections
+      .filter(section =>
+        chapterMap.has(
+          section.id
+        )
+      )
+      .forEach(section => {
+
+        railObserver.observe(
+          section
+        );
+
+      });
+
+  }
+
+
+  /* ====================================================================== */
+  /* 21 / SECTION DEPTH EFFECT                                               */
+  /* ====================================================================== */
+
+  if (
+    finePointer
+    && !prefersReducedMotion
+  ) {
+
+    const depthSections =
+      $$(".section");
+
+
+    const updateSectionDepth =
+      () => {
+
+        const viewportCenter =
+          window.innerHeight / 2;
+
+
+        depthSections.forEach(
+          section => {
+
+            const rect =
+              section
+                .getBoundingClientRect();
+
+
+            const sectionCenter =
+              rect.top
+              + rect.height / 2;
+
+
+            const distance =
+              Math.abs(
+                sectionCenter
+                - viewportCenter
+              );
+
+
+            const visibility =
+              clamp(
+                1
+                - distance
+                / (
+                  window.innerHeight
+                  * 1.6
+                ),
+                0,
+                1
+              );
+
+
+            section.style
+              .setProperty(
+                "--section-focus",
+                visibility
+                  .toFixed(3)
+              );
+
+          }
+        );
+
+      };
+
+
+    let sectionDepthTicking =
+      false;
+
+
+    const requestSectionDepth =
+      () => {
+
+        if (
+          sectionDepthTicking
+        ) {
+
+          return;
+
+        }
+
+
+        sectionDepthTicking =
+          true;
+
+
+        requestAnimationFrame(
+          () => {
+
+            updateSectionDepth();
+
+            sectionDepthTicking =
+              false;
+
+          }
+        );
+
+      };
+
+
+    updateSectionDepth();
+
+
+    window.addEventListener(
+      "scroll",
+      requestSectionDepth,
+      {
+        passive: true
+      }
+    );
+
+  }
+
+
+  /* ====================================================================== */
+  /* 22 / VISIBILITY / PERFORMANCE                                          */
+  /* ====================================================================== */
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (
+        document.hidden
+        && typingTimer
+      ) {
+
+        clearTimeout(
+          typingTimer
+        );
+
+
+        typingTimer =
+          null;
+
+      } else if (
+        !document.hidden
+        && rotatingRole
+        && !prefersReducedMotion
+        && !typingTimer
+      ) {
+
+        typingTimer =
+          window.setTimeout(
+            typeRole,
+            250
+          );
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 23 / KEYBOARD QUALITY OF LIFE                                          */
+  /* ====================================================================== */
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Home"
+        && !event.ctrlKey
+        && !event.metaKey
+        && document.activeElement
+           === body
+      ) {
+
+        window.scrollTo({
+
+          top: 0,
+
+          behavior:
+            prefersReducedMotion
+              ? "auto"
+              : "smooth"
+
+        });
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 24 / FLAGSHIP V2 EXTREME INTERACTION ENGINE                            */
+  /* ====================================================================== */
+
+  const flagshipSystem =
+    $(".flagship-live-system");
+
+  const flagshipModeButtons =
+    $$(".flagship-mode");
+
+  const flagshipModeLabel =
+    $("#flagshipModeLabel");
+
+  const runtimeModeValue =
+    $("#runtimeModeValue");
+
+  const platformStages =
+    $$(".platform-stage");
+
+  const flagshipNodes =
+    $$(".topology-node");
+
+  const flagshipPaths =
+    $$(".topology-line");
+
+  const flagshipEventLog =
+    $("#flagshipEventLog");
+
+  const requestPacket =
+    $("#requestPacketPrimary");
+
+  const meshPacket =
+    $("#meshPacketPrimary");
+
+  const observePacket =
+    $("#observePacketPrimary");
+
+
+  const FLAGSHIP = {
+
+    requestRoutes: [
+
+      {
+        name: "PRODUCT REQUEST",
+        nodes: [
+          "client",
+          "ingress",
+          "gateway",
+          "product",
+          "mysql"
+        ],
+        paths: [
+          "path-client-ingress",
+          "path-ingress-gateway",
+          "path-gateway-services",
+          "path-gateway-product",
+          "path-product-mysql"
+        ],
+        events: [
+          "client.request()",
+          "ingress.route()",
+          "gateway.forward(product)",
+          "product.read()",
+          "mysql.query()"
+        ]
+      },
+
+      {
+        name: "ORDER REQUEST",
+        nodes: [
+          "client",
+          "ingress",
+          "gateway",
+          "order",
+          "redis"
+        ],
+        paths: [
+          "path-client-ingress",
+          "path-ingress-gateway",
+          "path-gateway-services",
+          "path-gateway-order",
+          "path-order-redis"
+        ],
+        events: [
+          "client.request()",
+          "ingress.route()",
+          "gateway.forward(order)",
+          "order.process()",
+          "redis.lookup()"
+        ]
+      },
+
+      {
+        name: "USER REQUEST",
+        nodes: [
+          "client",
+          "ingress",
+          "gateway",
+          "user",
+          "rabbitmq"
+        ],
+        paths: [
+          "path-client-ingress",
+          "path-ingress-gateway",
+          "path-gateway-services",
+          "path-gateway-user",
+          "path-user-rabbitmq"
+        ],
+        events: [
+          "client.request()",
+          "ingress.route()",
+          "gateway.forward(user)",
+          "user.auth()",
+          "rabbitmq.publish()"
+        ]
+      }
+
+    ],
+
+    meshRoutes: [
+
+      {
+        name: "PRODUCT → ORDER",
+        nodes: [
+          "product",
+          "order"
+        ],
+        paths: [
+          "path-product-order"
+        ],
+        events: [
+          "istio.route(product→order)",
+          "envoy.retry_policy()",
+          "mesh.telemetry()"
+        ]
+      },
+
+      {
+        name: "ORDER → USER",
+        nodes: [
+          "order",
+          "user"
+        ],
+        paths: [
+          "path-order-user"
+        ],
+        events: [
+          "istio.route(order→user)",
+          "envoy.timeout_policy()",
+          "mesh.telemetry()"
+        ]
+      },
+
+      {
+        name: "PRODUCT → USER",
+        nodes: [
+          "product",
+          "user"
+        ],
+        paths: [
+          "path-product-user"
+        ],
+        events: [
+          "istio.route(product→user)",
+          "envoy.sidecar()",
+          "kiali.trace()"
+        ]
+      }
+
+    ],
+
+    observeRoute: {
+
+      name: "OBSERVABILITY FLOW",
+
+      nodes: [
+        "product",
+        "order",
+        "user",
+        "prometheus",
+        "grafana",
+        "kiali"
+      ],
+
+      paths: [
+        "path-services-prometheus",
+        "path-prometheus-grafana",
+        "path-grafana-kiali"
+      ],
+
+      events: [
+        "prometheus.scrape()",
+        "metrics.store()",
+        "grafana.render()",
+        "kiali.map_mesh()"
+      ]
+
+    }
+
+  };
+
+
+  let flagshipMode =
+    "request";
+
+
+  let flagshipRouteIndex =
+    0;
+
+
+  let flagshipCycleTimer =
+    null;
+
+
+  let flagshipPacketFrame =
+    null;
+
+
+  let flagshipPacketToken =
+    0;
+
+
+  const formatFlagshipTime =
+    () => {
+
+      const now =
+        new Date();
+
+
+      return now
+        .toLocaleTimeString(
+          [],
+          {
+            minute: "2-digit",
+            second: "2-digit"
+          }
+        );
+
+    };
+
+
+  const pushFlagshipEvent =
+    message => {
+
+      if (!flagshipEventLog) {
+        return;
+      }
+
+
+      const eventLine =
+        document.createElement(
+          "p"
+        );
+
+
+      const time =
+        document.createElement(
+          "span"
+        );
+
+
+      time.textContent =
+        formatFlagshipTime();
+
+
+      eventLine.appendChild(
+        time
+      );
+
+
+      eventLine.appendChild(
+        document.createTextNode(
+          message
+        )
+      );
+
+
+      flagshipEventLog.prepend(
+        eventLine
+      );
+
+
+      while (
+        flagshipEventLog.children.length
+        > 6
+      ) {
+
+        flagshipEventLog
+          .lastElementChild
+          ?.remove();
+
+      }
+
+    };
+
+
+  const clearFlagshipFocus =
+    () => {
+
+      flagshipNodes.forEach(node => {
+
+        node.classList.remove(
+          "is-active"
+        );
+
+      });
+
+
+      flagshipPaths.forEach(path => {
+
+        path.classList.remove(
+          "is-active"
+        );
+
+      });
+
+
+      flagshipSystem
+        ?.classList
+        .remove(
+          "has-node-focus"
+        );
+
+    };
+
+
+  const activateFlagshipRoute =
+    route => {
+
+      if (!route) {
+        return;
+      }
+
+
+      clearFlagshipFocus();
+
+
+      flagshipSystem
+        ?.classList
+        .add(
+          "has-node-focus"
+        );
+
+
+      route.nodes
+        .forEach(name => {
+
+          $(
+            `[data-node="${name}"]`
+          )
+            ?.classList
+            .add(
+              "is-active"
+            );
+
+        });
+
+
+      route.paths
+        .forEach(id => {
+
+          document
+            .getElementById(id)
+            ?.classList
+            .add(
+              "is-active"
+            );
+
+        });
+
+    };
+
+
+  const getConnectedPathsForNode =
+    nodeName => {
+
+      const map = {
+
+        client: [
+          "path-client-ingress"
+        ],
+
+        ingress: [
+          "path-client-ingress",
+          "path-ingress-gateway"
+        ],
+
+        gateway: [
+          "path-ingress-gateway",
+          "path-gateway-services",
+          "path-gateway-product",
+          "path-gateway-order",
+          "path-gateway-user"
+        ],
+
+        product: [
+          "path-gateway-product",
+          "path-product-order",
+          "path-product-user",
+          "path-product-mysql",
+          "path-services-prometheus"
+        ],
+
+        order: [
+          "path-gateway-order",
+          "path-product-order",
+          "path-order-user",
+          "path-order-redis",
+          "path-services-prometheus"
+        ],
+
+        user: [
+          "path-gateway-user",
+          "path-order-user",
+          "path-product-user",
+          "path-user-rabbitmq",
+          "path-services-prometheus"
+        ],
+
+        mysql: [
+          "path-product-mysql"
+        ],
+
+        redis: [
+          "path-order-redis"
+        ],
+
+        rabbitmq: [
+          "path-user-rabbitmq"
+        ],
+
+        prometheus: [
+          "path-services-prometheus",
+          "path-prometheus-grafana"
+        ],
+
+        grafana: [
+          "path-prometheus-grafana",
+          "path-grafana-kiali"
+        ],
+
+        kiali: [
+          "path-grafana-kiali"
+        ]
+
+      };
+
+
+      return map[nodeName]
+        || [];
+
+    };
+
+
+  const focusFlagshipNode =
+    node => {
+
+      if (!node) {
+        return;
+      }
+
+
+      const nodeName =
+        node.dataset.node;
+
+
+      clearFlagshipFocus();
+
+
+      flagshipSystem
+        ?.classList
+        .add(
+          "has-node-focus"
+        );
+
+
+      node.classList.add(
+        "is-active"
+      );
+
+
+      getConnectedPathsForNode(
+        nodeName
+      ).forEach(id => {
+
+        document
+          .getElementById(id)
+          ?.classList
+          .add(
+            "is-active"
+          );
+
+      });
+
+    };
+
+
+  const stopFlagshipPacket =
+    () => {
+
+      flagshipPacketToken += 1;
+
+
+      if (
+        flagshipPacketFrame
+        !== null
+      ) {
+
+        cancelAnimationFrame(
+          flagshipPacketFrame
+        );
+
+
+        flagshipPacketFrame =
+          null;
+
+      }
+
+    };
+
+
+  const placePacketOnPath =
+    (
+      packet,
+      path,
+      progress
+    ) => {
+
+      if (
+        !packet
+        || !path
+        || typeof path.getTotalLength
+           !== "function"
+      ) {
+
+        return;
+
+      }
+
+
+      const length =
+        path.getTotalLength();
+
+
+      const point =
+        path.getPointAtLength(
+          length * progress
+        );
+
+
+      packet.setAttribute(
+        "cx",
+        point.x
+      );
+
+
+      packet.setAttribute(
+        "cy",
+        point.y
+      );
+
+    };
+
+
+  const animatePacketAcrossPath =
+    (
+      packet,
+      path,
+      duration = 650,
+      token
+    ) => {
+
+      return new Promise(resolve => {
+
+        if (
+          prefersReducedMotion
+          || !packet
+          || !path
+        ) {
+
+          placePacketOnPath(
+            packet,
+            path,
+            1
+          );
+
+
+          resolve();
+
+          return;
+
+        }
+
+
+        const start =
+          performance.now();
+
+
+        const frame =
+          now => {
+
+            if (
+              token
+              !== flagshipPacketToken
+            ) {
+
+              resolve();
+
+              return;
+
+            }
+
+
+            const progress =
+              clamp(
+                (now - start)
+                / duration,
+                0,
+                1
+              );
+
+
+            const eased =
+              progress
+              * progress
+              * (
+                3
+                - 2 * progress
+              );
+
+
+            placePacketOnPath(
+              packet,
+              path,
+              eased
+            );
+
+
+            if (
+              progress < 1
+            ) {
+
+              flagshipPacketFrame =
+                requestAnimationFrame(
+                  frame
+                );
+
+            } else {
+
+              flagshipPacketFrame =
+                null;
+
+
+              resolve();
+
+            }
+
+          };
+
+
+        flagshipPacketFrame =
+          requestAnimationFrame(
+            frame
+          );
+
+      });
+
+    };
+
+
+  const animateFlagshipRoute =
+    async (
+      route,
+      packet
+    ) => {
+
+      if (
+        !route
+        || !packet
+      ) {
+
+        return;
+      }
+
+
+      stopFlagshipPacket();
+
+
+      const token =
+        flagshipPacketToken;
+
+
+      activateFlagshipRoute(
+        route
+      );
+
+
+      pushFlagshipEvent(
+        route.name
+      );
+
+
+      for (
+        let index = 0;
+        index < route.paths.length;
+        index++
+      ) {
+
+        if (
+          token
+          !== flagshipPacketToken
+        ) {
+
+          return;
+
+        }
+
+
+        const path =
+          document.getElementById(
+            route.paths[index]
+          );
+
+
+        if (!path) {
+          continue;
+        }
+
+
+        path.classList.add(
+          "is-active"
+        );
+
+
+        const eventMessage =
+          route.events[index]
+          || route.events[
+            route.events.length - 1
+          ];
+
+
+        if (eventMessage) {
+
+          pushFlagshipEvent(
+            eventMessage
+          );
+
+        }
+
+
+        await animatePacketAcrossPath(
+          packet,
+          path,
+          560,
+          token
+        );
+
+
+        await wait(
+          prefersReducedMotion
+            ? 0
+            : 90
+        );
+
+      }
+
+    };
+
+
+  const getModeRoute =
+    () => {
+
+      if (
+        flagshipMode
+        === "request"
+      ) {
+
+        return FLAGSHIP
+          .requestRoutes[
+            flagshipRouteIndex
+            % FLAGSHIP
+                .requestRoutes
+                .length
+          ];
+
+      }
+
+
+      if (
+        flagshipMode
+        === "mesh"
+      ) {
+
+        return FLAGSHIP
+          .meshRoutes[
+            flagshipRouteIndex
+            % FLAGSHIP
+                .meshRoutes
+                .length
+          ];
+
+      }
+
+
+      return FLAGSHIP
+        .observeRoute;
+
+    };
+
+
+  const getModePacket =
+    () => {
+
+      if (
+        flagshipMode
+        === "mesh"
+      ) {
+
+        return meshPacket;
+
+      }
+
+
+      if (
+        flagshipMode
+        === "observe"
+      ) {
+
+        return observePacket;
+
+      }
+
+
+      return requestPacket;
+
+    };
+
+
+  const runFlagshipVisualization =
+    async () => {
+
+      const route =
+        getModeRoute();
+
+
+      const packet =
+        getModePacket();
+
+
+      await animateFlagshipRoute(
+        route,
+        packet
+      );
+
+
+      if (
+        flagshipMode
+        !== "observe"
+      ) {
+
+        flagshipRouteIndex += 1;
+
+      }
+
+    };
+
+
+  const stopFlagshipCycle =
+    () => {
+
+      if (flagshipCycleTimer) {
+
+        clearInterval(
+          flagshipCycleTimer
+        );
+
+
+        flagshipCycleTimer =
+          null;
+
+      }
+
+
+      stopFlagshipPacket();
+
+    };
+
+
+  const startFlagshipCycle =
+    () => {
+
+      stopFlagshipCycle();
+
+
+      runFlagshipVisualization();
+
+
+      if (
+        prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+      }
+
+
+      flagshipCycleTimer =
+        window.setInterval(
+          runFlagshipVisualization,
+          flagshipMode === "observe"
+            ? 5200
+            : 4500
+        );
+
+    };
+
+
+  const updateFlagshipModeUI =
+    mode => {
+
+      flagshipModeButtons
+        .forEach(button => {
+
+          const active =
+            button.dataset
+              .flagshipMode
+            === mode;
+
+
+          button.classList.toggle(
+            "is-active",
+            active
+          );
+
+
+          button.setAttribute(
+            "aria-pressed",
+            String(active)
+          );
+
+        });
+
+
+      if (flagshipSystem) {
+
+        flagshipSystem.classList.remove(
+          "mode-request",
+          "mode-mesh",
+          "mode-observe"
+        );
+
+
+        flagshipSystem.classList.add(
+          `mode-${mode}`
+        );
+
+      }
+
+
+      const labels = {
+
+        request:
+          "REQUEST FLOW",
+
+        mesh:
+          "SERVICE MESH",
+
+        observe:
+          "OBSERVABILITY"
+
+      };
+
+
+      const label =
+        labels[mode]
+        || labels.request;
+
+
+      if (flagshipModeLabel) {
+
+        flagshipModeLabel.textContent =
+          label;
+
+      }
+
+
+      if (runtimeModeValue) {
+
+        runtimeModeValue.textContent =
+          label;
+
+      }
+
+
+      $$(".runtime-status-item")
+        .forEach(item => {
+
+          item.classList.remove(
+            "is-active"
+          );
+
+        });
+
+
+      const activeStatuses = {
+
+        request: [
+          "kubernetes",
+          "helm"
+        ],
+
+        mesh: [
+          "kubernetes",
+          "istio",
+          "kiali"
+        ],
+
+        observe: [
+          "prometheus",
+          "grafana",
+          "kiali"
+        ]
+
+      };
+
+
+      (
+        activeStatuses[mode]
+        || []
+      ).forEach(status => {
+
+        $(
+          `[data-runtime-status="${status}"]`
+        )
+          ?.classList
+          .add(
+            "is-active"
+          );
+
+      });
+
+    };
+
+
+  const setFlagshipMode =
+    mode => {
+
+      if (
+        ![
+          "request",
+          "mesh",
+          "observe"
+        ].includes(mode)
+      ) {
+
+        return;
+
+      }
+
+
+      flagshipMode =
+        mode;
+
+
+      flagshipRouteIndex =
+        0;
+
+
+      clearFlagshipFocus();
+
+
+      updateFlagshipModeUI(
+        mode
+      );
+
+
+      pushFlagshipEvent(
+        `view.switch(${mode})`
+      );
+
+
+      startFlagshipCycle();
+
+    };
+
+
+  flagshipModeButtons
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          setFlagshipMode(
+            button.dataset
+              .flagshipMode
+          );
+
+        }
+      );
+
+    });
+
+
+  flagshipNodes
+    .forEach(node => {
+
+      node.addEventListener(
+        "mouseenter",
+        () => {
+
+          if (!finePointer) {
+            return;
+          }
+
+
+          focusFlagshipNode(
+            node
+          );
+
+        }
+      );
+
+
+      node.addEventListener(
+        "mouseleave",
+        () => {
+
+          if (!finePointer) {
+            return;
+          }
+
+
+          clearFlagshipFocus();
+
+        }
+      );
+
+
+      node.addEventListener(
+        "focus",
+        () => {
+
+          focusFlagshipNode(
+            node
+          );
+
+        }
+      );
+
+
+      node.addEventListener(
+        "blur",
+        () => {
+
+          clearFlagshipFocus();
+
+        }
+      );
+
+
+      node.addEventListener(
+        "click",
+        () => {
+
+          focusFlagshipNode(
+            node
+          );
+
+
+          pushFlagshipEvent(
+            `inspect.${node.dataset.node}()`
+          );
+
+        }
+      );
+
+    });
+
+
+  const PLATFORM_STAGE_DATA = {
+
+    compose: {
+      status:
+        "LOCAL STACK",
+
+      message:
+        "compose.stack_ready()"
+    },
+
+    swarm: {
+      status:
+        "ORCHESTRATION",
+
+      message:
+        "swarm.services_scaled()"
+    },
+
+    kubernetes: {
+      status:
+        "PLATFORM ACTIVE",
+
+      message:
+        "kubernetes.cluster_ready()"
+    },
+
+    helm: {
+      status:
+        "RELEASE DEPLOYED",
+
+      message:
+        "helm.release_deployed()"
+    },
+
+    istio: {
+      status:
+        "MESH ONLINE",
+
+      message:
+        "istio.mesh_online()"
+    }
+
+  };
+
+
+  platformStages
+    .forEach(stage => {
+
+      stage.addEventListener(
+        "click",
+        () => {
+
+          platformStages
+            .forEach(item => {
+
+              item.classList.remove(
+                "is-active"
+              );
+
+            });
+
+
+          stage.classList.add(
+            "is-active"
+          );
+
+
+          const stageName =
+            stage.dataset
+              .platformStage;
+
+
+          const data =
+            PLATFORM_STAGE_DATA[
+              stageName
+            ];
+
+
+          if (data) {
+
+            pushFlagshipEvent(
+              data.message
+            );
+
+          }
+
+
+          const linkedRuntime =
+            $(
+              `[data-runtime-status="${stageName}"]`
+            );
+
+
+          if (linkedRuntime) {
+
+            linkedRuntime.classList.add(
+              "is-active"
+            );
+
+
+            window.setTimeout(
+              () => {
+
+                linkedRuntime.classList.remove(
+                  "is-active"
+                );
+
+              },
+              1500
+            );
+
+          }
+
+
+          if (
+            stageName === "istio"
+          ) {
+
+            setFlagshipMode(
+              "mesh"
+            );
+
+          }
+
+
+          if (
+            stageName === "kubernetes"
+          ) {
+
+            setFlagshipMode(
+              "request"
+            );
+
+          }
+
+        }
+      );
+
+    });
+
+
+  if (
+    flagshipSystem
+    && "IntersectionObserver"
+       in window
+  ) {
+
+    const flagshipVisibilityObserver =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (
+              entry.isIntersecting
+            ) {
+
+              startFlagshipCycle();
+
+            } else {
+
+              stopFlagshipCycle();
+
+            }
+
+          });
+
+        },
+        {
+          threshold: 0.18
+        }
+      );
+
+
+    flagshipVisibilityObserver
+      .observe(
+        flagshipSystem
+      );
+
+  } else if (
+    flagshipSystem
+  ) {
+
+    startFlagshipCycle();
+
+  }
+
+
+  if (flagshipSystem) {
+
+    updateFlagshipModeUI(
+      "request"
+    );
+
+  }
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (!flagshipSystem) {
+        return;
+      }
+
+
+      if (document.hidden) {
+
+        stopFlagshipCycle();
+
+      } else {
+
+        const rect =
+          flagshipSystem
+            .getBoundingClientRect();
+
+
+        const visible =
+          rect.bottom > 0
+          && rect.top
+             < window.innerHeight;
+
+
+        if (visible) {
+
+          startFlagshipCycle();
+
+        }
+
+      }
+
+    }
+  );
+
+
+
+  /* ====================================================================== */
+  /* 25 / PROJECTS V2 INTERACTION ENGINE                                    */
+  /* ====================================================================== */
+
+  const hotelSystemMap =
+    $("#hotelSystemMap");
+
+  const hotelDataPacket =
+    $("#hotelDataPacket");
+
+  const techSystemMap =
+    $("#techSystemMap");
+
+  const techNetworkPacket =
+    $("#techNetworkPacket");
+
+  const hotelProjectCard =
+    $('[data-project-system="hotel"]');
+
+  const techProjectCard =
+    $('[data-project-system="techsolutions"]');
+
+
+  const projectMapNodes =
+    $$(".project-map-node");
+
+
+  const projectFlowLines =
+    $$(".project-flow-line");
+
+
+  const PROJECTS_V2 = {
+
+    hotel: {
+
+      card:
+        hotelProjectCard,
+
+      map:
+        hotelSystemMap,
+
+      packet:
+        hotelDataPacket,
+
+      routes: [
+
+        {
+          name:
+            "HOTEL CORE FLOW",
+
+          nodes: [
+            "hotel-customers",
+            "hotel-bookings",
+            "hotel-python",
+            "hotel-postgresql"
+          ],
+
+          paths: [
+            "hotel-path-customers-bookings",
+            "hotel-path-bookings-python",
+            "hotel-path-python-postgres"
+          ]
+        },
+
+        {
+          name:
+            "HOTEL API FLOW",
+
+          nodes: [
+            "hotel-python",
+            "hotel-api"
+          ],
+
+          paths: [
+            "hotel-path-python-api"
+          ]
+        },
+
+        {
+          name:
+            "HOTEL ANALYTICS FLOW",
+
+          nodes: [
+            "hotel-postgresql",
+            "hotel-powerbi"
+          ],
+
+          paths: [
+            "hotel-path-postgres-powerbi"
+          ]
+        }
+
+      ]
+
+    },
+
+    tech: {
+
+      card:
+        techProjectCard,
+
+      map:
+        techSystemMap,
+
+      packet:
+        techNetworkPacket,
+
+      routes: [
+
+        {
+          name:
+            "TECH WINDOWS FLOW",
+
+          nodes: [
+            "tech-internet",
+            "tech-pfsense",
+            "tech-lan",
+            "tech-windows"
+          ],
+
+          paths: [
+            "tech-path-internet-pfsense",
+            "tech-path-pfsense-lan",
+            "tech-path-lan-windows"
+          ]
+        },
+
+        {
+          name:
+            "TECH LINUX FLOW",
+
+          nodes: [
+            "tech-internet",
+            "tech-pfsense",
+            "tech-lan",
+            "tech-linux"
+          ],
+
+          paths: [
+            "tech-path-internet-pfsense",
+            "tech-path-pfsense-lan",
+            "tech-path-lan-linux"
+          ]
+        },
+
+        {
+          name:
+            "TECH DMZ FLOW",
+
+          nodes: [
+            "tech-internet",
+            "tech-pfsense",
+            "tech-dmz",
+            "tech-services"
+          ],
+
+          paths: [
+            "tech-path-internet-pfsense",
+            "tech-path-pfsense-dmz",
+            "tech-path-dmz-services"
+          ]
+        }
+
+      ]
+
+    }
+
+  };
+
+
+  let hotelProjectRouteIndex =
+    0;
+
+
+  let techProjectRouteIndex =
+    0;
+
+
+  let hotelProjectTimer =
+    null;
+
+
+  let techProjectTimer =
+    null;
+
+
+  let hotelProjectFrame =
+    null;
+
+
+  let techProjectFrame =
+    null;
+
+
+  let hotelProjectToken =
+    0;
+
+
+  let techProjectToken =
+    0;
+
+
+  let hotelProjectVisible =
+    false;
+
+
+  let techProjectVisible =
+    false;
+
+
+  const clearProjectMapFocus =
+    map => {
+
+      if (!map) {
+        return;
+      }
+
+
+      $$(
+        ".project-map-node",
+        map
+      ).forEach(node => {
+
+        node.classList.remove(
+          "is-active"
+        );
+
+      });
+
+
+      $$(
+        ".project-flow-line",
+        map
+      ).forEach(path => {
+
+        path.classList.remove(
+          "is-active"
+        );
+
+      });
+
+
+      map.classList.remove(
+        "has-node-focus"
+      );
+
+    };
+
+
+  const activateProjectRoute =
+    (
+      project,
+      route
+    ) => {
+
+      if (
+        !project
+        || !project.map
+        || !route
+      ) {
+
+        return;
+      }
+
+
+      clearProjectMapFocus(
+        project.map
+      );
+
+
+      project.map.classList.add(
+        "has-node-focus"
+      );
+
+
+      route.nodes.forEach(
+        nodeName => {
+
+          $(
+            `[data-project-node="${nodeName}"]`,
+            project.map
+          )
+            ?.classList
+            .add(
+              "is-active"
+            );
+
+        }
+      );
+
+
+      route.paths.forEach(
+        pathId => {
+
+          document
+            .getElementById(
+              pathId
+            )
+            ?.classList
+            .add(
+              "is-active"
+            );
+
+        }
+      );
+
+    };
+
+
+  const PROJECT_NODE_CONNECTIONS = {
+
+    "hotel-customers": [
+      "hotel-path-customers-bookings"
+    ],
+
+    "hotel-bookings": [
+      "hotel-path-customers-bookings",
+      "hotel-path-bookings-python"
+    ],
+
+    "hotel-python": [
+      "hotel-path-bookings-python",
+      "hotel-path-python-postgres",
+      "hotel-path-python-api"
+    ],
+
+    "hotel-postgresql": [
+      "hotel-path-python-postgres",
+      "hotel-path-postgres-powerbi"
+    ],
+
+    "hotel-api": [
+      "hotel-path-python-api"
+    ],
+
+    "hotel-powerbi": [
+      "hotel-path-postgres-powerbi"
+    ],
+
+    "tech-internet": [
+      "tech-path-internet-pfsense"
+    ],
+
+    "tech-pfsense": [
+      "tech-path-internet-pfsense",
+      "tech-path-pfsense-lan",
+      "tech-path-pfsense-dmz"
+    ],
+
+    "tech-lan": [
+      "tech-path-pfsense-lan",
+      "tech-path-lan-windows",
+      "tech-path-lan-linux"
+    ],
+
+    "tech-windows": [
+      "tech-path-lan-windows"
+    ],
+
+    "tech-linux": [
+      "tech-path-lan-linux"
+    ],
+
+    "tech-dmz": [
+      "tech-path-pfsense-dmz",
+      "tech-path-dmz-services"
+    ],
+
+    "tech-services": [
+      "tech-path-dmz-services"
+    ]
+
+  };
+
+
+  const focusProjectNode =
+    node => {
+
+      if (!node) {
+        return;
+      }
+
+
+      const map =
+        node.closest(
+          ".project-system-map"
+        );
+
+
+      if (!map) {
+        return;
+      }
+
+
+      const nodeName =
+        node.dataset.projectNode;
+
+
+      clearProjectMapFocus(
+        map
+      );
+
+
+      map.classList.add(
+        "has-node-focus"
+      );
+
+
+      node.classList.add(
+        "is-active"
+      );
+
+
+      (
+        PROJECT_NODE_CONNECTIONS[
+          nodeName
+        ]
+        || []
+      ).forEach(pathId => {
+
+        document
+          .getElementById(
+            pathId
+          )
+          ?.classList
+          .add(
+            "is-active"
+          );
+
+      });
+
+    };
+
+
+  const getProjectFrameKey =
+    projectName => {
+
+      return projectName === "hotel"
+        ? "hotel"
+        : "tech";
+
+    };
+
+
+  const stopProjectPacket =
+    projectName => {
+
+      if (
+        projectName
+        === "hotel"
+      ) {
+
+        hotelProjectToken += 1;
+
+
+        if (
+          hotelProjectFrame
+          !== null
+        ) {
+
+          cancelAnimationFrame(
+            hotelProjectFrame
+          );
+
+
+          hotelProjectFrame =
+            null;
+
+        }
+
+      } else {
+
+        techProjectToken += 1;
+
+
+        if (
+          techProjectFrame
+          !== null
+        ) {
+
+          cancelAnimationFrame(
+            techProjectFrame
+          );
+
+
+          techProjectFrame =
+            null;
+
+        }
+
+      }
+
+    };
+
+
+  const placeProjectPacketOnPath =
+    (
+      packet,
+      path,
+      progress
+    ) => {
+
+      if (
+        !packet
+        || !path
+        || typeof path.getTotalLength
+           !== "function"
+      ) {
+
+        return;
+      }
+
+
+      const totalLength =
+        path.getTotalLength();
+
+
+      const point =
+        path.getPointAtLength(
+          totalLength
+          * progress
+        );
+
+
+      packet.setAttribute(
+        "cx",
+        point.x
+      );
+
+
+      packet.setAttribute(
+        "cy",
+        point.y
+      );
+
+    };
+
+
+  const animateProjectPacketAcrossPath =
+    (
+      projectName,
+      packet,
+      path,
+      duration,
+      token
+    ) => {
+
+      return new Promise(resolve => {
+
+        if (
+          prefersReducedMotion
+          || !packet
+          || !path
+        ) {
+
+          placeProjectPacketOnPath(
+            packet,
+            path,
+            1
+          );
+
+
+          resolve();
+
+          return;
+        }
+
+
+        const start =
+          performance.now();
+
+
+        const frame =
+          now => {
+
+            const currentToken =
+              projectName === "hotel"
+                ? hotelProjectToken
+                : techProjectToken;
+
+
+            if (
+              token
+              !== currentToken
+            ) {
+
+              resolve();
+
+              return;
+            }
+
+
+            const progress =
+              clamp(
+                (now - start)
+                / duration,
+                0,
+                1
+              );
+
+
+            const eased =
+              progress
+              * progress
+              * (
+                3
+                - 2 * progress
+              );
+
+
+            placeProjectPacketOnPath(
+              packet,
+              path,
+              eased
+            );
+
+
+            if (
+              progress < 1
+            ) {
+
+              const frameId =
+                requestAnimationFrame(
+                  frame
+                );
+
+
+              if (
+                projectName
+                === "hotel"
+              ) {
+
+                hotelProjectFrame =
+                  frameId;
+
+              } else {
+
+                techProjectFrame =
+                  frameId;
+
+              }
+
+            } else {
+
+              if (
+                projectName
+                === "hotel"
+              ) {
+
+                hotelProjectFrame =
+                  null;
+
+              } else {
+
+                techProjectFrame =
+                  null;
+
+              }
+
+
+              resolve();
+
+            }
+
+          };
+
+
+        const frameId =
+          requestAnimationFrame(
+            frame
+          );
+
+
+        if (
+          projectName
+          === "hotel"
+        ) {
+
+          hotelProjectFrame =
+            frameId;
+
+        } else {
+
+          techProjectFrame =
+            frameId;
+
+        }
+
+      });
+
+    };
+
+
+  const animateProjectRoute =
+    async (
+      projectName,
+      project,
+      route
+    ) => {
+
+      if (
+        !project
+        || !project.map
+        || !project.packet
+        || !route
+      ) {
+
+        return;
+      }
+
+
+      stopProjectPacket(
+        projectName
+      );
+
+
+      const token =
+        projectName === "hotel"
+          ? hotelProjectToken
+          : techProjectToken;
+
+
+      project.card
+        ?.classList
+        .add(
+          "is-running"
+        );
+
+
+      activateProjectRoute(
+        project,
+        route
+      );
+
+
+      for (
+        let index = 0;
+        index < route.paths.length;
+        index++
+      ) {
+
+        const currentToken =
+          projectName === "hotel"
+            ? hotelProjectToken
+            : techProjectToken;
+
+
+        if (
+          token
+          !== currentToken
+        ) {
+
+          return;
+        }
+
+
+        const path =
+          document.getElementById(
+            route.paths[index]
+          );
+
+
+        if (!path) {
+          continue;
+        }
+
+
+        path.classList.add(
+          "is-active"
+        );
+
+
+        await animateProjectPacketAcrossPath(
+          projectName,
+          project.packet,
+          path,
+          projectName === "hotel"
+            ? 720
+            : 760,
+          token
+        );
+
+
+        await wait(
+          prefersReducedMotion
+            ? 0
+            : 90
+        );
+
+      }
+
+
+      await wait(
+        prefersReducedMotion
+          ? 0
+          : 420
+      );
+
+
+      project.card
+        ?.classList
+        .remove(
+          "is-running"
+        );
+
+    };
+
+
+  const runHotelProjectVisualization =
+    async () => {
+
+      const project =
+        PROJECTS_V2.hotel;
+
+
+      if (
+        !project.map
+        || !project.packet
+      ) {
+
+        return;
+      }
+
+
+      const route =
+        project.routes[
+          hotelProjectRouteIndex
+          % project.routes.length
+        ];
+
+
+      hotelProjectRouteIndex +=
+        1;
+
+
+      await animateProjectRoute(
+        "hotel",
+        project,
+        route
+      );
+
+    };
+
+
+  const runTechProjectVisualization =
+    async () => {
+
+      const project =
+        PROJECTS_V2.tech;
+
+
+      if (
+        !project.map
+        || !project.packet
+      ) {
+
+        return;
+      }
+
+
+      const route =
+        project.routes[
+          techProjectRouteIndex
+          % project.routes.length
+        ];
+
+
+      techProjectRouteIndex +=
+        1;
+
+
+      await animateProjectRoute(
+        "tech",
+        project,
+        route
+      );
+
+    };
+
+
+  const stopHotelProjectCycle =
+    () => {
+
+      if (
+        hotelProjectTimer
+      ) {
+
+        clearInterval(
+          hotelProjectTimer
+        );
+
+
+        hotelProjectTimer =
+          null;
+
+      }
+
+
+      stopProjectPacket(
+        "hotel"
+      );
+
+
+      hotelProjectCard
+        ?.classList
+        .remove(
+          "is-running"
+        );
+
+    };
+
+
+  const stopTechProjectCycle =
+    () => {
+
+      if (
+        techProjectTimer
+      ) {
+
+        clearInterval(
+          techProjectTimer
+        );
+
+
+        techProjectTimer =
+          null;
+
+      }
+
+
+      stopProjectPacket(
+        "tech"
+      );
+
+
+      techProjectCard
+        ?.classList
+        .remove(
+          "is-running"
+        );
+
+    };
+
+
+  const startHotelProjectCycle =
+    () => {
+
+      stopHotelProjectCycle();
+
+
+      if (
+        !hotelSystemMap
+        || !hotelDataPacket
+      ) {
+
+        return;
+      }
+
+
+      runHotelProjectVisualization();
+
+
+      if (
+        prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+      }
+
+
+      hotelProjectTimer =
+        window.setInterval(
+          runHotelProjectVisualization,
+          4700
+        );
+
+    };
+
+
+  const startTechProjectCycle =
+    () => {
+
+      stopTechProjectCycle();
+
+
+      if (
+        !techSystemMap
+        || !techNetworkPacket
+      ) {
+
+        return;
+      }
+
+
+      runTechProjectVisualization();
+
+
+      if (
+        prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+      }
+
+
+      techProjectTimer =
+        window.setInterval(
+          runTechProjectVisualization,
+          4900
+        );
+
+    };
+
+
+  projectMapNodes
+    .forEach(node => {
+
+      node.addEventListener(
+        "mouseenter",
+        () => {
+
+          if (!finePointer) {
+            return;
+          }
+
+
+          focusProjectNode(
+            node
+          );
+
+        }
+      );
+
+
+      node.addEventListener(
+        "mouseleave",
+        () => {
+
+          if (!finePointer) {
+            return;
+          }
+
+
+          const map =
+            node.closest(
+              ".project-system-map"
+            );
+
+
+          clearProjectMapFocus(
+            map
+          );
+
+        }
+      );
+
+
+      node.addEventListener(
+        "focus",
+        () => {
+
+          focusProjectNode(
+            node
+          );
+
+        }
+      );
+
+
+      node.addEventListener(
+        "blur",
+        () => {
+
+          const map =
+            node.closest(
+              ".project-system-map"
+            );
+
+
+          clearProjectMapFocus(
+            map
+          );
+
+        }
+      );
+
+
+      node.addEventListener(
+        "click",
+        () => {
+
+          focusProjectNode(
+            node
+          );
+
+        }
+      );
+
+    });
+
+
+  if (
+    "IntersectionObserver"
+    in window
+  ) {
+
+    if (hotelProjectCard) {
+
+      const hotelProjectObserver =
+        new IntersectionObserver(
+          entries => {
+
+            entries.forEach(entry => {
+
+              hotelProjectVisible =
+                entry.isIntersecting;
+
+
+              if (
+                entry.isIntersecting
+              ) {
+
+                startHotelProjectCycle();
+
+              } else {
+
+                stopHotelProjectCycle();
+
+              }
+
+            });
+
+          },
+          {
+            threshold:
+              0.14
+          }
+        );
+
+
+      hotelProjectObserver.observe(
+        hotelProjectCard
+      );
+
+    }
+
+
+    if (techProjectCard) {
+
+      const techProjectObserver =
+        new IntersectionObserver(
+          entries => {
+
+            entries.forEach(entry => {
+
+              techProjectVisible =
+                entry.isIntersecting;
+
+
+              if (
+                entry.isIntersecting
+              ) {
+
+                startTechProjectCycle();
+
+              } else {
+
+                stopTechProjectCycle();
+
+              }
+
+            });
+
+          },
+          {
+            threshold:
+              0.14
+          }
+        );
+
+
+      techProjectObserver.observe(
+        techProjectCard
+      );
+
+    }
+
+  } else {
+
+    if (hotelProjectCard) {
+
+      hotelProjectVisible =
+        true;
+
+
+      startHotelProjectCycle();
+
+    }
+
+
+    if (techProjectCard) {
+
+      techProjectVisible =
+        true;
+
+
+      startTechProjectCycle();
+
+    }
+
+  }
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (document.hidden) {
+
+        stopHotelProjectCycle();
+
+        stopTechProjectCycle();
+
+        return;
+      }
+
+
+      if (
+        hotelProjectVisible
+      ) {
+
+        startHotelProjectCycle();
+
+      }
+
+
+      if (
+        techProjectVisible
+      ) {
+
+        startTechProjectCycle();
+
+      }
+
+    }
+  );
+
+
+
+  /* ====================================================================== */
+  /* 26 / STACK V2 — TECHNICAL UNIVERSE INTERACTION ENGINE                  */
+  /* ====================================================================== */
+
+  const stackV2Shell =
+    $(".stack-v2-shell");
+
+  const stackV2Map =
+    $("#stackUniverseMap");
+
+  const stackV2DomainButtons =
+    $$(".stack-domain-button");
+
+  const stackV2DomainNodes =
+    $$(".stack-domain-node");
+
+  const stackV2TechNodes =
+    $$(".stack-tech-node");
+
+  const stackV2Edges =
+    $$(".stack-edge");
+
+  const stackV2SatelliteGroups =
+    $$(".stack-satellite-group");
+
+  const stackV2BankCards =
+    $$(".stack-bank-card");
+
+  const stackV2PulsePrimary =
+    $("#stackPulsePrimary");
+
+  const stackV2PulseSecondary =
+    $("#stackPulseSecondary");
+
+  const stackV2ModeLabel =
+    $("#stackUniverseMode");
+
+  const stackV2ActivePath =
+    $("#stackActivePath");
+
+  const stackV2InspectorCode =
+    $("#stackInspectorCode");
+
+  const stackV2InspectorTitle =
+    $("#stackInspectorTitle");
+
+  const stackV2InspectorDescription =
+    $("#stackInspectorDescription");
+
+  const stackV2InspectorDomain =
+    $("#stackInspectorDomain");
+
+  const stackV2InspectorCount =
+    $("#stackInspectorCount");
+
+  const stackV2InspectorTechs =
+    $("#stackInspectorTechs");
+
+  const stackV2InspectorRelation =
+    $("#stackInspectorRelation");
+
+
+  const STACK_V2_DATA = {
+
+    systems: {
+      code: "DOMAIN_01",
+      title: "Systems",
+      label: "SYSTEMS",
+      mode: "SYSTEMS FOUNDATION",
+      count: "07",
+      description:
+        "Foundation layer for services, users and workloads.",
+      relation:
+        "FOUNDATION → PLATFORM",
+      path:
+        "SYSTEMS → CLOUD → NETWORK",
+      techs: [
+        "Linux",
+        "Ubuntu",
+        "Windows Server",
+        "Active Directory",
+        "DNS",
+        "DHCP",
+        "Virtualization"
+      ]
+    },
+
+    cloud: {
+      code: "DOMAIN_02",
+      title: "Cloud Native",
+      label: "CLOUD",
+      mode: "CLOUD-NATIVE PLATFORM",
+      count: "06",
+      description:
+        "Containerization, orchestration, lifecycle and service-mesh tooling.",
+      relation:
+        "CONTAINERS → ORCHESTRATION",
+      path:
+        "DOCKER → KUBERNETES → ISTIO",
+      techs: [
+        "Docker",
+        "Compose",
+        "Swarm",
+        "Kubernetes",
+        "Helm",
+        "Istio"
+      ]
+    },
+
+    network: {
+      code: "DOMAIN_03",
+      title: "Networking",
+      label: "NETWORK",
+      mode: "NETWORK CONNECTIVITY",
+      count: "07",
+      description:
+        "Connectivity, segmentation, routing and network-service foundations.",
+      relation:
+        "CONNECTIVITY → SEGMENTATION",
+      path:
+        "TCP/IP → VLAN → ROUTING → PFSENSE",
+      techs: [
+        "TCP/IP",
+        "Subnetting",
+        "VLAN",
+        "Routing",
+        "Switching",
+        "LAN / DMZ",
+        "pfSense"
+      ]
+    },
+
+    security: {
+      code: "DOMAIN_04",
+      title: "Security",
+      label: "SECURITY",
+      mode: "SECURITY CONTROL",
+      count: "05",
+      description:
+        "Protection, traffic control and defensive network tooling.",
+      relation:
+        "CONTROL → DETECTION",
+      path:
+        "FIREWALL → IDS / IPS → SSL / TLS",
+      techs: [
+        "Firewall",
+        "Suricata",
+        "IDS / IPS",
+        "iptables",
+        "SSL / TLS"
+      ]
+    },
+
+    observe: {
+      code: "DOMAIN_05",
+      title: "Observability",
+      label: "OBSERVE",
+      mode: "OBSERVABILITY SIGNAL",
+      count: "05",
+      description:
+        "Monitoring and visibility across systems and cloud-native platforms.",
+      relation:
+        "METRICS → VISIBILITY",
+      path:
+        "PROMETHEUS → GRAFANA → KIALI",
+      techs: [
+        "Prometheus",
+        "Grafana",
+        "Kiali",
+        "Zabbix",
+        "SNMP"
+      ]
+    },
+
+    automation: {
+      code: "DOMAIN_06",
+      title: "Automation",
+      label: "AUTOMATION",
+      mode: "AUTOMATED OPERATIONS",
+      count: "06",
+      description:
+        "Scripting, configuration and versioned operational workflows.",
+      relation:
+        "SCRIPT → CONFIGURE → VERSION",
+      path:
+        "BASH → ANSIBLE → GIT → GITHUB",
+      techs: [
+        "Bash",
+        "PowerShell",
+        "Ansible",
+        "YAML",
+        "Git",
+        "GitHub"
+      ]
+    },
+
+    data: {
+      code: "DOMAIN_07",
+      title: "Data + AI",
+      label: "DATA + AI",
+      mode: "DATA + INTELLIGENCE",
+      count: "08",
+      description:
+        "Programming, databases, analysis, Big Data and Artificial Intelligence.",
+      relation:
+        "DATA → ANALYSIS → AI",
+      path:
+        "PYTHON → SQL → BIG DATA → AI",
+      techs: [
+        "Python",
+        "SQL",
+        "PostgreSQL",
+        "MySQL",
+        "Redis",
+        "Big Data",
+        "Data Analysis",
+        "Artificial Intelligence"
+      ]
+    },
+
+    digital: {
+      code: "DOMAIN_08",
+      title: "Digital",
+      label: "DIGITAL",
+      mode: "WEB + CRM WORKFLOWS",
+      count: "06",
+      description:
+        "Web platforms, CRM systems, content and digital workflows.",
+      relation:
+        "CONTENT → CRM → WEB",
+      path:
+        "WORDPRESS → ZOHO CRM → HTML / CSS",
+      techs: [
+        "WordPress",
+        "Zoho CRM",
+        "Photoshop",
+        "HTML",
+        "CSS",
+        "Plone CMS"
+      ]
+    }
+
+  };
+
+
+  const STACK_V2_DOMAIN_ORDER = [
+    "systems",
+    "cloud",
+    "network",
+    "security",
+    "observe",
+    "data",
+    "automation",
+    "digital"
+  ];
+
+
+  const STACK_V2_PULSE_ROUTE = [
+    "stack-edge-systems-cloud",
+    "stack-edge-cloud-network",
+    "stack-edge-network-security",
+    "stack-edge-security-observe",
+    "stack-edge-observe-data",
+    "stack-edge-data-automation",
+    "stack-edge-automation-systems",
+    "stack-edge-automation-cloud",
+    "stack-edge-cloud-observe",
+    "stack-edge-systems-data",
+    "stack-edge-data-digital",
+    "stack-edge-digital-cloud"
+  ];
+
+
+  let stackV2ActiveDomain =
+    "systems";
+
+
+  let stackV2DomainIndex =
+    0;
+
+
+  let stackV2CycleTimer =
+    null;
+
+
+  let stackV2PulseFramePrimary =
+    null;
+
+
+  let stackV2PulseFrameSecondary =
+    null;
+
+
+  let stackV2PulseToken =
+    0;
+
+
+  let stackV2Visible =
+    false;
+
+
+  let stackV2UserHoldUntil =
+    0;
+
+
+  const updateStackV2Inspector =
+    domain => {
+
+      const data =
+        STACK_V2_DATA[domain];
+
+
+      if (!data) {
+        return;
+      }
+
+
+      if (stackV2ModeLabel) {
+        stackV2ModeLabel.textContent =
+          data.mode;
+      }
+
+
+      if (stackV2ActivePath) {
+        stackV2ActivePath.textContent =
+          data.path;
+      }
+
+
+      if (stackV2InspectorCode) {
+        stackV2InspectorCode.textContent =
+          data.code;
+      }
+
+
+      if (stackV2InspectorTitle) {
+        stackV2InspectorTitle.textContent =
+          data.title;
+      }
+
+
+      if (stackV2InspectorDescription) {
+        stackV2InspectorDescription.textContent =
+          data.description;
+      }
+
+
+      if (stackV2InspectorDomain) {
+        stackV2InspectorDomain.textContent =
+          data.label;
+      }
+
+
+      if (stackV2InspectorCount) {
+        stackV2InspectorCount.textContent =
+          data.count;
+      }
+
+
+      if (stackV2InspectorRelation) {
+        stackV2InspectorRelation.textContent =
+          data.relation;
+      }
+
+
+      if (stackV2InspectorTechs) {
+
+        stackV2InspectorTechs.innerHTML =
+          "";
+
+
+        data.techs.forEach(tech => {
+
+          const item =
+            document.createElement(
+              "span"
+            );
+
+
+          item.textContent =
+            tech;
+
+
+          stackV2InspectorTechs.appendChild(
+            item
+          );
+
+        });
+
+      }
+
+    };
+
+
+  const clearStackV2Focus =
+    () => {
+
+      stackV2DomainButtons
+        .forEach(button => {
+
+          button.classList.remove(
+            "is-active"
+          );
+
+
+          button.setAttribute(
+            "aria-pressed",
+            "false"
+          );
+
+        });
+
+
+      stackV2DomainNodes
+        .forEach(node => {
+
+          node.classList.remove(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2Edges
+        .forEach(edge => {
+
+          edge.classList.remove(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2SatelliteGroups
+        .forEach(group => {
+
+          group.classList.remove(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2BankCards
+        .forEach(card => {
+
+          card.classList.remove(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2Map
+        ?.classList
+        .remove(
+          "has-domain-focus"
+        );
+
+    };
+
+
+  const activateStackV2Domain =
+    (
+      domain,
+      userInitiated = false
+    ) => {
+
+      const data =
+        STACK_V2_DATA[domain];
+
+
+      if (!data) {
+        return;
+      }
+
+
+      stackV2ActiveDomain =
+        domain;
+
+
+      stackV2DomainIndex =
+        Math.max(
+          STACK_V2_DOMAIN_ORDER.indexOf(
+            domain
+          ),
+          0
+        );
+
+
+      if (userInitiated) {
+
+        stackV2UserHoldUntil =
+          Date.now() + 8500;
+
+      }
+
+
+      clearStackV2Focus();
+
+
+      stackV2Map
+        ?.classList
+        .add(
+          "has-domain-focus"
+        );
+
+
+      stackV2DomainButtons
+        .filter(button =>
+          button.dataset.stackDomain
+          === domain
+        )
+        .forEach(button => {
+
+          button.classList.add(
+            "is-active"
+          );
+
+
+          button.setAttribute(
+            "aria-pressed",
+            "true"
+          );
+
+        });
+
+
+      stackV2DomainNodes
+        .filter(node =>
+          node.dataset.stackNode
+          === domain
+        )
+        .forEach(node => {
+
+          node.classList.add(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2SatelliteGroups
+        .filter(group =>
+          group.dataset.stackDomainRef
+          === domain
+        )
+        .forEach(group => {
+
+          group.classList.add(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2Edges
+        .filter(edge => {
+
+          const edgeDomains =
+            (
+              edge.dataset.stackEdge
+              || ""
+            )
+              .split(" ");
+
+
+          return edgeDomains.includes(
+            domain
+          );
+
+        })
+        .forEach(edge => {
+
+          edge.classList.add(
+            "is-active"
+          );
+
+        });
+
+
+      stackV2BankCards
+        .filter(card =>
+          card.dataset.stackBank
+          === domain
+        )
+        .forEach(card => {
+
+          card.classList.add(
+            "is-active"
+          );
+
+        });
+
+
+      updateStackV2Inspector(
+        domain
+      );
+
+    };
+
+
+  const inspectStackV2Technology =
+    node => {
+
+      if (!node) {
+        return;
+      }
+
+
+      const tech =
+        node.dataset.stackTech;
+
+
+      const domain =
+        node.dataset.stackDomainRef;
+
+
+      if (
+        !tech
+        || !domain
+        || !STACK_V2_DATA[domain]
+      ) {
+        return;
+      }
+
+
+      activateStackV2Domain(
+        domain,
+        true
+      );
+
+
+      stackV2TechNodes
+        .forEach(item => {
+
+          item.classList.toggle(
+            "is-active",
+            item === node
+          );
+
+        });
+
+
+      if (stackV2InspectorTitle) {
+        stackV2InspectorTitle.textContent =
+          tech;
+      }
+
+
+      if (stackV2InspectorDescription) {
+        stackV2InspectorDescription.textContent =
+          `${tech} / ${STACK_V2_DATA[domain].title}`;
+      }
+
+    };
+
+
+  const placeStackV2PulseOnPath =
+    (
+      pulse,
+      path,
+      progress
+    ) => {
+
+      if (
+        !pulse
+        || !path
+        || typeof path.getTotalLength
+           !== "function"
+      ) {
+        return;
+      }
+
+
+      const totalLength =
+        path.getTotalLength();
+
+
+      const point =
+        path.getPointAtLength(
+          totalLength * progress
+        );
+
+
+      pulse.setAttribute(
+        "cx",
+        point.x
+      );
+
+
+      pulse.setAttribute(
+        "cy",
+        point.y
+      );
+
+    };
+
+
+  const stopStackV2PulseFrames =
+    () => {
+
+      stackV2PulseToken += 1;
+
+
+      if (
+        stackV2PulseFramePrimary
+        !== null
+      ) {
+
+        cancelAnimationFrame(
+          stackV2PulseFramePrimary
+        );
+
+
+        stackV2PulseFramePrimary =
+          null;
+
+      }
+
+
+      if (
+        stackV2PulseFrameSecondary
+        !== null
+      ) {
+
+        cancelAnimationFrame(
+          stackV2PulseFrameSecondary
+        );
+
+
+        stackV2PulseFrameSecondary =
+          null;
+
+      }
+
+    };
+
+
+  const animateStackV2Pulse =
+    (
+      pulse,
+      path,
+      duration,
+      token,
+      frameSlot
+    ) => {
+
+      return new Promise(resolve => {
+
+        if (
+          prefersReducedMotion
+          || !pulse
+          || !path
+        ) {
+
+          placeStackV2PulseOnPath(
+            pulse,
+            path,
+            1
+          );
+
+
+          resolve();
+
+          return;
+
+        }
+
+
+        const start =
+          performance.now();
+
+
+        const frame =
+          now => {
+
+            if (
+              token
+              !== stackV2PulseToken
+            ) {
+
+              resolve();
+
+              return;
+
+            }
+
+
+            const progress =
+              clamp(
+                (now - start) / duration,
+                0,
+                1
+              );
+
+
+            const eased =
+              progress
+              * progress
+              * (3 - 2 * progress);
+
+
+            placeStackV2PulseOnPath(
+              pulse,
+              path,
+              eased
+            );
+
+
+            if (progress < 1) {
+
+              const id =
+                requestAnimationFrame(
+                  frame
+                );
+
+
+              if (frameSlot === "primary") {
+                stackV2PulseFramePrimary = id;
+              } else {
+                stackV2PulseFrameSecondary = id;
+              }
+
+            } else {
+
+              if (frameSlot === "primary") {
+                stackV2PulseFramePrimary = null;
+              } else {
+                stackV2PulseFrameSecondary = null;
+              }
+
+
+              resolve();
+
+            }
+
+          };
+
+
+        const id =
+          requestAnimationFrame(
+            frame
+          );
+
+
+        if (frameSlot === "primary") {
+          stackV2PulseFramePrimary = id;
+        } else {
+          stackV2PulseFrameSecondary = id;
+        }
+
+      });
+
+    };
+
+
+  const getStackV2DomainEdges =
+    domain =>
+      stackV2Edges.filter(edge =>
+        (
+          edge.dataset.stackEdge
+          || ""
+        )
+          .split(" ")
+          .includes(domain)
+      );
+
+
+  const runStackV2PulseSequence =
+    async () => {
+
+      if (
+        !stackV2Shell
+        || !stackV2Map
+      ) {
+        return;
+      }
+
+
+      stopStackV2PulseFrames();
+
+
+      const token =
+        stackV2PulseToken;
+
+
+      stackV2Shell.classList.add(
+        "is-running"
+      );
+
+
+      const activeEdges =
+        getStackV2DomainEdges(
+          stackV2ActiveDomain
+        );
+
+
+      const primaryPath =
+        activeEdges[0]
+        || document.getElementById(
+          STACK_V2_PULSE_ROUTE[0]
+        );
+
+
+      const secondaryPath =
+        activeEdges[1]
+        || document.getElementById(
+          STACK_V2_PULSE_ROUTE[1]
+        );
+
+
+      const jobs = [];
+
+
+      if (
+        stackV2PulsePrimary
+        && primaryPath
+      ) {
+
+        jobs.push(
+          animateStackV2Pulse(
+            stackV2PulsePrimary,
+            primaryPath,
+            1200,
+            token,
+            "primary"
+          )
+        );
+
+      }
+
+
+      if (
+        stackV2PulseSecondary
+        && secondaryPath
+      ) {
+
+        jobs.push(
+          wait(260)
+            .then(() =>
+              animateStackV2Pulse(
+                stackV2PulseSecondary,
+                secondaryPath,
+                1450,
+                token,
+                "secondary"
+              )
+            )
+        );
+
+      }
+
+
+      await Promise.all(jobs);
+
+
+      stackV2Shell.classList.remove(
+        "is-running"
+      );
+
+    };
+
+
+  const stopStackV2Cycle =
+    () => {
+
+      if (stackV2CycleTimer) {
+
+        clearInterval(
+          stackV2CycleTimer
+        );
+
+
+        stackV2CycleTimer =
+          null;
+
+      }
+
+
+      stopStackV2PulseFrames();
+
+
+      stackV2Shell
+        ?.classList
+        .remove(
+          "is-running"
+        );
+
+    };
+
+
+  const advanceStackV2Domain =
+    () => {
+
+      if (
+        Date.now()
+        < stackV2UserHoldUntil
+      ) {
+
+        runStackV2PulseSequence();
+
+        return;
+
+      }
+
+
+      stackV2DomainIndex =
+        (
+          stackV2DomainIndex + 1
+        )
+        % STACK_V2_DOMAIN_ORDER.length;
+
+
+      activateStackV2Domain(
+        STACK_V2_DOMAIN_ORDER[
+          stackV2DomainIndex
+        ]
+      );
+
+
+      runStackV2PulseSequence();
+
+    };
+
+
+  const startStackV2Cycle =
+    () => {
+
+      stopStackV2Cycle();
+
+
+      if (!stackV2Shell) {
+        return;
+      }
+
+
+      activateStackV2Domain(
+        stackV2ActiveDomain
+      );
+
+
+      runStackV2PulseSequence();
+
+
+      if (
+        prefersReducedMotion
+        || document.hidden
+      ) {
+        return;
+      }
+
+
+      stackV2CycleTimer =
+        window.setInterval(
+          advanceStackV2Domain,
+          4300
+        );
+
+    };
+
+
+  stackV2DomainButtons
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          activateStackV2Domain(
+            button.dataset.stackDomain,
+            true
+          );
+
+
+          runStackV2PulseSequence();
+
+        }
+      );
+
+
+      button.addEventListener(
+        "mouseenter",
+        () => {
+
+          if (!finePointer) {
+            return;
+          }
+
+
+          activateStackV2Domain(
+            button.dataset.stackDomain,
+            true
+          );
+
+        }
+      );
+
+    });
+
+
+  stackV2DomainNodes
+    .forEach(node => {
+
+      const activateNode =
+        () => {
+
+          activateStackV2Domain(
+            node.dataset.stackNode,
+            true
+          );
+
+
+          runStackV2PulseSequence();
+
+        };
+
+
+      node.addEventListener(
+        "click",
+        activateNode
+      );
+
+
+      node.addEventListener(
+        "focus",
+        activateNode
+      );
+
+
+      node.addEventListener(
+        "mouseenter",
+        () => {
+
+          if (finePointer) {
+            activateNode();
+          }
+
+        }
+      );
+
+    });
+
+
+  stackV2TechNodes
+    .forEach(node => {
+
+      const inspectTech =
+        () => {
+          inspectStackV2Technology(node);
+        };
+
+
+      node.addEventListener(
+        "click",
+        inspectTech
+      );
+
+
+      node.addEventListener(
+        "focus",
+        inspectTech
+      );
+
+
+      node.addEventListener(
+        "mouseenter",
+        () => {
+
+          if (finePointer) {
+            inspectTech();
+          }
+
+        }
+      );
+
+
+      node.addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key === "Enter"
+            || event.key === " "
+          ) {
+
+            event.preventDefault();
+            inspectTech();
+
+          }
+
+        }
+      );
+
+    });
+
+
+  stackV2BankCards
+    .forEach(card => {
+
+      const inspectBank =
+        () => {
+
+          activateStackV2Domain(
+            card.dataset.stackBank,
+            true
+          );
+
+
+          runStackV2PulseSequence();
+
+        };
+
+
+      card.addEventListener(
+        "click",
+        inspectBank
+      );
+
+
+      card.addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key === "Enter"
+            || event.key === " "
+          ) {
+
+            event.preventDefault();
+            inspectBank();
+
+          }
+
+        }
+      );
+
+    });
+
+
+  stackV2DomainButtons
+    .forEach(
+      (
+        button,
+        index
+      ) => {
+
+        button.addEventListener(
+          "keydown",
+          event => {
+
+            if (
+              event.key !== "ArrowDown"
+              && event.key !== "ArrowRight"
+              && event.key !== "ArrowUp"
+              && event.key !== "ArrowLeft"
+            ) {
+              return;
+            }
+
+
+            event.preventDefault();
+
+
+            const direction =
+              (
+                event.key === "ArrowDown"
+                || event.key === "ArrowRight"
+              )
+                ? 1
+                : -1;
+
+
+            const nextIndex =
+              (
+                index
+                + direction
+                + stackV2DomainButtons.length
+              )
+              % stackV2DomainButtons.length;
+
+
+            stackV2DomainButtons[
+              nextIndex
+            ]?.focus();
+
+          }
+        );
+
+      }
+    );
+
+
+  if (
+    stackV2Shell
+    && "IntersectionObserver"
+       in window
+  ) {
+
+    const stackV2Observer =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            stackV2Visible =
+              entry.isIntersecting;
+
+
+            if (entry.isIntersecting) {
+
+              startStackV2Cycle();
+
+            } else {
+
+              stopStackV2Cycle();
+
+            }
+
+          });
+
+        },
+        {
+          threshold: .15
+        }
+      );
+
+
+    stackV2Observer.observe(
+      stackV2Shell
+    );
+
+  } else if (stackV2Shell) {
+
+    stackV2Visible =
+      true;
+
+
+    startStackV2Cycle();
+
+  }
+
+
+  if (stackV2Shell) {
+
+    activateStackV2Domain(
+      "systems"
+    );
+
+  }
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (!stackV2Shell) {
+        return;
+      }
+
+
+      if (document.hidden) {
+
+        stopStackV2Cycle();
+
+        return;
+
+      }
+
+
+      if (stackV2Visible) {
+
+        startStackV2Cycle();
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 27 / SYSTEM READY                                                       */
+  /* ====================================================================== */
+
+  requestAnimationFrame(
+    () => {
+
+      body.classList.add(
+        "system-ready"
+      );
+
+    }
+  );
+
+
+  console.log(
+    "%c IEVGEN // PORTFOLIO SYSTEM ONLINE ",
+    [
+      "background:#38bdf8",
+      "color:#04111a",
+      "font-weight:700",
+      "padding:6px 10px",
+      "border-radius:4px"
+    ].join(";")
+  );
+
+
+  console.log(
+    [
+      "Systems",
       "Cloud Native",
       "Automation",
-      "Python",
-      "Big Data",
-      "Artificial Intelligence"
-    ]
-  }
-  </script>
-
-</head>
-
-<body data-theme="dark">
-
-  <!-- ===================================================== -->
-  <!-- ACCESSIBILITY                                         -->
-  <!-- ===================================================== -->
-
-  <a
-    href="#main"
-    class="sr-only">
-
-    Skip to main content
-
-  </a>
-
-  <noscript>
-
-    <div class="noscript-message">
-
-      This portfolio includes optional interactive features that
-      require JavaScript. The main content remains accessible.
-
-    </div>
-
-  </noscript>
-
-  <!-- ===================================================== -->
-  <!-- OPTIONAL BOOT SCREEN                                  -->
-  <!-- Will be activated later from script.js                -->
-  <!-- ===================================================== -->
-
-  <div
-    class="boot-screen"
-    id="bootScreen"
-    aria-hidden="true"
-    hidden>
-
-    <div class="boot-terminal">
-
-      <div class="boot-terminal-top">
-
-        <div class="window-dots">
-          <i></i>
-          <i></i>
-          <i></i>
-        </div>
-
-        <span>
-          portfolio://startup
-        </span>
-
-      </div>
-
-      <div class="boot-terminal-body">
-
-        <p class="boot-command">
-
-          <span>$</span>
-          ./ievgen --initialize
-
-        </p>
-
-        <div class="boot-log">
-
-          <p data-boot-step>
-            [ OK ] loading systems foundation
-          </p>
-
-          <p data-boot-step>
-            [ OK ] mounting cloud-native stack
-          </p>
-
-          <p data-boot-step>
-            [ OK ] indexing professional experience
-          </p>
-
-          <p data-boot-step>
-            [ OK ] connecting flagship architecture
-          </p>
-
-          <p data-boot-step>
-            [ OK ] initializing data + ai layer
-          </p>
-
-          <p data-boot-step>
-            [ OK ] interface ready
-          </p>
-
-        </div>
-
-        <div class="boot-progress">
-
-          <div
-            class="boot-progress-bar"
-            id="bootProgressBar">
-          </div>
-
-        </div>
-
-        <div class="boot-progress-meta">
-
-          <span>
-            SYSTEM BOOT
-          </span>
-
-          <strong id="bootPercentage">
-            0%
-          </strong>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- ===================================================== -->
-  <!-- GLOBAL VISUAL SYSTEM                                  -->
-  <!-- ===================================================== -->
-
-  <div
-    class="site-grid"
-    aria-hidden="true">
-  </div>
-
-  <div
-    class="site-noise"
-    aria-hidden="true">
-  </div>
-
-  <div
-    class="cursor-glow"
-    id="cursorGlow"
-    aria-hidden="true">
-  </div>
-
-  <!-- ===================================================== -->
-  <!-- SCROLL PROGRESS                                       -->
-  <!-- ===================================================== -->
-
-  <div
-    class="scroll-progress"
-    aria-hidden="true">
-
-    <div id="scrollProgressBar"></div>
-
-  </div>
-
-  <!-- ===================================================== -->
-  <!-- NAVIGATION                                            -->
-  <!-- ===================================================== -->
-
-  <nav
-    class="navbar"
-    id="navbar"
-    aria-label="Primary navigation">
-
-    <div class="nav-shell">
-
-      <!-- BRAND -->
-
-      <a
-        href="#hero"
-        class="brand">
-
-        <span class="brand-status"></span>
-
-        <span class="brand-command">
-
-          ievgen<span>@portfolio</span>:~$
-
-        </span>
-
-      </a>
-
-      <!-- NAV -->
-
-      <div
-        class="nav-links"
-        id="navLinks">
-
-        <a href="#identity">
-          Identity
-        </a>
-
-        <a href="#mission">
-          Mission
-        </a>
-
-        <a href="#experience">
-          Experience
-        </a>
-
-        <a href="#flagship">
-          Flagship
-        </a>
-
-        <a href="#projects">
-          Projects
-        </a>
-
-        <a href="#stack">
-          Stack
-        </a>
-
-        <a href="#contact">
-          Connect
-        </a>
-
-      </div>
-
-      <!-- ACTIONS -->
-
-      <div class="nav-actions">
-
-        <button
-          class="nav-icon command-trigger"
-          id="commandTrigger"
-          aria-label="Open command palette"
-          title="Quick navigation">
-
-          <span>⌘</span>K
-
-        </button>
-
-        <button
-          class="nav-icon"
-          id="themeToggle"
-          aria-label="Toggle color theme"
-          aria-pressed="false">
-
-          ◐
-
-        </button>
-
-        <button
-          class="menu-toggle"
-          id="menuToggle"
-          aria-label="Open navigation"
-          aria-expanded="false">
-
-          <span></span>
-          <span></span>
-
-        </button>
-
-      </div>
-
-    </div>
-
-  </nav>
-
-  <!-- ===================================================== -->
-  <!-- SIDE CHAPTER NAVIGATION                               -->
-  <!-- ===================================================== -->
-
-  <aside
-    class="chapter-rail"
-    aria-label="Portfolio chapters">
-
-    <a href="#identity">
-      <span>01</span>
-      <small>Identity</small>
-    </a>
-
-    <a href="#mission">
-      <span>02</span>
-      <small>Mission</small>
-    </a>
-
-    <a href="#experience">
-      <span>03</span>
-      <small>Experience</small>
-    </a>
-
-    <a href="#flagship">
-      <span>04</span>
-      <small>Flagship</small>
-    </a>
-
-    <a href="#projects">
-      <span>05</span>
-      <small>Projects</small>
-    </a>
-
-    <a href="#stack">
-      <span>06</span>
-      <small>Stack</small>
-    </a>
-
-    <a href="#lab">
-      <span>07</span>
-      <small>Lab</small>
-    </a>
-
-    <a href="#education">
-      <span>08</span>
-      <small>Education</small>
-    </a>
-
-    <a href="#human">
-      <span>09</span>
-      <small>Human</small>
-    </a>
-
-    <a href="#signal">
-      <span>10</span>
-      <small>Signal</small>
-    </a>
-
-  </aside>
-
-  <!-- ===================================================== -->
-  <!-- HERO / CHAPTER 00                                     -->
-  <!-- ===================================================== -->
-
-  <header
-    class="hero"
-    id="hero">
-
-    <!-- AMBIENT -->
-
-    <div class="hero-ambient hero-ambient-one"></div>
-    <div class="hero-ambient hero-ambient-two"></div>
-    <div class="hero-ambient hero-ambient-three"></div>
-
-    <div class="hero-shell">
-
-      <!-- ================================================= -->
-      <!-- HERO COPY                                         -->
-      <!-- ================================================= -->
-
-      <div
-        class="hero-copy"
-        data-reveal>
-
-        <div class="eyebrow">
-
-          <span class="live-dot"></span>
-
-          SYSTEM ONLINE
-
-          <span class="eyebrow-divider">
-            /
-          </span>
-
-          PORTFOLIO BUILD 2026
-
-        </div>
-
-        <p class="hero-kicker">
-
-          SYSTEMS · CLOUD NATIVE · AUTOMATION · DATA · AI
-
-        </p>
-
-        <h1>
-
-          <span class="hero-name-primary">
-            Ievgen
-          </span>
-
-          <span class="hero-name-secondary">
-            Soloviov.
-          </span>
-
-        </h1>
-
-        <div class="hero-role">
-
-          <span class="role-prefix">
-            &gt;
-          </span>
-
-          <span id="rotatingRole">
-            Systems & Network Administration
-          </span>
-
-          <span class="terminal-cursor">
-            _
-          </span>
-
-        </div>
-
-        <p class="hero-description">
-
-          I build, connect and understand the layers between
-
-          <strong>
-            infrastructure
-          </strong>,
-
-          <strong>
-            cloud-native platforms
-          </strong>,
-
-          <strong>
-            automation
-          </strong>,
-
-          <strong>
-            data
-          </strong>
-
-          and
-
-          <strong>
-            intelligent systems
-          </strong>.
-
-        </p>
-
-        <div class="hero-actions">
-
-          <a
-            href="#flagship"
-            class="btn btn-primary">
-
-            Explore flagship
-
-            <span>
-              ↗
-            </span>
-
-          </a>
-
-          <a
-            href="https://github.com/IevgenSoloviov"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-secondary">
-
-            GitHub
-
-            <span>
-              ↗
-            </span>
-
-          </a>
-
-          <a
-            href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-ghost">
-
-            LinkedIn
-
-          </a>
-
-        </div>
-
-        <div class="hero-signals">
-
-          <span>
-
-            <i class="signal signal-blue"></i>
-
-            ASIR COMPLETE
-
-          </span>
-
-          <span>
-
-            <i class="signal signal-purple"></i>
-
-            AI + BIG DATA CURRENT
-
-          </span>
-
-          <span>
-
-            <i class="signal signal-green"></i>
-
-            MALTA EXPERIENCE
-
-          </span>
-
-          <span>
-
-            <i class="signal signal-orange"></i>
-
-            CLOUD NATIVE ACTIVE
-
-          </span>
-
-        </div>
-
-      </div>
-
-      <!-- ================================================= -->
-      <!-- HERO SYSTEM CORE                                  -->
-      <!-- ================================================= -->
-
-      <div
-        class="system-panel tilt-card"
-        data-reveal>
-
-        <div class="panel-top">
-
-          <div class="window-dots">
-
-            <i></i>
-            <i></i>
-            <i></i>
-
-          </div>
-
-          <span>
-            ~/profile/runtime
-          </span>
-
-          <span class="panel-status">
-
-            ACTIVE
-
-          </span>
-
-        </div>
-
-        <div class="system-core">
-
-          <!-- ORBITS -->
-
-          <div class="orbit orbit-one"></div>
-          <div class="orbit orbit-two"></div>
-          <div class="orbit orbit-three"></div>
-
-          <div class="orbit-node node-one"></div>
-          <div class="orbit-node node-two"></div>
-          <div class="orbit-node node-three"></div>
-          <div class="orbit-node node-four"></div>
-
-          <!-- LABELS -->
-
-          <div class="orbit-label orbit-linux">
-            LINUX
-          </div>
-
-          <div class="orbit-label orbit-cloud">
-            CLOUD
-          </div>
-
-          <div class="orbit-label orbit-k8s">
-            K8S
-          </div>
-
-          <div class="orbit-label orbit-data">
-            DATA
-          </div>
-
-          <div class="orbit-label orbit-ai">
-            AI
-          </div>
-
-          <!-- PHOTO -->
-
-          <div class="profile-core">
-
-            <div class="profile-glow"></div>
-
-            <div class="profile-ring"></div>
-
-            <img
-              src="img/foto.png"
-              alt="Portrait of Ievgen Soloviov"
-              class="hero-photo">
-
-          </div>
-
-          <!-- CORE LABEL -->
-
-          <div class="core-label">
-
-            <span>
-              CORE
-            </span>
-
-            <strong>
-              IEVGEN
-            </strong>
-
-          </div>
-
-        </div>
-
-        <!-- CONSOLE -->
-
-        <div class="system-console">
-
-          <div>
-
-            <span>
-              $
-            </span>
-
-            <small>
-              foundation
-            </small>
-
-            <strong>
-              systems_networking
-            </strong>
-
-          </div>
-
-          <div>
-
-            <span>
-              $
-            </span>
-
-            <small>
-              platform
-            </small>
-
-            <strong>
-              cloud_native
-            </strong>
-
-          </div>
-
-          <div>
-
-            <span>
-              $
-            </span>
-
-            <small>
-              current
-            </small>
-
-            <strong>
-              ai_big_data
-            </strong>
-
-          </div>
-
-          <div>
-
-            <span>
-              $
-            </span>
-
-            <small>
-              mode
-            </small>
-
-            <strong>
-              building
-            </strong>
-
-          </div>
-
-        </div>
-
-        <!-- PANEL FOOT -->
-
-        <div class="panel-footer">
-
-          <span>
-            SYS / READY
-          </span>
-
-          <span>
-            NETWORK / ONLINE
-          </span>
-
-          <span>
-            NEXT / BUILD
-          </span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- =================================================== -->
-    <!-- HERO LIVE METRICS                                   -->
-    <!-- =================================================== -->
-
-    <div
-      class="hero-metrics"
-      data-reveal>
-
-      <div>
-
-        <span class="metric-value">
-          3
-        </span>
-
-        <small>
-          PROFESSIONAL
-          <br>
-          ENVIRONMENTS
-        </small>
-
-      </div>
-
-      <div>
-
-        <span class="metric-value">
-          3
-        </span>
-
-        <small>
-          MAJOR
-          <br>
-          PROJECTS
-        </small>
-
-      </div>
-
-      <div>
-
-        <span class="metric-value">
-          5
-        </span>
-
-        <small>
-          FLAGSHIP
-          <br>
-          PLATFORM STAGES
-        </small>
-
-      </div>
-
-      <div>
-
-        <span class="metric-value metric-current">
-          NOW
-        </span>
-
-        <small>
-          AI + BIG DATA
-          <br>
-          SPECIALIZATION
-        </small>
-
-      </div>
-
-    </div>
-
-    <!-- =================================================== -->
-    <!-- TECHNOLOGY TICKER                                   -->
-    <!-- =================================================== -->
-
-    <div
-      class="ticker"
-      aria-hidden="true">
-
-      <div class="ticker-track">
-
-        <span>LINUX</span>
-        <i>◆</i>
-
-        <span>NETWORKING</span>
-        <i>◆</i>
-
-        <span>DOCKER</span>
-        <i>◆</i>
-
-        <span>SWARM</span>
-        <i>◆</i>
-
-        <span>KUBERNETES</span>
-        <i>◆</i>
-
-        <span>HELM</span>
-        <i>◆</i>
-
-        <span>ISTIO</span>
-        <i>◆</i>
-
-        <span>PROMETHEUS</span>
-        <i>◆</i>
-
-        <span>GRAFANA</span>
-        <i>◆</i>
-
-        <span>PYTHON</span>
-        <i>◆</i>
-
-        <span>DATA</span>
-        <i>◆</i>
-
-        <span>AI</span>
-        <i>◆</i>
-
-        <!-- DUPLICATE FOR CONTINUOUS LOOP -->
-
-        <span>LINUX</span>
-        <i>◆</i>
-
-        <span>NETWORKING</span>
-        <i>◆</i>
-
-        <span>DOCKER</span>
-        <i>◆</i>
-
-        <span>KUBERNETES</span>
-        <i>◆</i>
-
-        <span>HELM</span>
-        <i>◆</i>
-
-        <span>ISTIO</span>
-        <i>◆</i>
-
-      </div>
-
-    </div>
-
-    <!-- SCROLL -->
-
-    <a
-      href="#identity"
-      class="scroll-indicator">
-
-      <span>
-        SCROLL TO EXPLORE
-      </span>
-
-      <i></i>
-
-    </a>
-
-  </header>
-
-  <!-- ===================================================== -->
-  <!-- MAIN                                                  -->
-  <!-- ===================================================== -->
-
-  <main id="main">
-
-    <!-- =================================================== -->
-    <!-- 01 / IDENTITY                                       -->
-    <!-- =================================================== -->
-
-    <section
-      class="section identity-section"
-      id="identity">
-
-      <div class="section-shell">
-
-        <!-- HEADER -->
-
-        <div
-          class="section-heading"
-          data-reveal>
-
-          <span class="section-index">
-            01
-          </span>
-
-          <div>
-
-            <p class="section-label">
-
-              SYSTEM IDENTITY
-
-            </p>
-
-            <h2>
-
-              More than
-              <br>
-              one layer.
-
-            </h2>
-
-          </div>
-
-        </div>
-
-        <!-- GRID -->
-
-        <div class="identity-grid">
-
-          <!-- MAIN STORY -->
-
-          <article
-            class="identity-main glass-card tilt-card"
-            data-reveal>
-
-            <span class="card-code">
-
-              PROFILE / CORE_IDENTITY
-
-            </span>
-
-            <h3>
-
-              Systems foundation.
-
-              <br>
-
-              Cloud-native direction.
-
-              <br>
-
-              Intelligence next.
-
-            </h3>
-
-            <p>
-
-              Higher Technician in Networked Computer Systems
-              Administration with practical experience across
-              public IT, corporate infrastructure and an
-              international internship in Malta.
-
-            </p>
-
-            <p>
-
-              My path started with hardware, operating systems,
-              networks and support. It later expanded into
-              Docker, Kubernetes, microservices, observability,
-              automation and security.
-
-            </p>
-
-            <p>
-
-              I am currently adding another layer to that
-              foundation through a specialization in
-              Artificial Intelligence and Big Data.
-
-            </p>
-
-            <div class="identity-path">
-
-              <span>
-                SYSTEMS
-              </span>
-
-              <i>
-                →
-              </i>
-
-              <span>
-                NETWORK
-              </span>
-
-              <i>
-                →
-              </i>
-
-              <span>
-                CLOUD
-              </span>
-
-              <i>
-                →
-              </i>
-
-              <span>
-                AUTOMATION
-              </span>
-
-              <i>
-                →
-              </i>
-
-              <span>
-                DATA
-              </span>
-
-              <i>
-                →
-              </i>
-
-              <span>
-                AI
-              </span>
-
-            </div>
-
-          </article>
-
-          <!-- PROFILE MATRIX -->
-
-          <article
-            class="profile-matrix glass-card"
-            data-reveal>
-
-            <span class="card-code">
-
-              PROFILE / MATRIX
-
-            </span>
-
-            <div class="matrix-row">
-
-              <span>
-                FOUNDATION
-              </span>
-
-              <strong>
-                SYSTEMS
-              </strong>
-
-            </div>
-
-            <div class="matrix-row">
-
-              <span>
-                CORE
-              </span>
-
-              <strong>
-                NETWORKING
-              </strong>
-
-            </div>
-
-            <div class="matrix-row">
-
-              <span>
-                PLATFORM
-              </span>
-
-              <strong>
-                CLOUD NATIVE
-              </strong>
-
-            </div>
-
-            <div class="matrix-row">
-
-              <span>
-                OPERATIONS
-              </span>
-
-              <strong>
-                AUTOMATION
-              </strong>
-
-            </div>
-
-            <div class="matrix-row">
-
-              <span>
-                CURRENT
-              </span>
-
-              <strong class="matrix-current">
-                DATA + AI
-              </strong>
-
-            </div>
-
-            <div class="matrix-status">
-
-              <span class="live-dot"></span>
-
-              BUILDING
-
-            </div>
-
-          </article>
-
-        </div>
-
-        <!-- OPERATING MODEL -->
-
-        <div
-          class="operating-model"
-          data-reveal>
-
-          <span class="operating-label">
-
-            HOW I SEE A SYSTEM
-
-          </span>
-
-          <div class="operating-flow">
-
-            <div>
-
-              <small>
-                01
-              </small>
-
-              <strong>
-                USER
-              </strong>
-
-            </div>
-
-            <span>
-              →
-            </span>
-
-            <div>
-
-              <small>
-                02
-              </small>
-
-              <strong>
-                APPLICATION
-              </strong>
-
-            </div>
-
-            <span>
-              →
-            </span>
-
-            <div>
-
-              <small>
-                03
-              </small>
-
-              <strong>
-                SERVICES
-              </strong>
-
-            </div>
-
-            <span>
-              →
-            </span>
-
-            <div>
-
-              <small>
-                04
-              </small>
-
-              <strong>
-                PLATFORM
-              </strong>
-
-            </div>
-
-            <span>
-              →
-            </span>
-
-            <div>
-
-              <small>
-                05
-              </small>
-
-              <strong>
-                INFRASTRUCTURE
-              </strong>
-
-            </div>
-
-            <span>
-              →
-            </span>
-
-            <div>
-
-              <small>
-                06
-              </small>
-
-              <strong>
-                NETWORK
-              </strong>
-
-            </div>
-
-            <span>
-              →
-            </span>
-
-            <div>
-
-              <small>
-                07
-              </small>
-
-              <strong>
-                DATA
-              </strong>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- =================================================== -->
-    <!-- 02 / CURRENT MISSION                                -->
-    <!-- =================================================== -->
-
-    <section
-      class="section section-dark mission-section"
-      id="mission">
-
-      <div class="section-shell">
-
-        <div
-          class="section-heading"
-          data-reveal>
-
-          <span class="section-index">
-            02
-          </span>
-
-          <div>
-
-            <p class="section-label">
-
-              CURRENT MISSION
-
-            </p>
-
-            <h2>
-
-              Expanding the system
-              <br>
-              into intelligence.
-
-            </h2>
-
-          </div>
-
-        </div>
-
-        <div class="mission-layout">
-
-          <!-- MISSION CORE -->
-
-          <div
-            class="mission-core-panel"
-            data-reveal>
-
-            <div class="mission-rings">
-
-              <div class="mission-ring ring-a"></div>
-              <div class="mission-ring ring-b"></div>
-              <div class="mission-ring ring-c"></div>
-
-              <div class="mission-core">
-
-                <small>
-                  CURRENT CORE
-                </small>
-
-                <strong>
-                  AI + BIG DATA
-                </strong>
-
-                <span>
-                  2026 → 2027
-                </span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- ACTIVE MODULES -->
-
-          <div class="mission-modules">
-
-            <article
-              class="mission-module"
-              data-reveal>
-
-              <span>
-                MODULE_01
-              </span>
-
-              <h3>
-                Python
-              </h3>
-
-              <p>
-                Programming foundations for data,
-                automation and AI-oriented problem solving.
-              </p>
-
-              <div class="module-status">
-                ACTIVE
-              </div>
-
-            </article>
-
-            <article
-              class="mission-module"
-              data-reveal>
-
-              <span>
-                MODULE_02
-              </span>
-
-              <h3>
-                Data Processing
-              </h3>
-
-              <p>
-                Working with information, structures,
-                transformation and analysis.
-              </p>
-
-              <div class="module-status">
-                BUILDING
-              </div>
-
-            </article>
-
-            <article
-              class="mission-module"
-              data-reveal>
-
-              <span>
-                MODULE_03
-              </span>
-
-              <h3>
-                Big Data
-              </h3>
-
-              <p>
-                Understanding modern data architectures,
-                processing models and scalable systems.
-              </p>
-
-              <div class="module-status">
-                BUILDING
-              </div>
-
-            </article>
-
-            <article
-              class="mission-module"
-              data-reveal>
-
-              <span>
-                MODULE_04
-              </span>
-
-              <h3>
-                Artificial Intelligence
-              </h3>
-
-              <p>
-                Building the programming and data foundations
-                required to move into intelligent systems.
-              </p>
-
-              <div class="module-status">
-                BUILDING
-              </div>
-
-            </article>
-
-          </div>
-
-        </div>
-
-        <div
-          class="mission-command"
-          data-reveal>
-
-          <span>
-            ievgen@learning:~$
-          </span>
-
-          <strong>
-            integrate --systems --cloud --data --ai
-          </strong>
-
-          <i class="terminal-cursor">
-            _
-          </i>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- =================================================== -->
-    <!-- 03 / EXPERIENCE                                     -->
-    <!-- =================================================== -->
-
-    <section
-      class="section experience-section"
-      id="experience">
-
-      <div class="section-shell">
-
-        <div
-          class="section-heading"
-          data-reveal>
-
-          <span class="section-index">
-            03
-          </span>
-
-          <div>
-
-            <p class="section-label">
-
-              FIELD EXPERIENCE
-
-            </p>
-
-            <h2>
-
-              Three environments.
-              <br>
-              One evolving profile.
-
-            </h2>
-
-          </div>
-
-        </div>
-
-        <div class="experience-timeline">
-
-          <!-- ================================================= -->
-          <!-- MALTA                                             -->
-          <!-- ================================================= -->
-
-          <article
-            class="experience-card experience-latest tilt-card"
-            data-reveal>
-
-            <div class="experience-marker purple"></div>
-
-            <div class="experience-card-top">
-
-              <div>
-
-                <span class="experience-index">
-                  ENV_03
-                </span>
-
-                <span class="experience-year">
-                  2026
-                </span>
-
-              </div>
-
-              <span class="experience-badge purple">
-
-                INTERNATIONAL
-
-              </span>
-
-            </div>
-
-            <h3>
-              ppmalta group
-            </h3>
-
-            <p class="experience-role">
-
-              Web & Digital Tools Intern
-
-            </p>
-
-            <p class="experience-period">
-
-              MAR 2026 → MAY 2026
-
-            </p>
-
-            <p class="experience-place">
-
-              Malta · On-site
-
-            </p>
-
-            <div class="experience-divider"></div>
-
-            <p class="experience-description">
-
-              International internship focused on web platforms,
-              CRM systems, content management and digital workflows.
-
-            </p>
-
-            <ul class="experience-list">
-
-              <li>
-                Created and improved website content with WordPress.
-              </li>
-
-              <li>
-                Worked with Zoho CRM modules and workflows.
-              </li>
-
-              <li>
-                Organized CRM tasks and data.
-              </li>
-
-              <li>
-                Edited and optimized images with Photoshop.
-              </li>
-
-              <li>
-                Supported website improvements and digital content organization.
-              </li>
-
-            </ul>
-
-            <div class="tags">
-
-              <span>WordPress</span>
-              <span>Zoho CRM</span>
-              <span>Photoshop</span>
-              <span>CRM</span>
-              <span>Web Content</span>
-
-            </div>
-
-          </article>
-
-          <!-- ================================================= -->
-          <!-- SERHS                                             -->
-          <!-- ================================================= -->
-
-          <article
-            class="experience-card tilt-card"
-            data-reveal>
-
-            <div class="experience-marker green"></div>
-
-            <div class="experience-card-top">
-
-              <div>
-
-                <span class="experience-index">
-                  ENV_02
-                </span>
-
-                <span class="experience-year">
-                  2025
-                </span>
-
-              </div>
-
-              <span class="experience-badge green">
-
-                CORPORATE IT
-
-              </span>
-
-            </div>
-
-            <h3>
-              SERHS
-            </h3>
-
-            <p class="experience-role">
-
-              Service Desk Technician
-
-            </p>
-
-            <p class="experience-period">
-
-              JUN 2025 → NOV 2025
-
-            </p>
-
-            <p class="experience-place">
-
-              Pineda de Mar · On-site
-
-            </p>
-
-            <div class="experience-divider"></div>
-
-            <p class="experience-description">
-
-              Technical support and infrastructure work inside
-              a real corporate IT environment.
-
-            </p>
-
-            <ul class="experience-list">
-
-              <li>
-                Hardware and software incident resolution.
-              </li>
-
-              <li>
-                Operating system installation and maintenance.
-              </li>
-
-              <li>
-                Basic Active Directory administration.
-              </li>
-
-              <li>
-                JIRA incident tracking and user support.
-              </li>
-
-              <li>
-                Corporate networking, switches and structured cabling.
-              </li>
-
-              <li>
-                Firewall rule review and basic security administration.
-              </li>
-
-            </ul>
-
-            <div class="tags">
-
-              <span>Active Directory</span>
-              <span>JIRA</span>
-              <span>Networking</span>
-              <span>Switching</span>
-              <span>Firewall</span>
-
-            </div>
-
-          </article>
-
-          <!-- ================================================= -->
-          <!-- AJUNTAMENT                                        -->
-          <!-- ================================================= -->
-
-          <article
-            class="experience-card tilt-card"
-            data-reveal>
-
-            <div class="experience-marker blue"></div>
-
-            <div class="experience-card-top">
-
-              <div>
-
-                <span class="experience-index">
-                  ENV_01
-                </span>
-
-                <span class="experience-year">
-                  2023
-                </span>
-
-              </div>
-
-              <span class="experience-badge blue">
-
-                PUBLIC IT
-
-              </span>
-
-            </div>
-
-            <h3>
-              Ajuntament de Lloret de Mar
-            </h3>
-
-            <p class="experience-role">
-
-              IT Assistant
-
-            </p>
-
-            <p class="experience-period">
-
-              APR 2023 → AUG 2023
-
-            </p>
-
-            <p class="experience-place">
-
-              Lloret de Mar · On-site
-
-            </p>
-
-            <div class="experience-divider"></div>
-
-            <p class="experience-description">
-
-              Support, web administration and digital services
-              inside a public administration environment.
-
-            </p>
-
-            <ul class="experience-list">
-
-              <li>
-                Managed and updated content with Plone CMS.
-              </li>
-
-              <li>
-                Implemented HTML/CSS website changes.
-              </li>
-
-              <li>
-                Maintained municipal web content.
-              </li>
-
-              <li>
-                Supported users and basic technical incidents.
-              </li>
-
-              <li>
-                Worked with digital municipal tools and Lloret Smart.
-              </li>
-
-            </ul>
-
-            <div class="tags">
-
-              <span>Plone CMS</span>
-              <span>HTML</span>
-              <span>CSS</span>
-              <span>Support</span>
-              <span>Web Administration</span>
-
-            </div>
-
-          </article>
-
-        </div>
-
-        <!-- EXPERIENCE VECTOR -->
-
-        <div
-          class="experience-vector"
-          data-reveal>
-
-          <span>
-            SUPPORT
-          </span>
-
-          <i>→</i>
-
-          <span>
-            SYSTEMS
-          </span>
-
-          <i>→</i>
-
-          <span>
-            NETWORKING
-          </span>
-
-          <i>→</i>
-
-          <span>
-            CLOUD
-          </span>
-
-          <i>→</i>
-
-          <span>
-            DIGITAL
-          </span>
-
-          <i>→</i>
-
-          <span>
-            DATA + AI
-          </span>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- =================================================== -->
-    <!-- 04 / FLAGSHIP V2                                    -->
-    <!-- =================================================== -->
-
-    <section
-      class="section section-dark flagship-section flagship-v2"
-      id="flagship">
-
-      <div class="section-shell">
-
-        <div
-          class="section-heading"
-          data-reveal>
-
-          <span class="section-index">04</span>
-
-          <div>
-            <p class="section-label">FLAGSHIP SYSTEM / 2026</p>
-
-            <h2>
-              From containers
-              <br>
-              to a living platform.
-            </h2>
-          </div>
-
-        </div>
-
-        <!-- ================================================= -->
-        <!-- FLAGSHIP CONTROL CENTER                           -->
-        <!-- ================================================= -->
-
-        <article
-          class="flagship-card flagship-v2-shell"
-          data-reveal>
-
-          <div class="flagship-v2-topbar">
-
-            <div class="flagship-v2-window">
-
-              <div class="window-dots">
-                <i></i>
-                <i></i>
-                <i></i>
-              </div>
-
-              <span>flagship://shopmicro/runtime</span>
-
-            </div>
-
-            <div class="flagship-v2-top-status">
-
-              <span class="flagship-status-chip is-online">
-                <i></i>
-                PLATFORM ONLINE
-              </span>
-
-              <span class="flagship-status-chip">
-                2026
-              </span>
-
-              <span class="flagship-status-chip is-core">
-                CORE_01 + CORE_02
-              </span>
-
-            </div>
-
-          </div>
-
-          <!-- ================================================= -->
-          <!-- INTRO                                             -->
-          <!-- ================================================= -->
-
-          <div class="flagship-grid flagship-v2-grid">
-
-            <div class="flagship-copy flagship-v2-copy">
-
-              <div class="flagship-status">
-                <span class="live-dot"></span>
-                ASIX INTERMODULAR
-              </div>
-
-              <span class="flagship-period">
-                FEB 2026 → JUN 2026
-              </span>
-
-              <h3>
-                Modern Infrastructure
-                <span>Platform</span>
-              </h3>
-
-              <p>
-                A progressive infrastructure project built around
-                containerization, orchestration, microservices,
-                automation, security and observability.
-              </p>
-
-              <p>
-                My main contribution focused on
-                <strong>CORE_01</strong>
-                and
-                <strong>CORE_02</strong>:
-                evolving the container platform and developing the
-                advanced ShopMicro cloud-native architecture.
-              </p>
-
-              <div class="flagship-focus flagship-v2-focus">
-
-                <div
-                  class="flagship-core-card"
-                  data-flagship-focus="platform">
-
-                  <span>CORE_01</span>
-                  <strong>Platform Evolution</strong>
-                  <small>Compose → Swarm → Kubernetes</small>
-
-                </div>
-
-                <div
-                  class="flagship-core-card"
-                  data-flagship-focus="shopmicro">
-
-                  <span>CORE_02</span>
-                  <strong>ShopMicro</strong>
-                  <small>Helm → Istio → Observability</small>
-
-                </div>
-
-              </div>
-
-              <div class="flagship-actions">
-
-                <a
-                  href="https://github.com/IevgenSoloviov/Projecte-intermodular-administracio-de-sistemes-informatics-en-xarxa"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn btn-primary">
-
-                  Enter repository
-                  <span>↗</span>
-
-                </a>
-
-                <a
-                  href="#flagship-depth"
-                  class="btn btn-secondary">
-
-                  Technical depth
-                  <span>↓</span>
-
-                </a>
-
-              </div>
-
-            </div>
-
-            <div class="flagship-v2-snapshot">
-
-              <span class="snapshot-label">
-                OPERATIONAL_SNAPSHOT
-              </span>
-
-              <div class="snapshot-state">
-                <span>PLATFORM</span>
-                <strong>KUBERNETES</strong>
-              </div>
-
-              <div class="snapshot-state">
-                <span>DELIVERY</span>
-                <strong>HELM</strong>
-              </div>
-
-              <div class="snapshot-state">
-                <span>SERVICE MESH</span>
-                <strong>ISTIO</strong>
-              </div>
-
-              <div class="snapshot-state">
-                <span>OBSERVABILITY</span>
-                <strong>LIVE</strong>
-              </div>
-
-              <div class="snapshot-runtime">
-                <span class="live-dot"></span>
-                SYSTEM READY
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- ================================================= -->
-          <!-- PLATFORM EVOLUTION                                -->
-          <!-- ================================================= -->
-
-          <div class="flagship-platform-rail">
-
-            <span class="platform-rail-label">
-              PLATFORM_EVOLUTION
-            </span>
-
-            <div class="platform-rail-track">
-
-              <button
-                type="button"
-                class="platform-stage"
-                data-platform-stage="compose">
-
-                <small>01</small>
-                <strong>Docker Compose</strong>
-                <span>LOCAL STACK</span>
-
-              </button>
-
-              <i>→</i>
-
-              <button
-                type="button"
-                class="platform-stage"
-                data-platform-stage="swarm">
-
-                <small>02</small>
-                <strong>Swarm</strong>
-                <span>ORCHESTRATION</span>
-
-              </button>
-
-              <i>→</i>
-
-              <button
-                type="button"
-                class="platform-stage is-active"
-                data-platform-stage="kubernetes">
-
-                <small>03</small>
-                <strong>Kubernetes</strong>
-                <span>PLATFORM</span>
-
-              </button>
-
-              <i>→</i>
-
-              <button
-                type="button"
-                class="platform-stage"
-                data-platform-stage="helm">
-
-                <small>04</small>
-                <strong>Helm</strong>
-                <span>LIFECYCLE</span>
-
-              </button>
-
-              <i>→</i>
-
-              <button
-                type="button"
-                class="platform-stage"
-                data-platform-stage="istio">
-
-                <small>05</small>
-                <strong>Istio</strong>
-                <span>SERVICE MESH</span>
-
-              </button>
-
-            </div>
-
-          </div>
-
-          <!-- ================================================= -->
-          <!-- ARCHITECTURE TOOLBAR                              -->
-          <!-- ================================================= -->
-
-          <div class="flagship-architecture-toolbar">
-
-            <div>
-              <span class="toolbar-label">
-                SHOPMICRO / LIVE ARCHITECTURE
-              </span>
-
-              <strong id="flagshipModeLabel">
-                REQUEST FLOW
-              </strong>
-            </div>
-
-            <div
-              class="flagship-mode-switch"
-              role="group"
-              aria-label="Architecture visualization mode">
-
-              <button
-                type="button"
-                class="flagship-mode is-active"
-                data-flagship-mode="request"
-                aria-pressed="true">
-                REQUEST
-              </button>
-
-              <button
-                type="button"
-                class="flagship-mode"
-                data-flagship-mode="mesh"
-                aria-pressed="false">
-                SERVICE MESH
-              </button>
-
-              <button
-                type="button"
-                class="flagship-mode"
-                data-flagship-mode="observe"
-                aria-pressed="false">
-                OBSERVE
-              </button>
-
-            </div>
-
-          </div>
-
-          <!-- ================================================= -->
-          <!-- LIVE ARCHITECTURE                                 -->
-          <!-- ================================================= -->
-
-          <div class="flagship-live-system">
-
-            <div
-              class="flagship-topology"
-              id="shopmicroArchitecture">
-
-              <svg
-                class="shopmicro-svg"
-                viewBox="0 0 920 660"
-                role="img"
-                aria-labelledby="shopmicroTitle shopmicroDesc">
-
-                <title id="shopmicroTitle">
-                  ShopMicro cloud-native architecture
-                </title>
-
-                <desc id="shopmicroDesc">
-                  Interactive architecture showing client traffic
-                  through ingress and API gateway to Product, Order
-                  and User microservices, connected to MySQL, Redis
-                  and RabbitMQ, with Istio service mesh and
-                  Prometheus, Grafana and Kiali observability.
-                </desc>
-
-                <defs>
-
-                  <linearGradient
-                    id="clusterGradient"
-                    x1="0"
-                    x2="1">
-
-                    <stop
-                      offset="0%"
-                      stop-color="#38bdf8"
-                      stop-opacity=".16">
-                    </stop>
-
-                    <stop
-                      offset="50%"
-                      stop-color="#8b5cf6"
-                      stop-opacity=".09">
-                    </stop>
-
-                    <stop
-                      offset="100%"
-                      stop-color="#2dd4bf"
-                      stop-opacity=".12">
-                    </stop>
-
-                  </linearGradient>
-
-                  <linearGradient
-                    id="requestGradient"
-                    x1="0"
-                    x2="1">
-
-                    <stop
-                      offset="0%"
-                      stop-color="#38bdf8">
-                    </stop>
-
-                    <stop
-                      offset="100%"
-                      stop-color="#2dd4bf">
-                    </stop>
-
-                  </linearGradient>
-
-                  <linearGradient
-                    id="meshGradient"
-                    x1="0"
-                    x2="1">
-
-                    <stop
-                      offset="0%"
-                      stop-color="#8b5cf6">
-                    </stop>
-
-                    <stop
-                      offset="100%"
-                      stop-color="#c4b5fd">
-                    </stop>
-
-                  </linearGradient>
-
-                  <filter
-                    id="packetGlow"
-                    x="-100%"
-                    y="-100%"
-                    width="300%"
-                    height="300%">
-
-                    <feGaussianBlur
-                      stdDeviation="6"
-                      result="blur">
-                    </feGaussianBlur>
-
-                    <feMerge>
-                      <feMergeNode in="blur"></feMergeNode>
-                      <feMergeNode in="SourceGraphic"></feMergeNode>
-                    </feMerge>
-
-                  </filter>
-
-                  <filter
-                    id="nodeGlow"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%">
-
-                    <feGaussianBlur
-                      stdDeviation="9"
-                      result="blur">
-                    </feGaussianBlur>
-
-                    <feMerge>
-                      <feMergeNode in="blur"></feMergeNode>
-                      <feMergeNode in="SourceGraphic"></feMergeNode>
-                    </feMerge>
-
-                  </filter>
-
-                </defs>
-
-                <!-- GRID -->
-
-                <g
-                  class="topology-grid"
-                  aria-hidden="true">
-
-                  <path
-                    d="M80 40V620
-                       M160 40V620
-                       M240 40V620
-                       M320 40V620
-                       M400 40V620
-                       M480 40V620
-                       M560 40V620
-                       M640 40V620
-                       M720 40V620
-                       M800 40V620
-                       M880 40V620">
-                  </path>
-
-                  <path
-                    d="M40 80H880
-                       M40 160H880
-                       M40 240H880
-                       M40 320H880
-                       M40 400H880
-                       M40 480H880
-                       M40 560H880">
-                  </path>
-
-                </g>
-
-                <!-- PLATFORM -->
-
-                <rect
-                  class="cluster-boundary"
-                  x="150"
-                  y="250"
-                  width="600"
-                  height="315"
-                  rx="32"
-                  fill="url(#clusterGradient)">
-                </rect>
-
-                <g class="cluster-label">
-
-                  <circle
-                    cx="172"
-                    cy="272"
-                    r="4"
-                    fill="#38bdf8"
-                    filter="url(#nodeGlow)">
-                  </circle>
-
-                  <text
-                    x="188"
-                    y="276">
-                    KUBERNETES PLATFORM
-                  </text>
-
-                </g>
-
-                <rect
-                  class="mesh-boundary"
-                  x="172"
-                  y="315"
-                  width="555"
-                  height="155"
-                  rx="25">
-                </rect>
-
-                <g class="mesh-label">
-
-                  <circle
-                    cx="690"
-                    cy="333"
-                    r="4"
-                    fill="#8b5cf6">
-                  </circle>
-
-                  <text
-                    x="610"
-                    y="337">
-                    ISTIO MESH
-                  </text>
-
-                </g>
-
-                <!-- REQUEST PATHS -->
-
-                <g class="request-paths">
-
-                  <path
-                    id="path-client-ingress"
-                    class="topology-line request-line"
-                    data-path="client-ingress"
-                    d="M450 92 L450 130">
-                  </path>
-
-                  <path
-                    id="path-ingress-gateway"
-                    class="topology-line request-line"
-                    data-path="ingress-gateway"
-                    d="M450 178 L450 208">
-                  </path>
-
-                  <path
-                    id="path-gateway-services"
-                    class="topology-line request-line"
-                    data-path="gateway-services"
-                    d="M450 250 L450 285">
-                  </path>
-
-                  <path
-                    id="path-gateway-product"
-                    class="topology-line request-line"
-                    data-path="gateway-product"
-                    d="M450 285 L285 315">
-                  </path>
-
-                  <path
-                    id="path-gateway-order"
-                    class="topology-line request-line"
-                    data-path="gateway-order"
-                    d="M450 285 L450 315">
-                  </path>
-
-                  <path
-                    id="path-gateway-user"
-                    class="topology-line request-line"
-                    data-path="gateway-user"
-                    d="M450 285 L615 315">
-                  </path>
-
-                </g>
-
-                <!-- SERVICE MESH PATHS -->
-
-                <g class="mesh-paths">
-
-                  <path
-                    id="path-product-order"
-                    class="topology-line mesh-line"
-                    data-path="product-order"
-                    d="M350 365 L390 365">
-                  </path>
-
-                  <path
-                    id="path-order-user"
-                    class="topology-line mesh-line"
-                    data-path="order-user"
-                    d="M510 365 L550 365">
-                  </path>
-
-                  <path
-                    id="path-product-user"
-                    class="topology-line mesh-line mesh-line-long"
-                    data-path="product-user"
-                    d="M350 390
-                       C420 430 480 430 550 390">
-                  </path>
-
-                </g>
-
-                <!-- DATA PATHS -->
-
-                <g class="data-paths">
-
-                  <path
-                    id="path-product-mysql"
-                    class="topology-line data-line"
-                    data-path="product-mysql"
-                    d="M285 415 L285 493">
-                  </path>
-
-                  <path
-                    id="path-order-redis"
-                    class="topology-line data-line"
-                    data-path="order-redis"
-                    d="M450 415 L450 493">
-                  </path>
-
-                  <path
-                    id="path-user-rabbitmq"
-                    class="topology-line data-line"
-                    data-path="user-rabbitmq"
-                    d="M615 415 L615 493">
-                  </path>
-
-                </g>
-
-                <!-- OBSERVABILITY PATHS -->
-
-                <g class="observe-paths">
-
-                  <path
-                    id="path-services-prometheus"
-                    class="topology-line observe-line"
-                    data-path="services-prometheus"
-                    d="M730 385
-                       C790 385 790 420 810 420">
-                  </path>
-
-                  <path
-                    id="path-prometheus-grafana"
-                    class="topology-line observe-line"
-                    data-path="prometheus-grafana"
-                    d="M810 450 L810 492">
-                  </path>
-
-                  <path
-                    id="path-grafana-kiali"
-                    class="topology-line observe-line"
-                    data-path="grafana-kiali"
-                    d="M810 522 L810 565">
-                  </path>
-
-                </g>
-
-                <!-- CLIENT -->
-
-                <g
-                  class="topology-node node-client"
-                  data-node="client"
-                  tabindex="0">
-
-                  <rect
-                    x="390"
-                    y="48"
-                    width="120"
-                    height="44"
-                    rx="12">
-                  </rect>
-
-                  <circle
-                    cx="410"
-                    cy="70"
-                    r="5">
-                  </circle>
-
-                  <text
-                    class="node-title"
-                    x="428"
-                    y="74">
-                    CLIENT
-                  </text>
-
-                </g>
-
-                <!-- INGRESS -->
-
-                <g
-                  class="topology-node node-ingress"
-                  data-node="ingress"
-                  tabindex="0">
-
-                  <rect
-                    x="360"
-                    y="130"
-                    width="180"
-                    height="48"
-                    rx="13">
-                  </rect>
-
-                  <text
-                    class="node-kicker"
-                    x="380"
-                    y="148">
-                    ENTRY
-                  </text>
-
-                  <text
-                    class="node-title"
-                    x="380"
-                    y="165">
-                    NGINX INGRESS
-                  </text>
-
-                </g>
-
-                <!-- GATEWAY -->
-
-                <g
-                  class="topology-node node-gateway"
-                  data-node="gateway"
-                  tabindex="0">
-
-                  <rect
-                    x="360"
-                    y="208"
-                    width="180"
-                    height="48"
-                    rx="13">
-                  </rect>
-
-                  <text
-                    class="node-kicker"
-                    x="380"
-                    y="226">
-                    ROUTING
-                  </text>
-
-                  <text
-                    class="node-title"
-                    x="380"
-                    y="243">
-                    API GATEWAY
-                  </text>
-
-                </g>
-
-                <!-- PRODUCT -->
-
-                <g
-                  class="topology-node service-node node-product"
-                  data-node="product"
-                  tabindex="0">
-
-                  <rect
-                    x="220"
-                    y="315"
-                    width="130"
-                    height="100"
-                    rx="16">
-                  </rect>
-
-                  <circle
-                    class="service-health"
-                    cx="330"
-                    cy="336"
-                    r="4">
-                  </circle>
-
-                  <text
-                    class="node-kicker"
-                    x="240"
-                    y="338">
-                    SERVICE_01
-                  </text>
-
-                  <text
-                    class="node-title"
-                    x="240"
-                    y="364">
-                    Product
-                  </text>
-
-                  <text
-                    class="node-subtitle"
-                    x="240"
-                    y="383">
-                    products / inventory
-                  </text>
-
-                  <text
-                    class="node-runtime"
-                    x="240"
-                    y="401">
-                    READY
-                  </text>
-
-                </g>
-
-                <!-- ORDER -->
-
-                <g
-                  class="topology-node service-node node-order"
-                  data-node="order"
-                  tabindex="0">
-
-                  <rect
-                    x="385"
-                    y="315"
-                    width="130"
-                    height="100"
-                    rx="16">
-                  </rect>
-
-                  <circle
-                    class="service-health"
-                    cx="495"
-                    cy="336"
-                    r="4">
-                  </circle>
-
-                  <text
-                    class="node-kicker"
-                    x="405"
-                    y="338">
-                    SERVICE_02
-                  </text>
-
-                  <text
-                    class="node-title"
-                    x="405"
-                    y="364">
-                    Order
-                  </text>
-
-                  <text
-                    class="node-subtitle"
-                    x="405"
-                    y="383">
-                    orders / workflow
-                  </text>
-
-                  <text
-                    class="node-runtime"
-                    x="405"
-                    y="401">
-                    READY
-                  </text>
-
-                </g>
-
-                <!-- USER -->
-
-                <g
-                  class="topology-node service-node node-user"
-                  data-node="user"
-                  tabindex="0">
-
-                  <rect
-                    x="550"
-                    y="315"
-                    width="130"
-                    height="100"
-                    rx="16">
-                  </rect>
-
-                  <circle
-                    class="service-health"
-                    cx="660"
-                    cy="336"
-                    r="4">
-                  </circle>
-
-                  <text
-                    class="node-kicker"
-                    x="570"
-                    y="338">
-                    SERVICE_03
-                  </text>
-
-                  <text
-                    class="node-title"
-                    x="570"
-                    y="364">
-                    User
-                  </text>
-
-                  <text
-                    class="node-subtitle"
-                    x="570"
-                    y="383">
-                    auth / users
-                  </text>
-
-                  <text
-                    class="node-runtime"
-                    x="570"
-                    y="401">
-                    READY
-                  </text>
-
-                </g>
-
-                <!-- MYSQL -->
-
-                <g
-                  class="topology-node data-node node-mysql"
-                  data-node="mysql"
-                  tabindex="0">
-
-                  <rect
-                    x="225"
-                    y="493"
-                    width="120"
-                    height="46"
-                    rx="11">
-                  </rect>
-
-                  <text
-                    class="node-kicker"
-                    x="244"
-                    y="511">
-                    DATABASE
-                  </text>
-
-                  <text
-                    class="node-title"
-                    x="244"
-                    y="527">
-                    MySQL
-                  </text>
-
-                </g>
-
-                <!-- REDIS -->
-
-                <g
-                  class="topology-node data-node node-redis"
-                  data-node="redis"
-                  tabindex="0">
-
-                  <rect
-                    x="390"
-                    y="493"
-                    width="120"
-                    height="46"
-                    rx="11">
-                  </rect>
-
-                  <text
-                    class="node-kicker"
-                    x="409"
-                    y="511">
-                    CACHE
-                  </text>
-
-                  <text
-                    class="node-title"
-                    x="409"
-                    y="527">
-                    Redis
-                  </text>
-
-                </g>
-
-                <!-- RABBITMQ -->
-
-                <g
-                  class="topology-node data-node node-rabbitmq"
-                  data-node="rabbitmq"
-                  tabindex="0">
-
-                  <rect
-                    x="555"
-                    y="493"
-                    width="120"
-                    height="46"
-                    rx="11">
-                  </rect>
-
-                  <text
-                    class="node-kicker"
-                    x="574"
-                    y="511">
-                    MESSAGING
-                  </text>
-
-                  <text
-                    class="node-title"
-                    x="574"
-                    y="527">
-                    RabbitMQ
-                  </text>
-
-                </g>
-
-                <!-- OBSERVABILITY -->
-
-                <g class="observability-zone">
-
-                  <text
-                    class="zone-label"
-                    x="765"
-                    y="340">
-                    OBSERVABILITY
-                  </text>
-
-                  <g
-                    class="topology-node observe-node node-prometheus"
-                    data-node="prometheus"
-                    tabindex="0">
-
-                    <rect
-                      x="760"
-                      y="400"
-                      width="125"
-                      height="50"
-                      rx="11">
-                    </rect>
-
-                    <text
-                      class="node-kicker"
-                      x="779"
-                      y="418">
-                      METRICS
-                    </text>
-
-                    <text
-                      class="node-title"
-                      x="779"
-                      y="436">
-                      Prometheus
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="topology-node observe-node node-grafana"
-                    data-node="grafana"
-                    tabindex="0">
-
-                    <rect
-                      x="760"
-                      y="480"
-                      width="125"
-                      height="50"
-                      rx="11">
-                    </rect>
-
-                    <text
-                      class="node-kicker"
-                      x="779"
-                      y="498">
-                      DASHBOARD
-                    </text>
-
-                    <text
-                      class="node-title"
-                      x="779"
-                      y="516">
-                      Grafana
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="topology-node observe-node node-kiali"
-                    data-node="kiali"
-                    tabindex="0">
-
-                    <rect
-                      x="760"
-                      y="560"
-                      width="125"
-                      height="50"
-                      rx="11">
-                    </rect>
-
-                    <text
-                      class="node-kicker"
-                      x="779"
-                      y="578">
-                      SERVICE MESH
-                    </text>
-
-                    <text
-                      class="node-title"
-                      x="779"
-                      y="596">
-                      Kiali
-                    </text>
-
-                  </g>
-
-                </g>
-
-                <!-- PACKETS -->
-
-                <g
-                  class="packet-layer"
-                  aria-hidden="true">
-
-                  <circle
-                    id="requestPacketPrimary"
-                    class="architecture-packet request-packet"
-                    cx="450"
-                    cy="92"
-                    r="6"
-                    filter="url(#packetGlow)">
-                  </circle>
-
-                  <circle
-                    id="meshPacketPrimary"
-                    class="architecture-packet mesh-packet"
-                    cx="350"
-                    cy="365"
-                    r="5"
-                    filter="url(#packetGlow)">
-                  </circle>
-
-                  <circle
-                    id="observePacketPrimary"
-                    class="architecture-packet observe-packet"
-                    cx="730"
-                    cy="385"
-                    r="5"
-                    filter="url(#packetGlow)">
-                  </circle>
-
-                </g>
-
-                <!-- FOOTER SIGNALS -->
-
-                <g class="architecture-footer-signals">
-
-                  <circle
-                    cx="210"
-                    cy="605"
-                    r="4">
-                  </circle>
-
-                  <text
-                    x="222"
-                    y="609">
-                    DOCKER
-                  </text>
-
-                  <circle
-                    cx="335"
-                    cy="605"
-                    r="4">
-                  </circle>
-
-                  <text
-                    x="347"
-                    y="609">
-                    K8S
-                  </text>
-
-                  <circle
-                    cx="455"
-                    cy="605"
-                    r="4">
-                  </circle>
-
-                  <text
-                    x="467"
-                    y="609">
-                    HELM
-                  </text>
-
-                  <circle
-                    cx="565"
-                    cy="605"
-                    r="4">
-                  </circle>
-
-                  <text
-                    x="577"
-                    y="609">
-                    ISTIO
-                  </text>
-
-                  <circle
-                    cx="675"
-                    cy="605"
-                    r="4">
-                  </circle>
-
-                  <text
-                    x="687"
-                    y="609">
-                    OBSERVE
-                  </text>
-
-                </g>
-
-              </svg>
-
-            </div>
-
-            <!-- ================================================= -->
-            <!-- RUNTIME PANEL                                     -->
-            <!-- ================================================= -->
-
-            <aside
-              class="flagship-runtime-panel"
-              aria-label="ShopMicro runtime status">
-
-              <div class="runtime-panel-header">
-
-                <div>
-                  <span>RUNTIME</span>
-                  <strong>SHOPMICRO</strong>
-                </div>
-
-                <span class="runtime-health">
-                  <i></i>
-                  HEALTHY
-                </span>
-
-              </div>
-
-              <div class="runtime-current-mode">
-
-                <small>ACTIVE VIEW</small>
-
-                <strong id="runtimeModeValue">
-                  REQUEST FLOW
-                </strong>
-
-              </div>
-
-              <div class="runtime-status-stack">
-
-                <div
-                  class="runtime-status-item"
-                  data-runtime-status="kubernetes">
-
-                  <span>KUBERNETES</span>
-                  <strong>ACTIVE</strong>
-
-                </div>
-
-                <div
-                  class="runtime-status-item"
-                  data-runtime-status="helm">
-
-                  <span>HELM</span>
-                  <strong>DEPLOYED</strong>
-
-                </div>
-
-                <div
-                  class="runtime-status-item"
-                  data-runtime-status="istio">
-
-                  <span>ISTIO</span>
-                  <strong>MESH ONLINE</strong>
-
-                </div>
-
-                <div
-                  class="runtime-status-item"
-                  data-runtime-status="prometheus">
-
-                  <span>PROMETHEUS</span>
-                  <strong>SCRAPING</strong>
-
-                </div>
-
-                <div
-                  class="runtime-status-item"
-                  data-runtime-status="grafana">
-
-                  <span>GRAFANA</span>
-                  <strong>READY</strong>
-
-                </div>
-
-                <div
-                  class="runtime-status-item"
-                  data-runtime-status="kiali">
-
-                  <span>KIALI</span>
-                  <strong>CONNECTED</strong>
-
-                </div>
-
-              </div>
-
-              <div class="runtime-telemetry">
-
-                <div>
-                  <span>SERVICES</span>
-                  <strong>03</strong>
-                </div>
-
-                <div>
-                  <span>DATA</span>
-                  <strong>03</strong>
-                </div>
-
-                <div>
-                  <span>HEALTH</span>
-                  <strong>100%</strong>
-                </div>
-
-              </div>
-
-              <div class="runtime-event-console">
-
-                <div class="runtime-event-title">
-
-                  <span>EVENT_STREAM</span>
-                  <i class="live-dot"></i>
-
-                </div>
-
-                <div
-                  class="runtime-event-log"
-                  id="flagshipEventLog"
-                  aria-live="polite">
-
-                  <p>
-                    <span>00:01</span>
-                    ingress.route()
-                  </p>
-
-                  <p>
-                    <span>00:02</span>
-                    gateway.forward()
-                  </p>
-
-                  <p>
-                    <span>00:03</span>
-                    service.ready()
-                  </p>
-
-                  <p>
-                    <span>00:04</span>
-                    metrics.scrape()
-                  </p>
-
-                </div>
-
-              </div>
-
-            </aside>
-
-          </div>
-
-          <!-- ================================================= -->
-          <!-- LEGEND                                            -->
-          <!-- ================================================= -->
-
-          <div class="flagship-flow-legend">
-
-            <div>
-              <i class="legend-dot request"></i>
-              <span>REQUEST</span>
-            </div>
-
-            <div>
-              <i class="legend-dot mesh"></i>
-              <span>SERVICE MESH</span>
-            </div>
-
-            <div>
-              <i class="legend-dot data"></i>
-              <span>DATA</span>
-            </div>
-
-            <div>
-              <i class="legend-dot observe"></i>
-              <span>TELEMETRY</span>
-            </div>
-
-            <strong>
-              CLIENT → INGRESS → GATEWAY → SERVICES → DATA
-            </strong>
-
-          </div>
-
-        </article>
-
-        <!-- ================================================= -->
-        <!-- FLAGSHIP METRICS                                  -->
-        <!-- ================================================= -->
-
-        <div
-          class="flagship-metrics flagship-v2-metrics"
-          data-reveal>
-
-          <article>
-
-            <span
-              class="counter"
-              data-target="5">
-              0
-            </span>
-
-            <small>
-              PLATFORM
-              <br>
-              STAGES
-            </small>
-
-          </article>
-
-          <article>
-
-            <span
-              class="counter"
-              data-target="3">
-              0
-            </span>
-
-            <small>
-              MICROSERVICES
-            </small>
-
-          </article>
-
-          <article>
-
-            <span
-              class="counter"
-              data-target="3">
-              0
-            </span>
-
-            <small>
-              DATA / MESSAGE
-              <br>
-              SYSTEMS
-            </small>
-
-          </article>
-
-          <article>
-
-            <span
-              class="counter"
-              data-target="3">
-              0
-            </span>
-
-            <small>
-              OBSERVABILITY
-              <br>
-              TOOLS
-            </small>
-
-          </article>
-
-        </div>
-
-        <!-- ================================================= -->
-        <!-- TECHNICAL DEPTH                                   -->
-        <!-- ================================================= -->
-
-        <div
-          class="flagship-depth"
-          id="flagship-depth">
-
-          <details
-            class="tech-details"
-            data-reveal>
-
-            <summary>
-
-              <span>CORE_01</span>
-
-              Container Platform Evolution
-
-              <i>+</i>
-
-            </summary>
-
-            <div class="details-body">
-
-              <div>
-
-                <h4>Docker Compose</h4>
-
-                <p>
-                  Multi-container services, networks,
-                  persistent volumes, environment configuration
-                  and secrets.
-                </p>
-
-              </div>
-
-              <div>
-
-                <h4>Docker Swarm</h4>
-
-                <p>
-                  Service deployment, replicas,
-                  overlay networking and orchestrated workloads.
-                </p>
-
-              </div>
-
-              <div>
-
-                <h4>Kubernetes</h4>
-
-                <p>
-                  Deployments, Services, ConfigMaps,
-                  Secrets, Ingress, probes and scaling.
-                </p>
-
-              </div>
-
-            </div>
-
-          </details>
-
-          <details
-            class="tech-details"
-            data-reveal>
-
-            <summary>
-
-              <span>CORE_02</span>
-
-              ShopMicro Advanced Cloud-Native Platform
-
-              <i>+</i>
-
-            </summary>
-
-            <div class="details-body">
-
-              <div>
-
-                <h4>Microservices</h4>
-
-                <p>
-                  Product, Order and User services
-                  deployed as independent components.
-                </p>
-
-              </div>
-
-              <div>
-
-                <h4>Kubernetes Advanced</h4>
-
-                <p>
-                  HPA, probes, resource requests and limits,
-                  plus stateful workloads.
-                </p>
-
-              </div>
-
-              <div>
-
-                <h4>Helm</h4>
-
-                <p>
-                  Application packaging, installation,
-                  upgrades, release history and rollback.
-                </p>
-
-              </div>
-
-              <div>
-
-                <h4>Istio</h4>
-
-                <p>
-                  Service mesh with Envoy,
-                  retries, timeouts, traffic control
-                  and resilient service communication.
-                </p>
-
-              </div>
-
-              <div>
-
-                <h4>Observability</h4>
-
-                <p>
-                  Prometheus metrics, Grafana dashboards
-                  and Kiali service mesh visualization.
-                </p>
-
-              </div>
-
-              <div>
-
-                <h4>Data Layer</h4>
-
-                <p>
-                  MySQL for persistent state,
-                  Redis for fast access and RabbitMQ
-                  for message-oriented communication.
-                </p>
-
-              </div>
-
-            </div>
-
-          </details>
-
-        </div>
-
-        <!-- ================================================= -->
-        <!-- FINAL SIGNAL                                      -->
-        <!-- ================================================= -->
-
-        <div
-          class="flagship-v2-footer"
-          data-reveal>
-
-          <div>
-            <span>CORE CONTRIBUTION</span>
-            <strong>01 / PLATFORM + 02 / SHOPMICRO</strong>
-          </div>
-
-          <div class="flagship-v2-footer-line">
-
-            <span>COMPOSE</span>
-            <i>→</i>
-
-            <span>SWARM</span>
-            <i>→</i>
-
-            <span>KUBERNETES</span>
-            <i>→</i>
-
-            <span>HELM</span>
-            <i>→</i>
-
-            <span>ISTIO</span>
-            <i>→</i>
-
-            <span>OBSERVABILITY</span>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- =================================================== -->
-    <!-- 05 / PROJECTS V2                                    -->
-    <!-- =================================================== -->
-
-    <section
-      class="section projects-section projects-v2-section"
-      id="projects">
-
-      <div class="section-shell">
-
-        <!-- ================================================= -->
-        <!-- SECTION HEADER                                    -->
-        <!-- ================================================= -->
-
-        <div
-          class="section-heading"
-          data-reveal>
-
-          <span class="section-index">
-            05
-          </span>
-
-          <div>
-
-            <p class="section-label">
-              SELECTED SYSTEMS / ARCHITECTURE VIEW
-            </p>
-
-            <h2>
-              Different problems.
-              <br>
-              Different architectures.
-            </h2>
-
-          </div>
-
-        </div>
-
-        <!-- ================================================= -->
-        <!-- PROJECTS SYSTEM GRID                              -->
-        <!-- ================================================= -->
-
-        <div class="projects-v2-grid">
-
-          <!-- ================================================= -->
-          <!-- PROJECT 01 / HOTEL                               -->
-          <!-- ================================================= -->
-
-          <article
-            class="project-v2-card project-v2-hotel tilt-card"
-            data-project-system="hotel"
-            data-reveal>
-
-            <div class="project-v2-topbar">
-
-              <div class="project-v2-id">
-
-                <span>
-                  PROJECT_01
-                </span>
-
-                <strong>
-                  HOTEL MANAGEMENT
-                </strong>
-
-              </div>
-
-              <div class="project-v2-status">
-
-                <span class="project-status-dot"></span>
-
-                SYSTEM ONLINE
-
-              </div>
-
-            </div>
-
-            <div class="project-v2-visual hotel-system-visual">
-
-              <div class="project-v2-visual-header">
-
-                <div>
-
-                  <span>
-                    DATA_SYSTEM
-                  </span>
-
-                  <strong>
-                    OPERATIONAL DATA FLOW
-                  </strong>
-
-                </div>
-
-                <div class="project-v2-visual-state">
-
-                  <i></i>
-
-                  DATA ACTIVE
-
-                </div>
-
-              </div>
-
-              <div
-                class="project-system-map"
-                id="hotelSystemMap">
-
-                <svg
-                  class="project-system-svg hotel-system-svg"
-                  viewBox="0 0 760 460"
-                  role="img"
-                  aria-labelledby="hotelMapTitle hotelMapDesc">
-
-                  <title id="hotelMapTitle">
-                    Hotel Management Platform data flow
-                  </title>
-
-                  <desc id="hotelMapDesc">
-                    Hotel management project using bookings,
-                    a Python application, PostgreSQL,
-                    API integration and Power BI analytics.
-                  </desc>
-
-                  <defs>
-
-                    <linearGradient
-                      id="hotelNodeGradient"
-                      x1="0"
-                      x2="1">
-
-                      <stop
-                        offset="0%"
-                        stop-color="#38bdf8"
-                        stop-opacity=".12">
-                      </stop>
-
-                      <stop
-                        offset="100%"
-                        stop-color="#2dd4bf"
-                        stop-opacity=".05">
-                      </stop>
-
-                    </linearGradient>
-
-                    <linearGradient
-                      id="hotelFlowGradient"
-                      x1="0"
-                      x2="1">
-
-                      <stop
-                        offset="0%"
-                        stop-color="#38bdf8">
-                      </stop>
-
-                      <stop
-                        offset="100%"
-                        stop-color="#2dd4bf">
-                      </stop>
-
-                    </linearGradient>
-
-                    <filter
-                      id="hotelGlow"
-                      x="-100%"
-                      y="-100%"
-                      width="300%"
-                      height="300%">
-
-                      <feGaussianBlur
-                        stdDeviation="5"
-                        result="hotelBlur">
-                      </feGaussianBlur>
-
-                      <feMerge>
-                        <feMergeNode in="hotelBlur"></feMergeNode>
-                        <feMergeNode in="SourceGraphic"></feMergeNode>
-                      </feMerge>
-
-                    </filter>
-
-                  </defs>
-
-                  <g
-                    class="project-map-grid"
-                    aria-hidden="true">
-
-                    <path
-                      d="M40 70H720
-                         M40 140H720
-                         M40 210H720
-                         M40 280H720
-                         M40 350H720
-                         M40 420H720">
-                    </path>
-
-                    <path
-                      d="M80 40V430
-                         M160 40V430
-                         M240 40V430
-                         M320 40V430
-                         M400 40V430
-                         M480 40V430
-                         M560 40V430
-                         M640 40V430">
-                    </path>
-
-                  </g>
-
-                  <g class="hotel-flow-paths">
-
-                    <path
-                      id="hotel-path-customers-bookings"
-                      class="project-flow-line hotel-flow-line"
-                      d="M165 215 L230 215">
-                    </path>
-
-                    <path
-                      id="hotel-path-bookings-python"
-                      class="project-flow-line hotel-flow-line"
-                      d="M330 215 L395 215">
-                    </path>
-
-                    <path
-                      id="hotel-path-python-postgres"
-                      class="project-flow-line hotel-flow-line"
-                      d="M515 215 L620 215">
-                    </path>
-
-                    <path
-                      id="hotel-path-python-api"
-                      class="project-flow-line hotel-api-line"
-                      d="M455 275
-                         C455 320 330 320 300 350">
-                    </path>
-
-                    <path
-                      id="hotel-path-postgres-powerbi"
-                      class="project-flow-line hotel-analytics-line"
-                      d="M675 275
-                         C675 320 575 325 550 350">
-                    </path>
-
-                  </g>
-
-                  <g
-                    class="project-map-node hotel-node"
-                    data-project-node="hotel-customers"
-                    tabindex="0">
-
-                    <rect
-                      x="45"
-                      y="170"
-                      width="120"
-                      height="90"
-                      rx="15">
-                    </rect>
-
-                    <circle
-                      cx="65"
-                      cy="191"
-                      r="4">
-                    </circle>
-
-                    <text
-                      class="map-node-kicker"
-                      x="68"
-                      y="205">
-                      INPUT
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="68"
-                      y="229">
-                      CUSTOMERS
-                    </text>
-
-                    <text
-                      class="map-node-meta"
-                      x="68"
-                      y="246">
-                      guest data
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="project-map-node hotel-node"
-                    data-project-node="hotel-bookings"
-                    tabindex="0">
-
-                    <rect
-                      x="230"
-                      y="170"
-                      width="100"
-                      height="90"
-                      rx="15">
-                    </rect>
-
-                    <circle
-                      cx="250"
-                      cy="191"
-                      r="4">
-                    </circle>
-
-                    <text
-                      class="map-node-kicker"
-                      x="250"
-                      y="205">
-                      OPERATIONS
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="250"
-                      y="229">
-                      BOOKINGS
-                    </text>
-
-                    <text
-                      class="map-node-meta"
-                      x="250"
-                      y="246">
-                      reservations
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="project-map-node hotel-node hotel-main-node"
-                    data-project-node="hotel-python"
-                    tabindex="0">
-
-                    <rect
-                      x="395"
-                      y="155"
-                      width="120"
-                      height="120"
-                      rx="18">
-                    </rect>
-
-                    <circle
-                      class="project-node-health"
-                      cx="491"
-                      cy="178"
-                      r="4">
-                    </circle>
-
-                    <text
-                      class="map-node-kicker"
-                      x="418"
-                      y="190">
-                      APPLICATION
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="418"
-                      y="221">
-                      PYTHON
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="418"
-                      y="239">
-                      APP
-                    </text>
-
-                    <text
-                      class="map-node-runtime"
-                      x="418"
-                      y="258">
-                      RUNNING
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="project-map-node hotel-node hotel-database-node"
-                    data-project-node="hotel-postgresql"
-                    tabindex="0">
-
-                    <rect
-                      x="620"
-                      y="155"
-                      width="110"
-                      height="120"
-                      rx="18">
-                    </rect>
-
-                    <circle
-                      class="project-node-health"
-                      cx="704"
-                      cy="178"
-                      r="4">
-                    </circle>
-
-                    <text
-                      class="map-node-kicker"
-                      x="641"
-                      y="190">
-                      DATABASE
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="641"
-                      y="221">
-                      PostgreSQL
-                    </text>
-
-                    <text
-                      class="map-node-meta"
-                      x="641"
-                      y="241">
-                      operational data
-                    </text>
-
-                    <text
-                      class="map-node-runtime"
-                      x="641"
-                      y="258">
-                      READY
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="project-map-node hotel-node hotel-api-node"
-                    data-project-node="hotel-api"
-                    tabindex="0">
-
-                    <rect
-                      x="235"
-                      y="350"
-                      width="130"
-                      height="70"
-                      rx="14">
-                    </rect>
-
-                    <text
-                      class="map-node-kicker"
-                      x="257"
-                      y="373">
-                      INTEGRATION
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="257"
-                      y="397">
-                      API
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="project-map-node hotel-node hotel-powerbi-node"
-                    data-project-node="hotel-powerbi"
-                    tabindex="0">
-
-                    <rect
-                      x="485"
-                      y="350"
-                      width="130"
-                      height="70"
-                      rx="14">
-                    </rect>
-
-                    <text
-                      class="map-node-kicker"
-                      x="507"
-                      y="373">
-                      ANALYTICS
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="507"
-                      y="397">
-                      POWER BI
-                    </text>
-
-                  </g>
-
-                  <circle
-                    id="hotelDataPacket"
-                    class="project-flow-packet hotel-data-packet"
-                    cx="165"
-                    cy="215"
-                    r="6"
-                    filter="url(#hotelGlow)">
-                  </circle>
-
-                </svg>
-
-              </div>
-
-              <div class="project-v2-system-footer">
-
-                <span>
-                  PYTHON
-                </span>
-
-                <i>→</i>
-
-                <span>
-                  POSTGRESQL
-                </span>
-
-                <i>→</i>
-
-                <span>
-                  API
-                </span>
-
-                <i>→</i>
-
-                <span>
-                  POWER BI
-                </span>
-
-              </div>
-
-            </div>
-
-            <div class="project-v2-content">
-
-              <div class="project-v2-content-head">
-
-                <div>
-
-                  <span class="project-date">
-                    MAR 2025 → JUL 2025
-                  </span>
-
-                  <h3>
-                    Hotel Management Platform
-                  </h3>
-
-                </div>
-
-                <span class="project-v2-type">
-                  DATA / APPLICATION
-                </span>
-
-              </div>
-
-              <p class="project-v2-description">
-                Hotel management platform combining
-                Python, PostgreSQL, APIs and Power BI
-                to manage operational and analytical data.
-              </p>
-
-              <div class="project-v2-capabilities">
-
-                <div>
-                  <span>01</span>
-                  <strong>Bookings</strong>
-                  <small>Customers & reservations</small>
-                </div>
-
-                <div>
-                  <span>02</span>
-                  <strong>Operations</strong>
-                  <small>Billing & staff</small>
-                </div>
-
-                <div>
-                  <span>03</span>
-                  <strong>Database</strong>
-                  <small>PostgreSQL administration</small>
-                </div>
-
-                <div>
-                  <span>04</span>
-                  <strong>Resilience</strong>
-                  <small>Backups & replication</small>
-                </div>
-
-                <div>
-                  <span>05</span>
-                  <strong>Integration</strong>
-                  <small>API integration</small>
-                </div>
-
-                <div>
-                  <span>06</span>
-                  <strong>Analytics</strong>
-                  <small>Power BI</small>
-                </div>
-
-              </div>
-
-              <div class="project-v2-bottom">
-
-                <div class="tags">
-                  <span>Python</span>
-                  <span>PostgreSQL</span>
-                  <span>Power BI</span>
-                  <span>APIs</span>
-                  <span>JIRA</span>
-                </div>
-
-                <a
-                  href="https://drive.google.com/drive/folders/1cHo6X1G8EaBOuPj4vm0Qt2R9xkxh8GaB"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="project-v2-link">
-
-                  Explore project
-
-                  <span>
-                    ↗
-                  </span>
-
-                </a>
-
-              </div>
-
-            </div>
-
-          </article>
-
-          <!-- ================================================= -->
-          <!-- PROJECT 02 / TECHSOLUTIONS                         -->
-          <!-- ================================================= -->
-
-          <article
-            class="project-v2-card project-v2-infra tilt-card"
-            data-project-system="techsolutions"
-            data-reveal>
-
-            <div class="project-v2-topbar">
-
-              <div class="project-v2-id">
-
-                <span>
-                  PROJECT_02
-                </span>
-
-                <strong>
-                  TECHSOLUTIONS IS
-                </strong>
-
-              </div>
-
-              <div class="project-v2-status project-v2-status-purple">
-
-                <span class="project-status-dot"></span>
-
-                NETWORK ONLINE
-
-              </div>
-
-            </div>
-
-            <div class="project-v2-visual tech-system-visual">
-
-              <div class="project-v2-visual-header">
-
-                <div>
-
-                  <span>
-                    INFRA_SYSTEM
-                  </span>
-
-                  <strong>
-                    CORPORATE NETWORK MAP
-                  </strong>
-
-                </div>
-
-                <div class="project-v2-visual-state purple">
-
-                  <i></i>
-
-                  FIREWALL ACTIVE
-
-                </div>
-
-              </div>
-
-              <div
-                class="project-system-map"
-                id="techSystemMap">
-
-                <svg
-                  class="project-system-svg tech-system-svg"
-                  viewBox="0 0 760 460"
-                  role="img"
-                  aria-labelledby="techMapTitle techMapDesc">
-
-                  <title id="techMapTitle">
-                    TechSolutions corporate infrastructure
-                  </title>
-
-                  <desc id="techMapDesc">
-                    Corporate infrastructure using
-                    Windows and Linux servers,
-                    Active Directory, DNS, DHCP,
-                    pfSense, LAN and DMZ segmentation
-                    and backup systems.
-                  </desc>
-
-                  <defs>
-
-                    <linearGradient
-                      id="techFlowGradient"
-                      x1="0"
-                      x2="1">
-
-                      <stop
-                        offset="0%"
-                        stop-color="#8b5cf6">
-                      </stop>
-
-                      <stop
-                        offset="100%"
-                        stop-color="#38bdf8">
-                      </stop>
-
-                    </linearGradient>
-
-                    <filter
-                      id="techGlow"
-                      x="-100%"
-                      y="-100%"
-                      width="300%"
-                      height="300%">
-
-                      <feGaussianBlur
-                        stdDeviation="5"
-                        result="techBlur">
-                      </feGaussianBlur>
-
-                      <feMerge>
-                        <feMergeNode in="techBlur"></feMergeNode>
-                        <feMergeNode in="SourceGraphic"></feMergeNode>
-                      </feMerge>
-
-                    </filter>
-
-                  </defs>
-
-                  <g
-                    class="project-map-grid"
-                    aria-hidden="true">
-
-                    <path
-                      d="M40 70H720
-                         M40 140H720
-                         M40 210H720
-                         M40 280H720
-                         M40 350H720
-                         M40 420H720">
-                    </path>
-
-                    <path
-                      d="M80 40V430
-                         M160 40V430
-                         M240 40V430
-                         M320 40V430
-                         M400 40V430
-                         M480 40V430
-                         M560 40V430
-                         M640 40V430">
-                    </path>
-
-                  </g>
-
-                  <rect
-                    class="tech-network-zone tech-lan-zone"
-                    x="60"
-                    y="270"
-                    width="400"
-                    height="155"
-                    rx="22">
-                  </rect>
-
-                  <text
-                    class="tech-zone-label"
-                    x="82"
-                    y="297">
-                    LAN / INTERNAL NETWORK
-                  </text>
-
-                  <rect
-                    class="tech-network-zone tech-dmz-zone"
-                    x="500"
-                    y="270"
-                    width="200"
-                    height="155"
-                    rx="22">
-                  </rect>
-
-                  <text
-                    class="tech-zone-label purple"
-                    x="521"
-                    y="297">
-                    DMZ
-                  </text>
-
-                  <g class="tech-network-paths">
-
-                    <path
-                      id="tech-path-internet-pfsense"
-                      class="project-flow-line tech-flow-line"
-                      d="M380 95 L380 145">
-                    </path>
-
-                    <path
-                      id="tech-path-pfsense-lan"
-                      class="project-flow-line tech-lan-line"
-                      d="M350 215
-                         C330 245 260 245 260 285">
-                    </path>
-
-                    <path
-                      id="tech-path-pfsense-dmz"
-                      class="project-flow-line tech-dmz-line"
-                      d="M410 215
-                         C450 245 590 240 590 285">
-                    </path>
-
-                    <path
-                      id="tech-path-lan-windows"
-                      class="project-flow-line tech-internal-line"
-                      d="M260 335 L170 345">
-                    </path>
-
-                    <path
-                      id="tech-path-lan-linux"
-                      class="project-flow-line tech-internal-line"
-                      d="M260 335 L350 345">
-                    </path>
-
-                    <path
-                      id="tech-path-dmz-services"
-                      class="project-flow-line tech-dmz-line"
-                      d="M590 335 L590 350">
-                    </path>
-
-                  </g>
-
-                  <g
-                    class="project-map-node tech-node"
-                    data-project-node="tech-internet"
-                    tabindex="0">
-
-                    <rect
-                      x="320"
-                      y="45"
-                      width="120"
-                      height="50"
-                      rx="14">
-                    </rect>
-
-                    <circle
-                      cx="340"
-                      cy="70"
-                      r="4">
-                    </circle>
-
-                    <text
-                      class="map-node-title"
-                      x="358"
-                      y="75">
-                      INTERNET
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="project-map-node tech-node tech-firewall-node"
-                    data-project-node="tech-pfsense"
-                    tabindex="0">
-
-                    <rect
-                      x="305"
-                      y="145"
-                      width="150"
-                      height="70"
-                      rx="15">
-                    </rect>
-
-                    <circle
-                      class="project-node-health"
-                      cx="430"
-                      cy="165"
-                      r="4">
-                    </circle>
-
-                    <text
-                      class="map-node-kicker"
-                      x="328"
-                      y="168">
-                      FIREWALL
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="328"
-                      y="194">
-                      pfSense
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="project-map-node tech-node tech-zone-router"
-                    data-project-node="tech-lan"
-                    tabindex="0">
-
-                    <rect
-                      x="205"
-                      y="285"
-                      width="110"
-                      height="50"
-                      rx="12">
-                    </rect>
-
-                    <text
-                      class="map-node-kicker"
-                      x="227"
-                      y="304">
-                      INTERNAL
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="227"
-                      y="322">
-                      LAN
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="project-map-node tech-node"
-                    data-project-node="tech-windows"
-                    tabindex="0">
-
-                    <rect
-                      x="95"
-                      y="345"
-                      width="150"
-                      height="65"
-                      rx="13">
-                    </rect>
-
-                    <text
-                      class="map-node-kicker"
-                      x="115"
-                      y="367">
-                      IDENTITY / NETWORK
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="115"
-                      y="389">
-                      Windows Server
-                    </text>
-
-                    <text
-                      class="map-node-meta"
-                      x="115"
-                      y="403">
-                      AD · DNS · DHCP
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="project-map-node tech-node"
-                    data-project-node="tech-linux"
-                    tabindex="0">
-
-                    <rect
-                      x="285"
-                      y="345"
-                      width="140"
-                      height="65"
-                      rx="13">
-                    </rect>
-
-                    <text
-                      class="map-node-kicker"
-                      x="305"
-                      y="367">
-                      SERVER
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="305"
-                      y="389">
-                      Linux
-                    </text>
-
-                    <text
-                      class="map-node-meta"
-                      x="305"
-                      y="403">
-                      services
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="project-map-node tech-node tech-dmz-router"
-                    data-project-node="tech-dmz"
-                    tabindex="0">
-
-                    <rect
-                      x="535"
-                      y="285"
-                      width="110"
-                      height="50"
-                      rx="12">
-                    </rect>
-
-                    <text
-                      class="map-node-kicker"
-                      x="557"
-                      y="304">
-                      SEGMENT
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="557"
-                      y="322">
-                      DMZ
-                    </text>
-
-                  </g>
-
-                  <g
-                    class="project-map-node tech-node"
-                    data-project-node="tech-services"
-                    tabindex="0">
-
-                    <rect
-                      x="525"
-                      y="350"
-                      width="130"
-                      height="60"
-                      rx="13">
-                    </rect>
-
-                    <text
-                      class="map-node-kicker"
-                      x="546"
-                      y="371">
-                      SERVICES
-                    </text>
-
-                    <text
-                      class="map-node-title"
-                      x="546"
-                      y="394">
-                      SERVER ZONE
-                    </text>
-
-                  </g>
-
-                  <circle
-                    id="techNetworkPacket"
-                    class="project-flow-packet tech-network-packet"
-                    cx="380"
-                    cy="95"
-                    r="6"
-                    filter="url(#techGlow)">
-                  </circle>
-
-                </svg>
-
-              </div>
-
-              <div class="tech-storage-strip">
-
-                <div>
-                  <span>STORAGE</span>
-                  <strong>RAID</strong>
-                </div>
-
-                <i>→</i>
-
-                <div>
-                  <span>RECOVERY</span>
-                  <strong>BACKUPS</strong>
-                </div>
-
-                <i>→</i>
-
-                <div>
-                  <span>NETWORK</span>
-                  <strong>LAN / DMZ</strong>
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="project-v2-content">
-
-              <div class="project-v2-content-head">
-
-                <div>
-
-                  <span class="project-date">
-                    FEB 2024 → JUN 2024
-                  </span>
-
-                  <h3>
-                    TechSolutions IS
-                  </h3>
-
-                </div>
-
-                <span class="project-v2-type purple">
-                  SYSTEMS / NETWORK
-                </span>
-
-              </div>
-
-              <p class="project-v2-description">
-                Corporate infrastructure project combining
-                Windows and Linux servers, identity,
-                networking, security and resilient storage.
-              </p>
-
-              <div class="project-v2-capabilities">
-
-                <div>
-                  <span>01</span>
-                  <strong>Servers</strong>
-                  <small>Windows / Linux</small>
-                </div>
-
-                <div>
-                  <span>02</span>
-                  <strong>Identity</strong>
-                  <small>Active Directory / LDAP</small>
-                </div>
-
-                <div>
-                  <span>03</span>
-                  <strong>Network Services</strong>
-                  <small>DNS / DHCP</small>
-                </div>
-
-                <div>
-                  <span>04</span>
-                  <strong>Security</strong>
-                  <small>pfSense firewall</small>
-                </div>
-
-                <div>
-                  <span>05</span>
-                  <strong>Segmentation</strong>
-                  <small>LAN / DMZ</small>
-                </div>
-
-                <div>
-                  <span>06</span>
-                  <strong>Resilience</strong>
-                  <small>RAID / backups</small>
-                </div>
-
-              </div>
-
-              <div class="project-v2-bottom">
-
-                <div class="tags">
-                  <span>Windows Server</span>
-                  <span>Linux</span>
-                  <span>Active Directory</span>
-                  <span>pfSense</span>
-                  <span>DNS / DHCP</span>
-                </div>
-
-                <a
-                  href="https://drive.google.com/drive/folders/1VF-ht9ClLWi4b1KtknwVLrIZdETHP4xI"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="project-v2-link">
-
-                  Explore project
-
-                  <span>
-                    ↗
-                  </span>
-
-                </a>
-
-              </div>
-
-            </div>
-
-          </article>
-
-        </div>
-
-        <!-- ================================================= -->
-        <!-- PROJECTS FOOTER VECTOR                            -->
-        <!-- ================================================= -->
-
-        <div
-          class="projects-v2-vector"
-          data-reveal>
-
-          <span>
-            SYSTEM_01
-          </span>
-
-          <strong>
-            APPLICATION + DATA
-          </strong>
-
-          <i>
-            /
-          </i>
-
-          <span>
-            SYSTEM_02
-          </span>
-
-          <strong>
-            INFRASTRUCTURE + NETWORK
-          </strong>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- =================================================== -->
-    <!-- 06 / STACK V2 — TECHNICAL UNIVERSE EXTREME          -->
-    <!-- =================================================== -->
-
-    <section
-      class="section section-dark stack-section stack-v2-section"
-      id="stack">
-
-      <div class="section-shell">
-
-        <!-- ================================================= -->
-        <!-- SECTION HEADER                                    -->
-        <!-- ================================================= -->
-
-        <div
-          class="section-heading"
-          data-reveal>
-
-          <span class="section-index">
-            06
-          </span>
-
-          <div>
-
-            <p class="section-label">
-              TECHNICAL UNIVERSE / KNOWLEDGE GRAPH
-            </p>
-
-            <h2>
-              The stack is a system.
-              <br>
-              Not a list.
-            </h2>
-
-          </div>
-
-        </div>
-
-        <!-- ================================================= -->
-        <!-- TECHNICAL UNIVERSE                                -->
-        <!-- ================================================= -->
-
-        <article
-          class="stack-v2-shell"
-          data-reveal>
-
-          <!-- TOP BAR -->
-
-          <div class="stack-v2-topbar">
-
-            <div class="stack-v2-window">
-
-              <div class="window-dots">
-                <i></i>
-                <i></i>
-                <i></i>
-              </div>
-
-              <span>
-                technical-universe://knowledge-graph
-              </span>
-
-            </div>
-
-            <div class="stack-v2-runtime">
-
-              <span class="stack-v2-chip is-live">
-                <i></i>
-                GRAPH ONLINE
-              </span>
-
-              <span class="stack-v2-chip">
-                08 DOMAINS
-              </span>
-
-              <span class="stack-v2-chip">
-                50 TOOLS
-              </span>
-
-            </div>
-
-          </div>
-
-          <!-- DASHBOARD -->
-
-          <div class="stack-v2-dashboard">
-
-            <!-- DOMAIN RAIL -->
-
-            <aside
-              class="stack-domain-rail"
-              aria-label="Technical domains">
-
-              <span class="stack-rail-label">
-                DOMAIN_INDEX
-              </span>
-
-              <button
-                type="button"
-                class="stack-domain-button is-active"
-                data-stack-domain="systems"
-                aria-pressed="true">
-
-                <span>01</span>
-                <strong>SYSTEMS</strong>
-                <small>07 tools</small>
-
-              </button>
-
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="cloud"
-                aria-pressed="false">
-
-                <span>02</span>
-                <strong>CLOUD</strong>
-                <small>06 tools</small>
-
-              </button>
-
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="network"
-                aria-pressed="false">
-
-                <span>03</span>
-                <strong>NETWORK</strong>
-                <small>07 tools</small>
-
-              </button>
-
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="security"
-                aria-pressed="false">
-
-                <span>04</span>
-                <strong>SECURITY</strong>
-                <small>05 tools</small>
-
-              </button>
-
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="observe"
-                aria-pressed="false">
-
-                <span>05</span>
-                <strong>OBSERVE</strong>
-                <small>05 tools</small>
-
-              </button>
-
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="automation"
-                aria-pressed="false">
-
-                <span>06</span>
-                <strong>AUTOMATION</strong>
-                <small>06 tools</small>
-
-              </button>
-
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="data"
-                aria-pressed="false">
-
-                <span>07</span>
-                <strong>DATA + AI</strong>
-                <small>08 tools</small>
-
-              </button>
-
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="digital"
-                aria-pressed="false">
-
-                <span>08</span>
-                <strong>DIGITAL</strong>
-                <small>06 tools</small>
-
-              </button>
-
-            </aside>
-
-            <!-- UNIVERSE -->
-
-            <div class="stack-universe-panel">
-
-              <div class="stack-universe-toolbar">
-
-                <div>
-                  <span>RELATION_MAP</span>
-                  <strong id="stackUniverseMode">
-                    SYSTEMS FOUNDATION
-                  </strong>
-                </div>
-
-                <div class="stack-universe-legend">
-                  <span><i class="legend-core"></i> DOMAIN</span>
-                  <span><i class="legend-tech"></i> TECHNOLOGY</span>
-                  <span><i class="legend-path"></i> RELATION</span>
-                </div>
-
-              </div>
-
-              <div
-                class="stack-universe-map"
-                id="stackUniverseMap">
-
-                <svg
-                  class="stack-universe-svg"
-                  viewBox="0 0 1000 680"
-                  role="img"
-                  aria-labelledby="stackUniverseTitle stackUniverseDesc">
-
-                  <title id="stackUniverseTitle">
-                    Ievgen Soloviov technical universe knowledge graph
-                  </title>
-
-                  <desc id="stackUniverseDesc">
-                    Conceptual relationship map connecting systems,
-                    cloud native, networking, security, observability,
-                    automation, data and AI, and digital tooling.
-                  </desc>
-
-                  <defs>
-
-                    <radialGradient id="stackCoreGradient">
-                      <stop offset="0%" stop-color="#38bdf8" stop-opacity=".18"></stop>
-                      <stop offset="55%" stop-color="#8b5cf6" stop-opacity=".08"></stop>
-                      <stop offset="100%" stop-color="#040711" stop-opacity="0"></stop>
-                    </radialGradient>
-
-                    <linearGradient id="stackFlowGradient" x1="0" x2="1">
-                      <stop offset="0%" stop-color="#38bdf8"></stop>
-                      <stop offset="48%" stop-color="#8b5cf6"></stop>
-                      <stop offset="100%" stop-color="#2dd4bf"></stop>
-                    </linearGradient>
-
-                    <filter
-                      id="stackPulseGlow"
-                      x="-200%"
-                      y="-200%"
-                      width="500%"
-                      height="500%">
-
-                      <feGaussianBlur
-                        stdDeviation="5"
-                        result="stackPulseBlur">
-                      </feGaussianBlur>
-
-                      <feMerge>
-                        <feMergeNode in="stackPulseBlur"></feMergeNode>
-                        <feMergeNode in="SourceGraphic"></feMergeNode>
-                      </feMerge>
-
-                    </filter>
-
-                  </defs>
-
-                  <!-- BACKGROUND GRID -->
-
-                  <g
-                    class="stack-universe-grid"
-                    aria-hidden="true">
-
-                    <circle cx="500" cy="340" r="90"></circle>
-                    <circle cx="500" cy="340" r="190"></circle>
-                    <circle cx="500" cy="340" r="290"></circle>
-
-                    <path d="M80 340H920"></path>
-                    <path d="M500 55V625"></path>
-                    <path d="M180 120L820 560"></path>
-                    <path d="M820 120L180 560"></path>
-
-                  </g>
-
-                  <!-- CORE -->
-
-                  <circle
-                    class="stack-core-halo"
-                    cx="500"
-                    cy="340"
-                    r="115"
-                    fill="url(#stackCoreGradient)">
-                  </circle>
-
-                  <g class="stack-core-node">
-
-                    <circle
-                      cx="500"
-                      cy="340"
-                      r="57">
-                    </circle>
-
-                    <text
-                      class="stack-core-kicker"
-                      x="500"
-                      y="326"
-                      text-anchor="middle">
-                      TECHNICAL
-                    </text>
-
-                    <text
-                      class="stack-core-title"
-                      x="500"
-                      y="346"
-                      text-anchor="middle">
-                      UNIVERSE
-                    </text>
-
-                    <text
-                      class="stack-core-meta"
-                      x="500"
-                      y="365"
-                      text-anchor="middle">
-                      IEVGEN / 2026
-                    </text>
-
-                  </g>
-
-                  <!-- CORE RADIAL LINKS -->
-
-                  <g class="stack-core-links">
-
-                    <path id="stack-core-systems" d="M457 302 L238 202"></path>
-                    <path id="stack-core-cloud" d="M500 282 L500 155"></path>
-                    <path id="stack-core-network" d="M543 302 L762 202"></path>
-                    <path id="stack-core-security" d="M555 357 L805 405"></path>
-                    <path id="stack-core-observe" d="M535 387 L652 542"></path>
-                    <path id="stack-core-data" d="M465 387 L348 542"></path>
-                    <path id="stack-core-automation" d="M445 357 L195 405"></path>
-                    <path id="stack-core-digital" d="M500 397 L500 470"></path>
-
-                  </g>
-
-                  <!-- CROSS DOMAIN RELATIONSHIPS -->
-
-                  <g class="stack-domain-links">
-
-                    <path
-                      id="stack-edge-systems-cloud"
-                      class="stack-edge"
-                      data-stack-edge="systems cloud"
-                      d="M250 178 C320 100 405 98 458 126">
-                    </path>
-
-                    <path
-                      id="stack-edge-cloud-network"
-                      class="stack-edge"
-                      data-stack-edge="cloud network"
-                      d="M542 126 C610 96 705 105 750 178">
-                    </path>
-
-                    <path
-                      id="stack-edge-network-security"
-                      class="stack-edge"
-                      data-stack-edge="network security"
-                      d="M812 225 C860 270 876 330 850 365">
-                    </path>
-
-                    <path
-                      id="stack-edge-security-observe"
-                      class="stack-edge"
-                      data-stack-edge="security observe"
-                      d="M810 443 C780 500 730 540 690 555">
-                    </path>
-
-                    <path
-                      id="stack-edge-observe-data"
-                      class="stack-edge"
-                      data-stack-edge="observe data"
-                      d="M610 583 C540 615 460 615 390 583">
-                    </path>
-
-                    <path
-                      id="stack-edge-data-automation"
-                      class="stack-edge"
-                      data-stack-edge="data automation"
-                      d="M310 555 C245 530 205 480 190 445">
-                    </path>
-
-                    <path
-                      id="stack-edge-automation-systems"
-                      class="stack-edge"
-                      data-stack-edge="automation systems"
-                      d="M150 365 C125 310 145 250 188 220">
-                    </path>
-
-                    <path
-                      id="stack-edge-cloud-observe"
-                      class="stack-edge stack-edge-major"
-                      data-stack-edge="cloud observe"
-                      d="M520 160 C625 230 690 360 670 520">
-                    </path>
-
-                    <path
-                      id="stack-edge-systems-data"
-                      class="stack-edge stack-edge-major"
-                      data-stack-edge="systems data"
-                      d="M220 225 C240 350 270 460 330 520">
-                    </path>
-
-                    <path
-                      id="stack-edge-automation-cloud"
-                      class="stack-edge"
-                      data-stack-edge="automation cloud"
-                      d="M205 385 C280 300 375 210 465 155">
-                    </path>
-
-                    <path
-                      id="stack-edge-data-digital"
-                      class="stack-edge"
-                      data-stack-edge="data digital"
-                      d="M380 530 C425 505 455 490 475 470">
-                    </path>
-
-                    <path
-                      id="stack-edge-digital-cloud"
-                      class="stack-edge"
-                      data-stack-edge="digital cloud"
-                      d="M525 470 C560 405 560 235 525 160">
-                    </path>
-
-                  </g>
-
-                  <!-- SYSTEMS -->
-
-                  <g
-                    class="stack-domain-node stack-domain-systems is-active"
-                    data-stack-node="systems"
-                    tabindex="0">
-
-                    <circle cx="210" cy="195" r="47"></circle>
-
-                    <text class="stack-domain-index" x="210" y="183" text-anchor="middle">01</text>
-                    <text class="stack-domain-title" x="210" y="202" text-anchor="middle">SYSTEMS</text>
-                    <text class="stack-domain-meta" x="210" y="219" text-anchor="middle">FOUNDATION</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="systems">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Linux" data-stack-domain-ref="systems">
-                      <circle cx="115" cy="120" r="22"></circle>
-                      <text x="115" y="124" text-anchor="middle">LINUX</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Windows Server" data-stack-domain-ref="systems">
-                      <circle cx="100" cy="220" r="22"></circle>
-                      <text x="100" y="217" text-anchor="middle">WINDOWS</text>
-                      <text x="100" y="228" text-anchor="middle">SERVER</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Active Directory" data-stack-domain-ref="systems">
-                      <circle cx="190" cy="95" r="22"></circle>
-                      <text x="190" y="92" text-anchor="middle">ACTIVE</text>
-                      <text x="190" y="103" text-anchor="middle">DIRECTORY</text>
-                    </g>
-
-                  </g>
-
-                  <!-- CLOUD -->
-
-                  <g
-                    class="stack-domain-node stack-domain-cloud"
-                    data-stack-node="cloud"
-                    tabindex="0">
-
-                    <circle cx="500" cy="125" r="47"></circle>
-
-                    <text class="stack-domain-index" x="500" y="113" text-anchor="middle">02</text>
-                    <text class="stack-domain-title" x="500" y="132" text-anchor="middle">CLOUD</text>
-                    <text class="stack-domain-meta" x="500" y="149" text-anchor="middle">NATIVE</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="cloud">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Docker" data-stack-domain-ref="cloud">
-                      <circle cx="390" cy="80" r="22"></circle>
-                      <text x="390" y="84" text-anchor="middle">DOCKER</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Kubernetes" data-stack-domain-ref="cloud">
-                      <circle cx="500" cy="45" r="25"></circle>
-                      <text x="500" y="49" text-anchor="middle">K8S</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Istio" data-stack-domain-ref="cloud">
-                      <circle cx="610" cy="80" r="22"></circle>
-                      <text x="610" y="84" text-anchor="middle">ISTIO</text>
-                    </g>
-
-                  </g>
-
-                  <!-- NETWORK -->
-
-                  <g
-                    class="stack-domain-node stack-domain-network"
-                    data-stack-node="network"
-                    tabindex="0">
-
-                    <circle cx="790" cy="195" r="47"></circle>
-
-                    <text class="stack-domain-index" x="790" y="183" text-anchor="middle">03</text>
-                    <text class="stack-domain-title" x="790" y="202" text-anchor="middle">NETWORK</text>
-                    <text class="stack-domain-meta" x="790" y="219" text-anchor="middle">CONNECTIVITY</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="network">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="TCP/IP" data-stack-domain-ref="network">
-                      <circle cx="810" cy="95" r="22"></circle>
-                      <text x="810" y="99" text-anchor="middle">TCP/IP</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="VLAN" data-stack-domain-ref="network">
-                      <circle cx="900" cy="150" r="22"></circle>
-                      <text x="900" y="154" text-anchor="middle">VLAN</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="pfSense" data-stack-domain-ref="network">
-                      <circle cx="905" cy="245" r="22"></circle>
-                      <text x="905" y="249" text-anchor="middle">pfSense</text>
-                    </g>
-
-                  </g>
-
-                  <!-- SECURITY -->
-
-                  <g
-                    class="stack-domain-node stack-domain-security"
-                    data-stack-node="security"
-                    tabindex="0">
-
-                    <circle cx="835" cy="405" r="47"></circle>
-
-                    <text class="stack-domain-index" x="835" y="393" text-anchor="middle">04</text>
-                    <text class="stack-domain-title" x="835" y="412" text-anchor="middle">SECURITY</text>
-                    <text class="stack-domain-meta" x="835" y="429" text-anchor="middle">PROTECTION</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="security">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Firewall" data-stack-domain-ref="security">
-                      <circle cx="920" cy="335" r="22"></circle>
-                      <text x="920" y="339" text-anchor="middle">FIREWALL</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Suricata" data-stack-domain-ref="security">
-                      <circle cx="935" cy="430" r="22"></circle>
-                      <text x="935" y="434" text-anchor="middle">SURICATA</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="SSL / TLS" data-stack-domain-ref="security">
-                      <circle cx="870" cy="505" r="22"></circle>
-                      <text x="870" y="509" text-anchor="middle">SSL/TLS</text>
-                    </g>
-
-                  </g>
-
-                  <!-- OBSERVABILITY -->
-
-                  <g
-                    class="stack-domain-node stack-domain-observe"
-                    data-stack-node="observe"
-                    tabindex="0">
-
-                    <circle cx="660" cy="570" r="47"></circle>
-
-                    <text class="stack-domain-index" x="660" y="558" text-anchor="middle">05</text>
-                    <text class="stack-domain-title" x="660" y="577" text-anchor="middle">OBSERVE</text>
-                    <text class="stack-domain-meta" x="660" y="594" text-anchor="middle">VISIBILITY</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="observe">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Prometheus" data-stack-domain-ref="observe">
-                      <circle cx="750" cy="600" r="22"></circle>
-                      <text x="750" y="604" text-anchor="middle">PROM</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Grafana" data-stack-domain-ref="observe">
-                      <circle cx="680" cy="645" r="22"></circle>
-                      <text x="680" y="649" text-anchor="middle">GRAFANA</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Kiali" data-stack-domain-ref="observe">
-                      <circle cx="590" cy="630" r="22"></circle>
-                      <text x="590" y="634" text-anchor="middle">KIALI</text>
-                    </g>
-
-                  </g>
-
-                  <!-- DATA + AI -->
-
-                  <g
-                    class="stack-domain-node stack-domain-data"
-                    data-stack-node="data"
-                    tabindex="0">
-
-                    <circle cx="340" cy="570" r="47"></circle>
-
-                    <text class="stack-domain-index" x="340" y="558" text-anchor="middle">07</text>
-                    <text class="stack-domain-title" x="340" y="577" text-anchor="middle">DATA + AI</text>
-                    <text class="stack-domain-meta" x="340" y="594" text-anchor="middle">INTELLIGENCE</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="data">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Python" data-stack-domain-ref="data">
-                      <circle cx="250" cy="600" r="22"></circle>
-                      <text x="250" y="604" text-anchor="middle">PYTHON</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="PostgreSQL" data-stack-domain-ref="data">
-                      <circle cx="320" cy="645" r="22"></circle>
-                      <text x="320" y="649" text-anchor="middle">POSTGRES</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Big Data" data-stack-domain-ref="data">
-                      <circle cx="410" cy="630" r="22"></circle>
-                      <text x="410" y="634" text-anchor="middle">BIG DATA</text>
-                    </g>
-
-                    <g class="stack-tech-node stack-tech-ai" tabindex="0" data-stack-tech="Artificial Intelligence" data-stack-domain-ref="data">
-                      <circle cx="190" cy="545" r="24"></circle>
-                      <text x="190" y="549" text-anchor="middle">AI</text>
-                    </g>
-
-                  </g>
-
-                  <!-- AUTOMATION -->
-
-                  <g
-                    class="stack-domain-node stack-domain-automation"
-                    data-stack-node="automation"
-                    tabindex="0">
-
-                    <circle cx="165" cy="405" r="47"></circle>
-
-                    <text class="stack-domain-index" x="165" y="393" text-anchor="middle">06</text>
-                    <text class="stack-domain-title" x="165" y="412" text-anchor="middle">AUTOMATE</text>
-                    <text class="stack-domain-meta" x="165" y="429" text-anchor="middle">OPERATIONS</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="automation">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Bash" data-stack-domain-ref="automation">
-                      <circle cx="80" cy="335" r="22"></circle>
-                      <text x="80" y="339" text-anchor="middle">BASH</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Ansible" data-stack-domain-ref="automation">
-                      <circle cx="65" cy="430" r="22"></circle>
-                      <text x="65" y="434" text-anchor="middle">ANSIBLE</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="GitHub" data-stack-domain-ref="automation">
-                      <circle cx="130" cy="505" r="22"></circle>
-                      <text x="130" y="509" text-anchor="middle">GITHUB</text>
-                    </g>
-
-                  </g>
-
-                  <!-- DIGITAL -->
-
-                  <g
-                    class="stack-domain-node stack-domain-digital"
-                    data-stack-node="digital"
-                    tabindex="0">
-
-                    <circle cx="500" cy="470" r="43"></circle>
-
-                    <text class="stack-domain-index" x="500" y="458" text-anchor="middle">08</text>
-                    <text class="stack-domain-title" x="500" y="477" text-anchor="middle">DIGITAL</text>
-                    <text class="stack-domain-meta" x="500" y="494" text-anchor="middle">WEB + CRM</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="digital">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="WordPress" data-stack-domain-ref="digital">
-                      <circle cx="555" cy="420" r="20"></circle>
-                      <text x="555" y="424" text-anchor="middle">WP</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Zoho CRM" data-stack-domain-ref="digital">
-                      <circle cx="445" cy="420" r="20"></circle>
-                      <text x="445" y="424" text-anchor="middle">ZOHO</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="HTML" data-stack-domain-ref="digital">
-                      <circle cx="500" cy="535" r="20"></circle>
-                      <text x="500" y="539" text-anchor="middle">HTML</text>
-                    </g>
-
-                  </g>
-
-                  <!-- LIVE PULSES -->
-
-                  <circle
-                    id="stackPulsePrimary"
-                    class="stack-live-pulse stack-live-pulse-primary"
-                    cx="250"
-                    cy="178"
-                    r="6"
-                    filter="url(#stackPulseGlow)">
-                  </circle>
-
-                  <circle
-                    id="stackPulseSecondary"
-                    class="stack-live-pulse stack-live-pulse-secondary"
-                    cx="542"
-                    cy="126"
-                    r="4.5"
-                    filter="url(#stackPulseGlow)">
-                  </circle>
-
-                </svg>
-
-              </div>
-
-              <div class="stack-universe-footer">
-
-                <span>
-                  CONCEPTUAL RELATION MAP
-                </span>
-
-                <i></i>
-
-                <span id="stackActivePath">
-                  SYSTEMS → CLOUD → NETWORK
-                </span>
-
-                <i></i>
-
-                <span>
-                  HOVER / CLICK TO INSPECT
-                </span>
-
-              </div>
-
-            </div>
-
-            <!-- INSPECTOR -->
-
-            <aside class="stack-inspector">
-
-              <div class="stack-inspector-head">
-
-                <span>
-                  NODE_INSPECTOR
-                </span>
-
-                <i class="stack-inspector-live"></i>
-
-              </div>
-
-              <div class="stack-inspector-body">
-
-                <span
-                  class="stack-inspector-code"
-                  id="stackInspectorCode">
-                  DOMAIN_01
-                </span>
-
-                <h3 id="stackInspectorTitle">
-                  Systems
-                </h3>
-
-                <p id="stackInspectorDescription">
-                  Foundation layer for services, users and workloads.
-                </p>
-
-                <div class="stack-inspector-metrics">
-
-                  <div>
-                    <span>DOMAIN</span>
-                    <strong id="stackInspectorDomain">SYSTEMS</strong>
-                  </div>
-
-                  <div>
-                    <span>TOOLS</span>
-                    <strong id="stackInspectorCount">07</strong>
-                  </div>
-
-                  <div>
-                    <span>STATE</span>
-                    <strong class="is-online" id="stackInspectorState">ACTIVE</strong>
-                  </div>
-
-                </div>
-
-                <span class="stack-inspector-label">
-                  DOMAIN TOOLSET
-                </span>
-
-                <div
-                  class="stack-inspector-techs"
-                  id="stackInspectorTechs">
-
-                  <span>Linux</span>
-                  <span>Ubuntu</span>
-                  <span>Windows Server</span>
-                  <span>Active Directory</span>
-                  <span>DNS</span>
-                  <span>DHCP</span>
-                  <span>Virtualization</span>
-
-                </div>
-
-                <div class="stack-inspector-signal">
-
-                  <span>
-                    RELATION SIGNAL
-                  </span>
-
-                  <div class="stack-signal-track">
-                    <i></i>
-                  </div>
-
-                  <strong id="stackInspectorRelation">
-                    FOUNDATION → PLATFORM
-                  </strong>
-
-                </div>
-
-              </div>
-
-            </aside>
-
-          </div>
-
-          <!-- FULL DOMAIN BANK -->
-
-          <div class="stack-domain-bank">
-
-            <article
-              class="stack-bank-card is-active"
-              data-stack-bank="systems"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Systems domain">
-
-              <div class="stack-bank-head">
-                <span>01</span>
-                <strong>SYSTEMS</strong>
-                <small>FOUNDATION</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>Linux</span>
-                <span>Ubuntu</span>
-                <span>Windows Server</span>
-                <span>Active Directory</span>
-                <span>DNS</span>
-                <span>DHCP</span>
-                <span>Virtualization</span>
-              </div>
-
-            </article>
-
-            <article
-              class="stack-bank-card"
-              data-stack-bank="cloud"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Cloud Native domain">
-
-              <div class="stack-bank-head">
-                <span>02</span>
-                <strong>CLOUD NATIVE</strong>
-                <small>PLATFORM</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>Docker</span>
-                <span>Compose</span>
-                <span>Swarm</span>
-                <span>Kubernetes</span>
-                <span>Helm</span>
-                <span>Istio</span>
-              </div>
-
-            </article>
-
-            <article
-              class="stack-bank-card"
-              data-stack-bank="network"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Network domain">
-
-              <div class="stack-bank-head">
-                <span>03</span>
-                <strong>NETWORK</strong>
-                <small>CONNECTIVITY</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>TCP/IP</span>
-                <span>Subnetting</span>
-                <span>VLAN</span>
-                <span>Routing</span>
-                <span>Switching</span>
-                <span>LAN / DMZ</span>
-                <span>pfSense</span>
-              </div>
-
-            </article>
-
-            <article
-              class="stack-bank-card"
-              data-stack-bank="security"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Security domain">
-
-              <div class="stack-bank-head">
-                <span>04</span>
-                <strong>SECURITY</strong>
-                <small>PROTECTION</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>Firewall</span>
-                <span>Suricata</span>
-                <span>IDS / IPS</span>
-                <span>iptables</span>
-                <span>SSL / TLS</span>
-              </div>
-
-            </article>
-
-            <article
-              class="stack-bank-card"
-              data-stack-bank="observe"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Observability domain">
-
-              <div class="stack-bank-head">
-                <span>05</span>
-                <strong>OBSERVE</strong>
-                <small>VISIBILITY</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>Prometheus</span>
-                <span>Grafana</span>
-                <span>Kiali</span>
-                <span>Zabbix</span>
-                <span>SNMP</span>
-              </div>
-
-            </article>
-
-            <article
-              class="stack-bank-card"
-              data-stack-bank="automation"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Automation domain">
-
-              <div class="stack-bank-head">
-                <span>06</span>
-                <strong>AUTOMATION</strong>
-                <small>OPERATIONS</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>Bash</span>
-                <span>PowerShell</span>
-                <span>Ansible</span>
-                <span>YAML</span>
-                <span>Git</span>
-                <span>GitHub</span>
-              </div>
-
-            </article>
-
-            <article
-              class="stack-bank-card"
-              data-stack-bank="data"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Data and AI domain">
-
-              <div class="stack-bank-head">
-                <span>07</span>
-                <strong>DATA + AI</strong>
-                <small>INTELLIGENCE</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>Python</span>
-                <span>SQL</span>
-                <span>PostgreSQL</span>
-                <span>MySQL</span>
-                <span>Redis</span>
-                <span>Big Data</span>
-                <span>Data Analysis</span>
-                <span>Artificial Intelligence</span>
-              </div>
-
-            </article>
-
-            <article
-              class="stack-bank-card"
-              data-stack-bank="digital"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Digital domain">
-
-              <div class="stack-bank-head">
-                <span>08</span>
-                <strong>DIGITAL</strong>
-                <small>WEB + CRM</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>WordPress</span>
-                <span>Zoho CRM</span>
-                <span>Photoshop</span>
-                <span>HTML</span>
-                <span>CSS</span>
-                <span>Plone CMS</span>
-              </div>
-
-            </article>
-
-          </div>
-
-          <!-- TELEMETRY -->
-
-          <div class="stack-v2-telemetry">
-
-            <div>
-              <span>FOUNDATION</span>
-              <strong>SYSTEMS + NETWORK</strong>
-            </div>
-
-            <i>→</i>
-
-            <div>
-              <span>PLATFORM</span>
-              <strong>CLOUD + AUTOMATION</strong>
-            </div>
-
-            <i>→</i>
-
-            <div>
-              <span>VISIBILITY</span>
-              <strong>SECURITY + OBSERVE</strong>
-            </div>
-
-            <i>→</i>
-
-            <div>
-              <span>EXPANSION</span>
-              <strong>DATA + AI</strong>
-            </div>
-
-          </div>
-
-        </article>
-
-      </div>
-
-    </section>
-
-    <!-- =================================================== -->
-    <!-- 07 / TECHNICAL LAB                                  -->
-    <!-- =================================================== -->
-
-    <section
-      class="section lab-section"
-      id="lab">
-
-      <div class="section-shell">
-
-        <div
-          class="section-heading"
-          data-reveal>
-
-          <span class="section-index">
-            07
-          </span>
-
-          <div>
-
-            <p class="section-label">
-
-              TECHNICAL LAB
-
-            </p>
-
-            <h2>
-
-              Where systems
-              <br>
-              become experiments.
-
-            </h2>
-
-          </div>
-
-        </div>
-
-        <div class="lab-console">
-
-          <div
-            class="lab-console-top"
-            data-reveal>
-
-            <div class="window-dots">
-
-              <i></i>
-              <i></i>
-              <i></i>
-
-            </div>
-
-            <span>
-              ~/laboratory/modules
-            </span>
-
-            <strong>
-              06 ACTIVE AREAS
-            </strong>
-
-          </div>
-
-          <div class="lab-grid">
-
-            <article
-              class="lab-module"
-              data-reveal>
-
-              <span>
-                LAB_01
-              </span>
-
-              <h3>
-                Container Platforms
-              </h3>
-
-              <p>
-                Docker · Compose · Swarm · Kubernetes · Helm · Istio
-              </p>
-
-            </article>
-
-            <article
-              class="lab-module"
-              data-reveal>
-
-              <span>
-                LAB_02
-              </span>
-
-              <h3>
-                Infrastructure
-              </h3>
-
-              <p>
-                Linux · Windows Server · AD · DNS · DHCP
-              </p>
-
-            </article>
-
-            <article
-              class="lab-module"
-              data-reveal>
-
-              <span>
-                LAB_03
-              </span>
-
-              <h3>
-                Security & Connectivity
-              </h3>
-
-              <p>
-                pfSense · VLAN · Firewalls · Suricata · iptables
-              </p>
-
-            </article>
-
-            <article
-              class="lab-module"
-              data-reveal>
-
-              <span>
-                LAB_04
-              </span>
-
-              <h3>
-                Monitoring
-              </h3>
-
-              <p>
-                Zabbix · Prometheus · Grafana · Kiali · SNMP
-              </p>
-
-            </article>
-
-            <article
-              class="lab-module"
-              data-reveal>
-
-              <span>
-                LAB_05
-              </span>
-
-              <h3>
-                Network Services
-              </h3>
-
-              <p>
-                Matrix · Synapse · Element · Nginx · RTMP · HLS
-              </p>
-
-            </article>
-
-            <article
-              class="lab-module lab-module-current"
-              data-reveal>
-
-              <span>
-                LAB_06 / CURRENT
-              </span>
-
-              <h3>
-                Intelligence
-              </h3>
-
-              <p>
-                Python · Data Processing · Big Data · AI
-              </p>
-
-            </article>
-
-          </div>
-
-          <div
-            class="lab-process"
-            data-reveal>
-
-            <span>
-              BUILD
-            </span>
-
-            <i>
-              →
-            </i>
-
-            <span>
-              BREAK
-            </span>
-
-            <i>
-              →
-            </i>
-
-            <span>
-              DEBUG
-            </span>
-
-            <i>
-              →
-            </i>
-
-            <span>
-              DOCUMENT
-            </span>
-
-            <i>
-              →
-            </i>
-
-            <span>
-              IMPROVE
-            </span>
-
-            <i>
-              →
-            </i>
-
-            <span class="lab-process-repeat">
-              REPEAT
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- =================================================== -->
-    <!-- 08 / EDUCATION                                      -->
-    <!-- =================================================== -->
-
-    <section
-      class="section section-dark education-section"
-      id="education">
-
-      <div class="section-shell">
-
-        <div
-          class="section-heading"
-          data-reveal>
-
-          <span class="section-index">
-            08
-          </span>
-
-          <div>
-
-            <p class="section-label">
-
-              EDUCATION PATH
-
-            </p>
-
-            <h2>
-
-              Building the foundation
-              <br>
-              layer by layer.
-
-            </h2>
-
-          </div>
-
-        </div>
-
-        <div class="education-path">
-
-          <!-- CURRENT -->
-
-          <article
-            class="education-stage current"
-            data-reveal>
-
-            <span class="education-status">
-
-              ● CURRENT
-
-            </span>
-
-            <span class="education-year">
-
-              2026 → 2027
-
-            </span>
-
-            <h3>
-
-              Artificial Intelligence
-              & Big Data
-
-            </h3>
-
-            <p class="education-type">
-
-              Specialization Course
-
-            </p>
-
-            <p class="education-school">
-
-              Institut Sa Palomera
-
-            </p>
-
-            <div class="tags">
-
-              <span>Python</span>
-              <span>Data</span>
-              <span>Big Data</span>
-              <span>AI</span>
-
-            </div>
-
-          </article>
-
-          <!-- ASIR -->
-
-          <article
-            class="education-stage"
-            data-reveal>
-
-            <span class="education-status">
-
-              COMPLETE
-
-            </span>
-
-            <span class="education-year">
-
-              2024 → 2026
-
-            </span>
-
-            <h3>
-
-              Networked Computer
-              Systems Administration
-
-            </h3>
-
-            <p class="education-type">
-
-              Higher Technician · ASIR
-
-            </p>
-
-            <p class="education-school">
-
-              Institut Sa Palomera
-
-            </p>
-
-            <div class="tags">
-
-              <span>Systems</span>
-              <span>Networking</span>
-              <span>Cloud Native</span>
-              <span>Databases</span>
-
-            </div>
-
-          </article>
-
-          <!-- SMX -->
-
-          <article
-            class="education-stage"
-            data-reveal>
-
-            <span class="education-status">
-
-              COMPLETE
-
-            </span>
-
-            <span class="education-year">
-
-              2022 → 2024
-
-            </span>
-
-            <h3>
-
-              Microcomputer Systems
-              & Networks
-
-            </h3>
-
-            <p class="education-type">
-
-              Technician · SMX
-
-            </p>
-
-            <p class="education-school">
-
-              Institut Sa Palomera
-
-            </p>
-
-            <div class="tags">
-
-              <span>Hardware</span>
-              <span>Support</span>
-              <span>Networks</span>
-              <span>Operating Systems</span>
-
-            </div>
-
-          </article>
-
-        </div>
-
-        <div
-          class="education-vector"
-          data-reveal>
-
-          <span>
-
-            HARDWARE
-
-          </span>
-
-          <i>
-            →
-          </i>
-
-          <span>
-
-            SYSTEMS
-
-          </span>
-
-          <i>
-            →
-          </i>
-
-          <span>
-
-            INFRASTRUCTURE
-
-          </span>
-
-          <i>
-            →
-          </i>
-
-          <span>
-
-            CLOUD
-
-          </span>
-
-          <i>
-            →
-          </i>
-
-          <span>
-
-            DATA
-
-          </span>
-
-          <i>
-            →
-          </i>
-
-          <span>
-
-            INTELLIGENCE
-
-          </span>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- =================================================== -->
-    <!-- 09 / HUMAN PROTOCOL                                 -->
-    <!-- =================================================== -->
-
-    <section
-      class="section human-section"
-      id="human">
-
-      <div class="section-shell">
-
-        <div
-          class="section-heading"
-          data-reveal>
-
-          <span class="section-index">
-            09
-          </span>
-
-          <div>
-
-            <p class="section-label">
-
-              HUMAN PROTOCOL
-
-            </p>
-
-            <h2>
-
-              Technology is only
-              <br>
-              part of the system.
-
-            </h2>
-
-          </div>
-
-        </div>
-
-        <div class="human-grid">
-
-          <!-- LANGUAGES -->
-
-          <article
-            class="human-card glass-card"
-            data-reveal>
-
-            <span class="card-code">
-
-              LANGUAGE_IO
-
-            </span>
-
-            <div class="language-row">
-
-              <strong>
-                ES
-              </strong>
-
-              <span>
-                Spanish
-              </span>
-
-              <small>
-                Native
-              </small>
-
-            </div>
-
-            <div class="language-row">
-
-              <strong>
-                CA
-              </strong>
-
-              <span>
-                Catalan
-              </span>
-
-              <small>
-                Native
-              </small>
-
-            </div>
-
-            <div class="language-row">
-
-              <strong>
-                EN
-              </strong>
-
-              <span>
-                English
-              </span>
-
-              <small>
-                B1 / B2
-              </small>
-
-            </div>
-
-            <div class="language-row">
-
-              <strong>
-                RU
-              </strong>
-
-              <span>
-                Russian
-              </span>
-
-              <small>
-                Basic
-              </small>
-
-            </div>
-
-          </article>
-
-          <!-- PRINCIPLES -->
-
-          <article
-            class="human-card glass-card"
-            data-reveal>
-
-            <span class="card-code">
-
-              OPERATING_PRINCIPLES
-
-            </span>
-
-            <ol class="principles">
-
-              <li>
-                Learn by building.
-              </li>
-
-              <li>
-                Understand the complete system.
-              </li>
-
-              <li>
-                Document what matters.
-              </li>
-
-              <li>
-                Automate repetitive work.
-              </li>
-
-              <li>
-                Debug before guessing.
-              </li>
-
-              <li>
-                Improve every iteration.
-              </li>
-
-            </ol>
-
-          </article>
-
-          <!-- DIRECTION -->
-
-          <article
-            class="human-card human-direction glass-card"
-            data-reveal>
-
-            <span class="card-code">
-
-              CURRENT_VECTOR
-
-            </span>
-
-            <div class="direction-map">
-
-              <span>
-                CLOUD
-              </span>
-
-              <span>
-                DEVOPS
-              </span>
-
-              <span>
-                AUTOMATION
-              </span>
-
-              <span>
-                SECURITY
-              </span>
-
-              <span>
-                DATA ENGINEERING
-              </span>
-
-              <span>
-                AI
-              </span>
-
-            </div>
-
-            <blockquote>
-
-              The goal is not to collect technologies.
-              The goal is to understand how they work together.
-
-            </blockquote>
-
-          </article>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- =================================================== -->
-    <!-- 10 / LIVE SIGNAL                                    -->
-    <!-- =================================================== -->
-
-    <section
-      class="section section-dark signal-section"
-      id="signal">
-
-      <div class="section-shell">
-
-        <div
-          class="section-heading"
-          data-reveal>
-
-          <span class="section-index">
-            10
-          </span>
-
-          <div>
-
-            <p class="section-label">
-
-              PUBLIC SIGNAL
-
-            </p>
-
-            <h2>
-
-              The work continues
-              <br>
-              outside this page.
-
-            </h2>
-
-          </div>
-
-        </div>
-
-        <div class="signal-grid">
-
-          <!-- GITHUB -->
-
-          <article
-            class="signal-card signal-github"
-            data-reveal>
-
-            <div class="signal-card-top">
-
-              <span>
-                GITHUB / LIVE
-              </span>
-
-              <i class="live-dot"></i>
-
-            </div>
-
-            <h3>
-
-              Technical repositories
-
-            </h3>
-
-            <p>
-
-              Projects, documentation, infrastructure labs
-              and ongoing technical work.
-
-            </p>
-
-            <div class="github-live-stats">
-
-              <div>
-
-                <strong
-                  data-github-stat="repos">
-
-                  --
-
-                </strong>
-
-                <span>
-                  PUBLIC REPOS
-                </span>
-
-              </div>
-
-              <div>
-
-                <strong
-                  data-github-stat="followers">
-
-                  --
-
-                </strong>
-
-                <span>
-                  FOLLOWERS
-                </span>
-
-              </div>
-
-              <div>
-
-                <strong
-                  data-github-stat="following">
-
-                  --
-
-                </strong>
-
-                <span>
-                  FOLLOWING
-                </span>
-
-              </div>
-
-            </div>
-
-            <a
-              href="https://github.com/IevgenSoloviov"
-              target="_blank"
-              rel="noopener noreferrer">
-
-              github.com/IevgenSoloviov
-
-              <span>
-                ↗
-              </span>
-
-            </a>
-
-          </article>
-
-          <!-- LINKEDIN -->
-
-          <article
-            class="signal-card signal-linkedin"
-            data-reveal>
-
-            <div class="signal-card-top">
-
-              <span>
-                LINKEDIN / PROFESSIONAL
-              </span>
-
-              <i class="signal signal-blue"></i>
-
-            </div>
-
-            <h3>
-
-              Professional profile
-
-            </h3>
-
-            <p>
-
-              Education, professional experience,
-              skills and professional network.
-
-            </p>
-
-            <div class="signal-stack">
-
-              <span>
-                Systems
-              </span>
-
-              <span>
-                Linux
-              </span>
-
-              <span>
-                Docker
-              </span>
-
-              <span>
-                Kubernetes
-              </span>
-
-              <span>
-                Networking
-              </span>
-
-            </div>
-
-            <a
-              href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299"
-              target="_blank"
-              rel="noopener noreferrer">
-
-              View LinkedIn
-
-              <span>
-                ↗
-              </span>
-
-            </a>
-
-          </article>
-
-          <!-- CURRENT STATUS -->
-
-          <article
-            class="signal-card signal-status"
-            data-reveal>
-
-            <div class="signal-card-top">
-
-              <span>
-                RUNTIME / STATUS
-              </span>
-
-              <i class="live-dot"></i>
-
-            </div>
-
-            <div class="runtime-log">
-
-              <p>
-
-                <span>
-                  SYSTEMS
-                </span>
-
-                <strong>
-                  STABLE
-                </strong>
-
-              </p>
-
-              <p>
-
-                <span>
-                  NETWORKING
-                </span>
-
-                <strong>
-                  STABLE
-                </strong>
-
-              </p>
-
-              <p>
-
-                <span>
-                  CLOUD_NATIVE
-                </span>
-
-                <strong>
-                  ACTIVE
-                </strong>
-
-              </p>
-
-              <p>
-
-                <span>
-                  PYTHON
-                </span>
-
-                <strong>
-                  BUILDING
-                </strong>
-
-              </p>
-
-              <p>
-
-                <span>
-                  BIG_DATA
-                </span>
-
-                <strong>
-                  BUILDING
-                </strong>
-
-              </p>
-
-              <p>
-
-                <span>
-                  AI
-                </span>
-
-                <strong>
-                  BUILDING
-                </strong>
-
-              </p>
-
-            </div>
-
-          </article>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- =================================================== -->
-    <!-- 11 / CONTACT                                        -->
-    <!-- =================================================== -->
-
-    <section
-      class="contact-section"
-      id="contact">
-
-      <div
-        class="contact-shell"
-        data-reveal>
-
-        <span class="section-label">
-
-          11 / CONNECTION
-
-        </span>
-
-        <p class="contact-pretitle">
-
-          ievgen@portfolio:~$ connect --next
-
-        </p>
-
-        <h2>
-
-          Let's build
-
-          <br>
-
-          <span>
-            the next system.
-          </span>
-
-        </h2>
-
-        <p class="contact-description">
-
-          Interested in opportunities related to systems,
-          infrastructure, networking, cloud-native platforms,
-          automation, data and emerging AI technologies.
-
-        </p>
-
-        <div class="contact-actions">
-
-          <a
-            href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-primary">
-
-            Connect on LinkedIn
-
-            <span>
-              ↗
-            </span>
-
-          </a>
-
-          <a
-            href="https://github.com/IevgenSoloviov"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-secondary">
-
-            Explore GitHub
-
-            <span>
-              ↗
-            </span>
-
-          </a>
-
-          <a
-            href="#hero"
-            class="btn btn-ghost">
-
-            Return to system
-
-            <span>
-              ↑
-            </span>
-
-          </a>
-
-        </div>
-
-        <!-- CONNECTION TERMINAL -->
-
-        <div class="connection-terminal">
-
-          <div class="connection-terminal-top">
-
-            <div class="window-dots">
-
-              <i></i>
-              <i></i>
-              <i></i>
-
-            </div>
-
-            <span>
-              connection://status
-            </span>
-
-          </div>
-
-          <div class="connection-terminal-body">
-
-            <p>
-
-              <span>
-                portfolio
-              </span>
-
-              <strong>
-                ONLINE
-              </strong>
-
-            </p>
-
-            <p>
-
-              <span>
-                github
-              </span>
-
-              <strong>
-                ONLINE
-              </strong>
-
-            </p>
-
-            <p>
-
-              <span>
-                linkedin
-              </span>
-
-              <strong>
-                ONLINE
-              </strong>
-
-            </p>
-
-            <p>
-
-              <span>
-                opportunities
-              </span>
-
-              <strong>
-                OPEN
-              </strong>
-
-            </p>
-
-            <div class="connection-command">
-
-              awaiting_next_connection
-
-              <i class="terminal-cursor">
-                _
-              </i>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="connection-status">
-
-          <span>
-
-            CONNECTION_STATUS
-
-          </span>
-
-          <strong>
-
-            READY
-
-          </strong>
-
-          <i></i>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- ===================================================== -->
-  <!-- FOOTER                                                -->
-  <!-- ===================================================== -->
-
-  <footer class="footer">
-
-    <div class="footer-shell">
-
-      <div>
-
-        <span>
-
-          © <span id="year"></span>
-          Ievgen Soloviov
-
-        </span>
-
-      </div>
-
-      <div class="footer-system">
-
-        SYSTEMS
-
-        <i>//</i>
-
-        CLOUD NATIVE
-
-        <i>//</i>
-
-        AUTOMATION
-
-        <i>//</i>
-
-        DATA
-
-        <i>//</i>
-
-        AI
-
-      </div>
-
-      <div>
-
-        <span>
-
-          EOF_
-
-        </span>
-
-      </div>
-
-    </div>
-
-  </footer>
-
-  <!-- ===================================================== -->
-  <!-- FLOATING STATUS DOCK                                  -->
-  <!-- ===================================================== -->
-
-  <div
-    class="floating-dock"
-    aria-label="Quick actions">
-
-    <a
-      href="https://github.com/IevgenSoloviov"
-      target="_blank"
-      rel="noopener noreferrer"
-      title="GitHub">
-
-      GH
-
-    </a>
-
-    <a
-      href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299"
-      target="_blank"
-      rel="noopener noreferrer"
-      title="LinkedIn">
-
-      IN
-
-    </a>
-
-    <button
-      id="scrollTopBtn"
-      class="scroll-top"
-      aria-label="Scroll to top"
-      title="Return to top">
-
-      ↑
-
-    </button>
-
-  </div>
-
-  <!-- ===================================================== -->
-  <!-- COMMAND PALETTE                                       -->
-  <!-- ===================================================== -->
-
-  <div
-    class="command-palette"
-    id="commandPalette"
-    aria-hidden="true">
-
-    <div
-      class="command-backdrop"
-      data-close-command>
-    </div>
-
-    <div
-      class="command-panel"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="commandTitle">
-
-      <div class="command-header">
-
-        <span id="commandTitle">
-
-          QUICK_NAVIGATION
-
-        </span>
-
-        <kbd>
-
-          ESC
-
-        </kbd>
-
-      </div>
-
-      <div class="command-search">
-
-        <span>
-          &gt;
-        </span>
-
-        <input
-          id="commandSearch"
-          type="text"
-          autocomplete="off"
-          placeholder="Jump to a system..."
-          aria-label="Search portfolio sections">
-
-      </div>
-
-      <div class="command-list">
-
-        <button
-          data-command-target="#identity">
-
-          <span>
-            01
-          </span>
-
-          <strong>
-            Identity
-          </strong>
-
-          <small>
-            System profile
-          </small>
-
-        </button>
-
-        <button
-          data-command-target="#mission">
-
-          <span>
-            02
-          </span>
-
-          <strong>
-            Current Mission
-          </strong>
-
-          <small>
-            AI + Big Data
-          </small>
-
-        </button>
-
-        <button
-          data-command-target="#experience">
-
-          <span>
-            03
-          </span>
-
-          <strong>
-            Experience
-          </strong>
-
-          <small>
-            Professional environments
-          </small>
-
-        </button>
-
-        <button
-          data-command-target="#flagship">
-
-          <span>
-            04
-          </span>
-
-          <strong>
-            Flagship
-          </strong>
-
-          <small>
-            ASIX Intermodular
-          </small>
-
-        </button>
-
-        <button
-          data-command-target="#projects">
-
-          <span>
-            05
-          </span>
-
-          <strong>
-            Projects
-          </strong>
-
-          <small>
-            Selected systems
-          </small>
-
-        </button>
-
-        <button
-          data-command-target="#stack">
-
-          <span>
-            06
-          </span>
-
-          <strong>
-            Stack
-          </strong>
-
-          <small>
-            Technical universe
-          </small>
-
-        </button>
-
-        <button
-          data-command-target="#lab">
-
-          <span>
-            07
-          </span>
-
-          <strong>
-            Technical Lab
-          </strong>
-
-          <small>
-            Experiments
-          </small>
-
-        </button>
-
-        <button
-          data-command-target="#education">
-
-          <span>
-            08
-          </span>
-
-          <strong>
-            Education
-          </strong>
-
-          <small>
-            Technical path
-          </small>
-
-        </button>
-
-        <button
-          data-command-target="#human">
-
-          <span>
-            09
-          </span>
-
-          <strong>
-            Human Protocol
-          </strong>
-
-          <small>
-            Languages + principles
-          </small>
-
-        </button>
-
-        <button
-          data-command-target="#signal">
-
-          <span>
-            10
-          </span>
-
-          <strong>
-            Public Signal
-          </strong>
-
-          <small>
-            GitHub + runtime
-          </small>
-
-        </button>
-
-        <button
-          data-command-target="#contact">
-
-          <span>
-            11
-          </span>
-
-          <strong>
-            Connect
-          </strong>
-
-          <small>
-            Next connection
-          </small>
-
-        </button>
-
-      </div>
-
-      <div class="command-footer">
-
-        <span>
-
-          ↑ ↓ navigate
-
-        </span>
-
-        <span>
-
-          ENTER select
-
-        </span>
-
-        <span>
-
-          ESC close
-
-        </span>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- ===================================================== -->
-  <!-- SCRIPTS                                               -->
-  <!-- ===================================================== -->
-
-  <script
-    src="script.js"
-    defer>
-  </script>
-
-</body>
-
-</html>
+      "Data",
+      "AI"
+    ].join(" → ")
+  );
+
+});
