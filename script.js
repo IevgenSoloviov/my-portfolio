@@ -6690,8 +6690,984 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
 
+
   /* ====================================================================== */
-  /* 27 / SYSTEM READY                                                       */
+  /* 27 / TECHNICAL LAB V2 INTERACTION ENGINE                              */
+  /* ====================================================================== */
+
+  const labV2Shell =
+    $("#technicalLabConsole");
+
+  const labV2Buttons =
+    $$(".lab-v2-mode");
+
+  const labV2BankCards =
+    $$(".lab-v2-bank-card");
+
+  const labV2ModeLabel =
+    $("#labV2ModeLabel");
+
+  const labV2Run =
+    $("#labV2Run");
+
+  const labV2Terminal =
+    $("#labV2Terminal");
+
+  const labV2TerminalOutput =
+    $("#labV2TerminalOutput");
+
+  const labV2Prompt =
+    $("#labV2Prompt");
+
+  const labV2Code =
+    $("#labV2Code");
+
+  const labV2Title =
+    $("#labV2Title");
+
+  const labV2Description =
+    $("#labV2Description");
+
+  const labV2State =
+    $("#labV2State");
+
+  const labV2Mode =
+    $("#labV2Mode");
+
+  const labV2ToolCount =
+    $("#labV2ToolCount");
+
+  const labV2Tools =
+    $("#labV2Tools");
+
+  const labV2EventLog =
+    $("#labV2EventLog");
+
+
+  const LAB_V2_DATA = {
+
+    containers: {
+      code: "LAB_01",
+      title: "Container Platforms",
+      modeLabel: "CONTAINER PLATFORM",
+      mode: "PLATFORM",
+      state: "ACTIVE",
+      description:
+        "Containerization, orchestration and cloud-native platform experiments.",
+      prompt:
+        "inspect --platform",
+      tools: [
+        "Docker",
+        "Compose",
+        "Swarm",
+        "Kubernetes",
+        "Helm",
+        "Istio"
+      ],
+      sequence: [
+        {
+          type: "command",
+          prefix: "$",
+          text: "docker compose up -d"
+        },
+        {
+          type: "ok",
+          prefix: "[OK]",
+          text: "services started"
+        },
+        {
+          type: "command",
+          prefix: "$",
+          text: "kubectl get pods -A"
+        },
+        {
+          type: "plain",
+          prefix: "",
+          text: "platform workloads / running"
+        },
+        {
+          type: "command",
+          prefix: "$",
+          text: "helm list"
+        },
+        {
+          type: "ok",
+          prefix: "[OK]",
+          text: "release state / ready"
+        }
+      ]
+    },
+
+    systems: {
+      code: "LAB_02",
+      title: "Systems & Identity",
+      modeLabel: "SYSTEMS SERVICES",
+      mode: "SYSTEMS",
+      state: "READY",
+      description:
+        "Linux and Windows Server foundations with identity, DNS and DHCP services.",
+      prompt:
+        "inspect --services",
+      tools: [
+        "Linux",
+        "Windows Server",
+        "Active Directory",
+        "DNS",
+        "DHCP"
+      ],
+      sequence: [
+        {
+          type: "command",
+          prefix: "$",
+          text: "systemctl --type=service --state=running"
+        },
+        {
+          type: "ok",
+          prefix: "[OK]",
+          text: "service layer available"
+        },
+        {
+          type: "command",
+          prefix: "$",
+          text: "dig lab.local"
+        },
+        {
+          type: "plain",
+          prefix: "",
+          text: "dns resolution / verified"
+        },
+        {
+          type: "command",
+          prefix: "$",
+          text: "ip addr show"
+        },
+        {
+          type: "ok",
+          prefix: "[OK]",
+          text: "network interface / ready"
+        }
+      ]
+    },
+
+    network: {
+      code: "LAB_03",
+      title: "Security & Connectivity",
+      modeLabel: "NETWORK SECURITY",
+      mode: "NETWORK",
+      state: "ACTIVE",
+      description:
+        "Segmentation, routing, firewalling and network-security experiments.",
+      prompt:
+        "inspect --network",
+      tools: [
+        "pfSense",
+        "VLAN",
+        "Firewall",
+        "Suricata",
+        "iptables"
+      ],
+      sequence: [
+        {
+          type: "command",
+          prefix: "$",
+          text: "ip route"
+        },
+        {
+          type: "plain",
+          prefix: "",
+          text: "routing table / loaded"
+        },
+        {
+          type: "command",
+          prefix: "$",
+          text: "iptables -L"
+        },
+        {
+          type: "ok",
+          prefix: "[OK]",
+          text: "firewall rules / inspected"
+        },
+        {
+          type: "command",
+          prefix: "$",
+          text: "ping -c 2 gateway.lab"
+        },
+        {
+          type: "ok",
+          prefix: "[OK]",
+          text: "connectivity / reachable"
+        }
+      ]
+    },
+
+    observe: {
+      code: "LAB_04",
+      title: "Observability",
+      modeLabel: "OBSERVABILITY STACK",
+      mode: "OBSERVE",
+      state: "READY",
+      description:
+        "Metrics, dashboards and service visibility across infrastructure and platforms.",
+      prompt:
+        "inspect --telemetry",
+      tools: [
+        "Prometheus",
+        "Grafana",
+        "Kiali",
+        "Zabbix",
+        "SNMP"
+      ],
+      sequence: [
+        {
+          type: "command",
+          prefix: "$",
+          text: "kubectl get svc -n monitoring"
+        },
+        {
+          type: "ok",
+          prefix: "[OK]",
+          text: "monitoring services / discovered"
+        },
+        {
+          type: "command",
+          prefix: "$",
+          text: "prometheus --version"
+        },
+        {
+          type: "plain",
+          prefix: "",
+          text: "metrics pipeline / available"
+        },
+        {
+          type: "command",
+          prefix: "$",
+          text: "inspect dashboards"
+        },
+        {
+          type: "ok",
+          prefix: "[OK]",
+          text: "visibility layer / ready"
+        }
+      ]
+    },
+
+    services: {
+      code: "LAB_05",
+      title: "Network Services",
+      modeLabel: "SERVICE DELIVERY",
+      mode: "SERVICES",
+      state: "READY",
+      description:
+        "Messaging and streaming service experiments built around containerized network services.",
+      prompt:
+        "inspect --services",
+      tools: [
+        "Matrix",
+        "Synapse",
+        "Element",
+        "Nginx",
+        "RTMP",
+        "HLS"
+      ],
+      sequence: [
+        {
+          type: "command",
+          prefix: "$",
+          text: "docker ps"
+        },
+        {
+          type: "ok",
+          prefix: "[OK]",
+          text: "service containers / running"
+        },
+        {
+          type: "command",
+          prefix: "$",
+          text: "nginx -t"
+        },
+        {
+          type: "ok",
+          prefix: "[OK]",
+          text: "configuration / valid"
+        },
+        {
+          type: "command",
+          prefix: "$",
+          text: "inspect stream pipeline"
+        },
+        {
+          type: "plain",
+          prefix: "",
+          text: "RTMP → HLS / delivery path"
+        }
+      ]
+    },
+
+    data: {
+      code: "LAB_06",
+      title: "Data + AI",
+      modeLabel: "DATA + INTELLIGENCE",
+      mode: "CURRENT",
+      state: "BUILDING",
+      description:
+        "Current learning layer focused on Python, data processing, Big Data and AI foundations.",
+      prompt:
+        "inspect --data --ai",
+      tools: [
+        "Python",
+        "Data Processing",
+        "Big Data",
+        "AI"
+      ],
+      sequence: [
+        {
+          type: "command",
+          prefix: "$",
+          text: "python main.py"
+        },
+        {
+          type: "ok",
+          prefix: "[OK]",
+          text: "program execution / complete"
+        },
+        {
+          type: "command",
+          prefix: "$",
+          text: "inspect data pipeline"
+        },
+        {
+          type: "plain",
+          prefix: "",
+          text: "data processing / active"
+        },
+        {
+          type: "command",
+          prefix: "$",
+          text: "build --next-layer ai"
+        },
+        {
+          type: "warn",
+          prefix: "[..]",
+          text: "learning layer / building"
+        }
+      ]
+    }
+
+  };
+
+
+  let labV2ActiveMode =
+    "containers";
+
+
+  let labV2RunToken =
+    0;
+
+
+  let labV2Visible =
+    false;
+
+
+  const getLabV2Time =
+    () => {
+
+      return new Date()
+        .toLocaleTimeString(
+          [],
+          {
+            hour: "2-digit",
+            minute: "2-digit"
+          }
+        );
+
+    };
+
+
+  const pushLabV2Event =
+    message => {
+
+      if (!labV2EventLog) {
+        return;
+      }
+
+
+      const line =
+        document.createElement(
+          "p"
+        );
+
+
+      const time =
+        document.createElement(
+          "span"
+        );
+
+
+      time.textContent =
+        getLabV2Time();
+
+
+      line.appendChild(
+        time
+      );
+
+
+      line.appendChild(
+        document.createTextNode(
+          message
+        )
+      );
+
+
+      labV2EventLog.prepend(
+        line
+      );
+
+
+      while (
+        labV2EventLog.children.length
+        > 5
+      ) {
+
+        labV2EventLog
+          .lastElementChild
+          ?.remove();
+
+      }
+
+    };
+
+
+  const renderLabV2Tools =
+    tools => {
+
+      if (!labV2Tools) {
+        return;
+      }
+
+
+      labV2Tools.innerHTML =
+        "";
+
+
+      tools.forEach(tool => {
+
+        const chip =
+          document.createElement(
+            "span"
+          );
+
+
+        chip.textContent =
+          tool;
+
+
+        labV2Tools.appendChild(
+          chip
+        );
+
+      });
+
+    };
+
+
+  const setLabV2ActiveMode =
+    (
+      mode,
+      userInitiated = false
+    ) => {
+
+      const data =
+        LAB_V2_DATA[mode];
+
+
+      if (!data) {
+        return;
+      }
+
+
+      labV2ActiveMode =
+        mode;
+
+
+      labV2RunToken += 1;
+
+
+      labV2Shell
+        ?.classList
+        .remove(
+          "is-running"
+        );
+
+
+      labV2Buttons
+        .forEach(button => {
+
+          const active =
+            button.dataset.labV2Mode
+            === mode;
+
+
+          button.classList.toggle(
+            "is-active",
+            active
+          );
+
+
+          button.setAttribute(
+            "aria-pressed",
+            String(active)
+          );
+
+        });
+
+
+      labV2BankCards
+        .forEach(card => {
+
+          card.classList.toggle(
+            "is-active",
+            card.dataset.labV2Bank
+            === mode
+          );
+
+        });
+
+
+      if (labV2ModeLabel) {
+        labV2ModeLabel.textContent =
+          data.modeLabel;
+      }
+
+
+      if (labV2Prompt) {
+        labV2Prompt.textContent =
+          data.prompt;
+      }
+
+
+      if (labV2Code) {
+        labV2Code.textContent =
+          data.code;
+      }
+
+
+      if (labV2Title) {
+        labV2Title.textContent =
+          data.title;
+      }
+
+
+      if (labV2Description) {
+        labV2Description.textContent =
+          data.description;
+      }
+
+
+      if (labV2State) {
+        labV2State.textContent =
+          data.state;
+      }
+
+
+      if (labV2Mode) {
+        labV2Mode.textContent =
+          data.mode;
+      }
+
+
+      if (labV2ToolCount) {
+        labV2ToolCount.textContent =
+          String(data.tools.length)
+            .padStart(
+              2,
+              "0"
+            );
+      }
+
+
+      renderLabV2Tools(
+        data.tools
+      );
+
+
+      if (labV2TerminalOutput) {
+
+        labV2TerminalOutput.innerHTML =
+          "";
+
+
+        data.sequence
+          .slice(
+            0,
+            2
+          )
+          .forEach(step => {
+
+            const line =
+              document.createElement(
+                "p"
+              );
+
+
+            line.className =
+              `lab-v2-line ${
+                step.type === "command"
+                  ? "is-command"
+                  : step.type === "ok"
+                    ? "is-ok"
+                    : step.type === "warn"
+                      ? "is-warn"
+                      : ""
+              }`;
+
+
+            if (step.prefix) {
+
+              const prefix =
+                document.createElement(
+                  "span"
+                );
+
+
+              prefix.textContent =
+                step.prefix;
+
+
+              line.appendChild(
+                prefix
+              );
+
+            }
+
+
+            line.appendChild(
+              document.createTextNode(
+                step.text
+              )
+            );
+
+
+            labV2TerminalOutput.appendChild(
+              line
+            );
+
+          });
+
+      }
+
+
+      pushLabV2Event(
+        `environment.select(${mode})`
+      );
+
+
+      if (userInitiated) {
+
+        pushLabV2Event(
+          "operator.input()"
+        );
+
+      }
+
+    };
+
+
+  const createLabV2Line =
+    step => {
+
+      const line =
+        document.createElement(
+          "p"
+        );
+
+
+      line.className =
+        `lab-v2-line ${
+          step.type === "command"
+            ? "is-command"
+            : step.type === "ok"
+              ? "is-ok"
+              : step.type === "warn"
+                ? "is-warn"
+                : ""
+        }`;
+
+
+      if (step.prefix) {
+
+        const prefix =
+          document.createElement(
+            "span"
+          );
+
+
+        prefix.textContent =
+          step.prefix;
+
+
+        line.appendChild(
+          prefix
+        );
+
+      }
+
+
+      line.appendChild(
+        document.createTextNode(
+          step.text
+        )
+      );
+
+
+      return line;
+
+    };
+
+
+  const runLabV2Sequence =
+    async () => {
+
+      const data =
+        LAB_V2_DATA[
+          labV2ActiveMode
+        ];
+
+
+      if (
+        !data
+        || !labV2TerminalOutput
+      ) {
+
+        return;
+      }
+
+
+      labV2RunToken += 1;
+
+
+      const token =
+        labV2RunToken;
+
+
+      labV2Shell
+        ?.classList
+        .add(
+          "is-running"
+        );
+
+
+      labV2TerminalOutput.innerHTML =
+        "";
+
+
+      pushLabV2Event(
+        "sequence.run()"
+      );
+
+
+      for (
+        const step
+        of data.sequence
+      ) {
+
+        if (
+          token
+          !== labV2RunToken
+        ) {
+
+          return;
+        }
+
+
+        labV2TerminalOutput.appendChild(
+          createLabV2Line(
+            step
+          )
+        );
+
+
+        labV2TerminalOutput.scrollTop =
+          labV2TerminalOutput.scrollHeight;
+
+
+        await wait(
+          prefersReducedMotion
+            ? 0
+            : step.type === "command"
+              ? 520
+              : 310
+        );
+
+      }
+
+
+      if (
+        token
+        !== labV2RunToken
+      ) {
+
+        return;
+      }
+
+
+      labV2Shell
+        ?.classList
+        .remove(
+          "is-running"
+        );
+
+
+      pushLabV2Event(
+        "sequence.complete()"
+      );
+
+    };
+
+
+  labV2Buttons
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const mode =
+            button.dataset.labV2Mode;
+
+
+          setLabV2ActiveMode(
+            mode,
+            true
+          );
+
+
+          runLabV2Sequence();
+
+        }
+      );
+
+    });
+
+
+  labV2BankCards
+    .forEach(card => {
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          const mode =
+            card.dataset.labV2Bank;
+
+
+          setLabV2ActiveMode(
+            mode,
+            true
+          );
+
+
+          runLabV2Sequence();
+
+        }
+      );
+
+    });
+
+
+  labV2Run
+    ?.addEventListener(
+      "click",
+      runLabV2Sequence
+    );
+
+
+  if (
+    labV2Shell
+    && "IntersectionObserver"
+       in window
+  ) {
+
+    const labV2Observer =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            labV2Visible =
+              entry.isIntersecting;
+
+
+            if (
+              entry.isIntersecting
+              && !prefersReducedMotion
+            ) {
+
+              pushLabV2Event(
+                "lab.viewport.active()"
+              );
+
+            }
+
+          });
+
+        },
+        {
+          threshold: .16
+        }
+      );
+
+
+    labV2Observer.observe(
+      labV2Shell
+    );
+
+  } else if (labV2Shell) {
+
+    labV2Visible =
+      true;
+
+  }
+
+
+  if (labV2Shell) {
+
+    setLabV2ActiveMode(
+      "containers"
+    );
+
+  }
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (
+        !labV2Shell
+        || !labV2Visible
+      ) {
+
+        return;
+      }
+
+
+      if (document.hidden) {
+
+        labV2RunToken += 1;
+
+        labV2Shell.classList.remove(
+          "is-running"
+        );
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 28 / SYSTEM READY                                                       */
   /* ====================================================================== */
 
   requestAnimationFrame(
