@@ -9113,8 +9113,843 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
 
+
   /* ====================================================================== */
-  /* 30 / SYSTEM READY                                                       */
+  /* 30 / PUBLIC SIGNAL V2 INTERACTION ENGINE                              */
+  /* ====================================================================== */
+
+  const signalV2System =
+    $("#signalV2System");
+
+  const signalRepoFeed =
+    $("#signalRepoFeed");
+
+  const signalGithubApiState =
+    $("#signalGithubApiState");
+
+  const signalGithubEndpointStatus =
+    $("#signalGithubEndpointStatus");
+
+  const signalSyncTime =
+    $("#signalSyncTime");
+
+  const signalV2EventLog =
+    $("#signalV2EventLog");
+
+  const signalV2Endpoints =
+    $$("[data-signal-endpoint]");
+
+
+  const SIGNAL_V2_REPOS_CACHE_KEY =
+    "ievgen-github-repos-cache-v2";
+
+
+  const SIGNAL_V2_EVENTS =
+    [
+      "github.profile.sync()",
+      "repositories.index()",
+      "portfolio.route(online)",
+      "linkedin.route(external)",
+      "cloud_native.signal(active)",
+      "data_ai.signal(building)"
+    ];
+
+
+  let signalV2EventIndex =
+    0;
+
+
+  let signalV2EventTimer =
+    null;
+
+
+  let signalV2Visible =
+    false;
+
+
+  const formatSignalV2Time =
+    () => {
+
+      const now =
+        new Date();
+
+
+      return now
+        .toLocaleTimeString(
+          [],
+          {
+            minute: "2-digit",
+            second: "2-digit"
+          }
+        );
+
+    };
+
+
+  const updateSignalV2SyncTime =
+    () => {
+
+      if (!signalSyncTime) {
+        return;
+      }
+
+
+      signalSyncTime.textContent =
+        formatSignalV2Time();
+
+    };
+
+
+  const pushSignalV2Event =
+    message => {
+
+      if (!signalV2EventLog) {
+        return;
+      }
+
+
+      const eventLine =
+        document.createElement(
+          "p"
+        );
+
+
+      const time =
+        document.createElement(
+          "span"
+        );
+
+
+      time.textContent =
+        formatSignalV2Time();
+
+
+      eventLine.appendChild(
+        time
+      );
+
+
+      eventLine.appendChild(
+        document.createTextNode(
+          message
+        )
+      );
+
+
+      signalV2EventLog.prepend(
+        eventLine
+      );
+
+
+      while (
+        signalV2EventLog.children.length
+        > 5
+      ) {
+
+        signalV2EventLog
+          .lastElementChild
+          ?.remove();
+
+      }
+
+    };
+
+
+  const formatSignalV2RelativeDate =
+    dateString => {
+
+      const timestamp =
+        new Date(
+          dateString
+        ).getTime();
+
+
+      if (
+        !Number.isFinite(timestamp)
+      ) {
+
+        return "updated";
+
+      }
+
+
+      const difference =
+        Date.now()
+        - timestamp;
+
+
+      const minutes =
+        Math.max(
+          1,
+          Math.floor(
+            difference
+            / 60000
+          )
+        );
+
+
+      if (minutes < 60) {
+
+        return `${minutes}m ago`;
+
+      }
+
+
+      const hours =
+        Math.floor(
+          minutes / 60
+        );
+
+
+      if (hours < 24) {
+
+        return `${hours}h ago`;
+
+      }
+
+
+      const days =
+        Math.floor(
+          hours / 24
+        );
+
+
+      if (days < 30) {
+
+        return `${days}d ago`;
+
+      }
+
+
+      const months =
+        Math.floor(
+          days / 30
+        );
+
+
+      return `${months}mo ago`;
+
+    };
+
+
+  const createSignalV2RepoItem =
+    repo => {
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+
+      link.className =
+        "signal-v2-repo-item";
+
+
+      link.href =
+        repo.html_url
+        || `https://github.com/${CONFIG.githubUser}`;
+
+
+      link.target =
+        "_blank";
+
+
+      link.rel =
+        "noopener noreferrer";
+
+
+      const main =
+        document.createElement(
+          "div"
+        );
+
+
+      main.className =
+        "signal-v2-repo-main";
+
+
+      const name =
+        document.createElement(
+          "strong"
+        );
+
+
+      name.textContent =
+        repo.name
+        || "repository";
+
+
+      const description =
+        document.createElement(
+          "span"
+        );
+
+
+      description.textContent =
+        repo.description
+        || "Public repository";
+
+
+      main.append(
+        name,
+        description
+      );
+
+
+      const meta =
+        document.createElement(
+          "div"
+        );
+
+
+      meta.className =
+        "signal-v2-repo-meta";
+
+
+      const language =
+        document.createElement(
+          "span"
+        );
+
+
+      language.textContent =
+        repo.language
+        || "CODE";
+
+
+      const updated =
+        document.createElement(
+          "span"
+        );
+
+
+      updated.textContent =
+        formatSignalV2RelativeDate(
+          repo.updated_at
+        );
+
+
+      const arrow =
+        document.createElement(
+          "i"
+        );
+
+
+      arrow.textContent =
+        "↗";
+
+
+      meta.append(
+        language,
+        updated,
+        arrow
+      );
+
+
+      link.append(
+        main,
+        meta
+      );
+
+
+      return link;
+
+    };
+
+
+  const renderSignalV2Repos =
+    repos => {
+
+      if (!signalRepoFeed) {
+        return;
+      }
+
+
+      signalRepoFeed.replaceChildren();
+
+
+      const cleanRepos =
+        Array.isArray(repos)
+          ? repos
+              .filter(repo =>
+                repo
+                && !repo.fork
+              )
+              .slice(0, 4)
+          : [];
+
+
+      if (
+        cleanRepos.length
+        === 0
+      ) {
+
+        const fallback =
+          document.createElement(
+            "div"
+          );
+
+
+        fallback.className =
+          "signal-v2-repo-loading";
+
+
+        fallback.textContent =
+          "Public repositories are available on GitHub.";
+
+
+        signalRepoFeed.appendChild(
+          fallback
+        );
+
+
+        return;
+
+      }
+
+
+      cleanRepos.forEach(repo => {
+
+        signalRepoFeed.appendChild(
+          createSignalV2RepoItem(
+            repo
+          )
+        );
+
+      });
+
+    };
+
+
+  const getCachedSignalV2Repos =
+    () => {
+
+      const raw =
+        safeStorageGet(
+          SIGNAL_V2_REPOS_CACHE_KEY
+        );
+
+
+      if (!raw) {
+        return null;
+      }
+
+
+      try {
+
+        const parsed =
+          JSON.parse(raw);
+
+
+        const maxAge =
+          CONFIG.githubCacheMinutes
+          * 60
+          * 1000;
+
+
+        const fresh =
+          Date.now()
+          - parsed.timestamp
+          < maxAge;
+
+
+        if (
+          !fresh
+          || !Array.isArray(
+            parsed.data
+          )
+        ) {
+
+          return null;
+
+        }
+
+
+        return parsed.data;
+
+      } catch {
+
+        return null;
+
+      }
+
+    };
+
+
+  const cacheSignalV2Repos =
+    repos => {
+
+      safeStorageSet(
+        SIGNAL_V2_REPOS_CACHE_KEY,
+        JSON.stringify(
+          {
+            timestamp:
+              Date.now(),
+
+            data:
+              repos
+          }
+        )
+      );
+
+    };
+
+
+  const setSignalV2GithubState =
+    (
+      label,
+      online
+    ) => {
+
+      if (signalGithubApiState) {
+
+        signalGithubApiState.textContent =
+          label;
+
+
+        signalGithubApiState
+          .parentElement
+          ?.classList
+          .toggle(
+            "is-online",
+            online
+          );
+
+      }
+
+
+      if (signalGithubEndpointStatus) {
+
+        signalGithubEndpointStatus
+          .textContent =
+            online
+              ? "CONNECTED"
+              : "DEGRADED";
+
+      }
+
+    };
+
+
+  const loadSignalV2Repos =
+    async () => {
+
+      if (!signalRepoFeed) {
+        return;
+      }
+
+
+      const cached =
+        getCachedSignalV2Repos();
+
+
+      if (cached) {
+
+        renderSignalV2Repos(
+          cached
+        );
+
+
+        setSignalV2GithubState(
+          "CACHE READY",
+          true
+        );
+
+
+        updateSignalV2SyncTime();
+
+
+        pushSignalV2Event(
+          "github.cache.restore()"
+        );
+
+
+        return;
+
+      }
+
+
+      try {
+
+        setSignalV2GithubState(
+          "SYNCING",
+          false
+        );
+
+
+        const response =
+          await fetch(
+            `https://api.github.com/users/${CONFIG.githubUser}/repos?sort=updated&direction=desc&per_page=8&type=owner`,
+            {
+              headers: {
+                Accept:
+                  "application/vnd.github+json"
+              }
+            }
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            `GitHub repos API ${response.status}`
+          );
+
+        }
+
+
+        const repos =
+          await response.json();
+
+
+        cacheSignalV2Repos(
+          repos
+        );
+
+
+        renderSignalV2Repos(
+          repos
+        );
+
+
+        setSignalV2GithubState(
+          "LIVE",
+          true
+        );
+
+
+        updateSignalV2SyncTime();
+
+
+        pushSignalV2Event(
+          "repositories.sync(ok)"
+        );
+
+
+      } catch (error) {
+
+        console.warn(
+          "Public Signal GitHub feed unavailable:",
+          error
+        );
+
+
+        renderSignalV2Repos(
+          []
+        );
+
+
+        setSignalV2GithubState(
+          "API LIMITED",
+          false
+        );
+
+
+        updateSignalV2SyncTime();
+
+
+        pushSignalV2Event(
+          "github.api.fallback()"
+        );
+
+      }
+
+    };
+
+
+  const stopSignalV2EventStream =
+    () => {
+
+      if (
+        signalV2EventTimer
+        !== null
+      ) {
+
+        clearInterval(
+          signalV2EventTimer
+        );
+
+
+        signalV2EventTimer =
+          null;
+
+      }
+
+    };
+
+
+  const startSignalV2EventStream =
+    () => {
+
+      stopSignalV2EventStream();
+
+
+      if (
+        !signalV2System
+        || prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+
+      }
+
+
+      signalV2EventTimer =
+        window.setInterval(
+          () => {
+
+            const message =
+              SIGNAL_V2_EVENTS[
+                signalV2EventIndex
+                % SIGNAL_V2_EVENTS.length
+              ];
+
+
+            signalV2EventIndex += 1;
+
+
+            pushSignalV2Event(
+              message
+            );
+
+          },
+          2400
+        );
+
+    };
+
+
+  signalV2Endpoints
+    .forEach(endpoint => {
+
+      endpoint.addEventListener(
+        "pointerenter",
+        () => {
+
+          const name =
+            endpoint.dataset
+              .signalEndpoint
+            || "endpoint";
+
+
+          pushSignalV2Event(
+            `route.inspect(${name})`
+          );
+
+        }
+      );
+
+    });
+
+
+  if (
+    signalV2System
+    && "IntersectionObserver"
+       in window
+  ) {
+
+    const signalV2Observer =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            signalV2Visible =
+              entry.isIntersecting;
+
+
+            signalV2System
+              .classList
+              .toggle(
+                "is-active",
+                entry.isIntersecting
+              );
+
+
+            if (entry.isIntersecting) {
+
+              pushSignalV2Event(
+                "public.viewport.active()"
+              );
+
+
+              startSignalV2EventStream();
+
+            } else {
+
+              stopSignalV2EventStream();
+
+            }
+
+          });
+
+        },
+        {
+          threshold: .16
+        }
+      );
+
+
+    signalV2Observer.observe(
+      signalV2System
+    );
+
+  } else if (signalV2System) {
+
+    signalV2Visible =
+      true;
+
+
+    signalV2System
+      .classList
+      .add(
+        "is-active"
+      );
+
+
+    startSignalV2EventStream();
+
+  }
+
+
+  if (signalV2System) {
+
+    loadSignalV2Repos();
+
+  }
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (!signalV2System) {
+        return;
+      }
+
+
+      if (document.hidden) {
+
+        stopSignalV2EventStream();
+
+        return;
+
+      }
+
+
+      if (signalV2Visible) {
+
+        startSignalV2EventStream();
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 31 / SYSTEM READY                                                       */
   /* ====================================================================== */
 
   requestAnimationFrame(
