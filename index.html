@@ -109,7 +109,7 @@
 
   <link
     rel="stylesheet"
-    href="style.css?v=lab-v2-20260924-01">
+    href="style.css?v=human-v2-20260925-01">
 
   <!-- ===================================================== -->
   <!-- STRUCTURED DATA                                       -->
@@ -6508,11 +6508,11 @@
     </section>
 
     <!-- =================================================== -->
-    <!-- 08 / EDUCATION                                      -->
+    <!-- 08 / EDUCATION V2 — LEARNING ARCHITECTURE           -->
     <!-- =================================================== -->
 
     <section
-      class="section section-dark education-section"
+      class="section section-dark education-section education-v2-section"
       id="education">
 
       <div class="section-shell">
@@ -6528,243 +6528,554 @@
           <div>
 
             <p class="section-label">
-
-              EDUCATION PATH
-
+              EDUCATION / LEARNING ARCHITECTURE
             </p>
 
             <h2>
-
-              Building the foundation
+              One foundation.
               <br>
-              layer by layer.
-
+              Three evolving layers.
             </h2>
 
           </div>
 
         </div>
 
-        <div class="education-path">
-
-          <!-- CURRENT -->
-
-          <article
-            class="education-stage current"
-            data-reveal>
-
-            <span class="education-status">
-
-              ● CURRENT
-
-            </span>
-
-            <span class="education-year">
-
-              2026 → 2027
-
-            </span>
-
-            <h3>
-
-              Artificial Intelligence
-              & Big Data
-
-            </h3>
-
-            <p class="education-type">
-
-              Specialization Course
-
-            </p>
-
-            <p class="education-school">
-
-              Institut Sa Palomera
-
-            </p>
-
-            <div class="tags">
-
-              <span>Python</span>
-              <span>Data</span>
-              <span>Big Data</span>
-              <span>AI</span>
-
-            </div>
-
-          </article>
-
-          <!-- ASIR -->
-
-          <article
-            class="education-stage"
-            data-reveal>
-
-            <span class="education-status">
-
-              COMPLETE
-
-            </span>
-
-            <span class="education-year">
-
-              2024 → 2026
-
-            </span>
-
-            <h3>
-
-              Networked Computer
-              Systems Administration
-
-            </h3>
-
-            <p class="education-type">
-
-              Higher Technician · ASIR
-
-            </p>
-
-            <p class="education-school">
-
-              Institut Sa Palomera
-
-            </p>
-
-            <div class="tags">
-
-              <span>Systems</span>
-              <span>Networking</span>
-              <span>Cloud Native</span>
-              <span>Databases</span>
-
-            </div>
-
-          </article>
-
-          <!-- SMX -->
-
-          <article
-            class="education-stage"
-            data-reveal>
-
-            <span class="education-status">
-
-              COMPLETE
-
-            </span>
-
-            <span class="education-year">
-
-              2022 → 2024
-
-            </span>
-
-            <h3>
-
-              Microcomputer Systems
-              & Networks
-
-            </h3>
-
-            <p class="education-type">
-
-              Technician · SMX
-
-            </p>
-
-            <p class="education-school">
-
-              Institut Sa Palomera
-
-            </p>
-
-            <div class="tags">
-
-              <span>Hardware</span>
-              <span>Support</span>
-              <span>Networks</span>
-              <span>Operating Systems</span>
-
-            </div>
-
-          </article>
-
-        </div>
-
-        <div
-          class="education-vector"
+        <article
+          class="education-v2-shell"
+          id="educationV2System"
           data-reveal>
 
-          <span>
+          <!-- TOP BAR -->
 
-            HARDWARE
+          <div class="education-v2-topbar">
 
-          </span>
+            <div class="education-v2-window">
 
-          <i>
-            →
-          </i>
+              <div class="window-dots">
+                <i></i>
+                <i></i>
+                <i></i>
+              </div>
 
-          <span>
+              <span>
+                education://ievgen/learning-path
+              </span>
 
-            SYSTEMS
+            </div>
 
-          </span>
+            <div class="education-v2-statuses">
 
-          <i>
-            →
-          </i>
+              <span class="education-v2-chip">
+                03 STAGES
+              </span>
 
-          <span>
+              <span class="education-v2-chip">
+                2022 → NOW
+              </span>
 
-            INFRASTRUCTURE
+              <span class="education-v2-chip is-current">
+                <i></i>
+                CURRENT ACTIVE
+              </span>
 
-          </span>
+            </div>
 
-          <i>
-            →
-          </i>
+          </div>
 
-          <span>
+          <!-- MAIN LEARNING ARCHITECTURE -->
 
-            CLOUD
+          <div class="education-v2-grid">
 
-          </span>
+            <!-- STAGE SELECTOR -->
 
-          <i>
-            →
-          </i>
+            <aside
+              class="education-v2-rail"
+              aria-label="Education stages">
 
-          <span>
+              <span class="education-v2-rail-label">
+                STAGE_INDEX
+              </span>
 
-            DATA
+              <button
+                type="button"
+                class="education-v2-stage"
+                data-education-stage="smx"
+                aria-pressed="false">
 
-          </span>
+                <span class="education-v2-stage-index">
+                  01
+                </span>
 
-          <i>
-            →
-          </i>
+                <div>
 
-          <span>
+                  <strong>
+                    SMX
+                  </strong>
 
-            INTELLIGENCE
+                  <small>
+                    2022 → 2024
+                  </small>
 
-          </span>
+                </div>
 
-        </div>
+                <i></i>
+
+              </button>
+
+              <button
+                type="button"
+                class="education-v2-stage"
+                data-education-stage="asir"
+                aria-pressed="false">
+
+                <span class="education-v2-stage-index">
+                  02
+                </span>
+
+                <div>
+
+                  <strong>
+                    ASIR
+                  </strong>
+
+                  <small>
+                    2024 → 2026
+                  </small>
+
+                </div>
+
+                <i></i>
+
+              </button>
+
+              <button
+                type="button"
+                class="education-v2-stage is-active"
+                data-education-stage="ai"
+                aria-pressed="true">
+
+                <span class="education-v2-stage-index">
+                  03
+                </span>
+
+                <div>
+
+                  <strong>
+                    AI + BIG DATA
+                  </strong>
+
+                  <small>
+                    2026 → 2027
+                  </small>
+
+                </div>
+
+                <i></i>
+
+              </button>
+
+              <div class="education-v2-rail-meta">
+
+                <span>
+                  SCHOOL
+                </span>
+
+                <strong>
+                  INSTITUT SA PALOMERA
+                </strong>
+
+              </div>
+
+            </aside>
+
+            <!-- CURRENT STAGE VIEW -->
+
+            <div class="education-v2-stage-view">
+
+              <div class="education-v2-stage-head">
+
+                <div>
+
+                  <span>
+                    ACTIVE_STAGE
+                  </span>
+
+                  <strong id="educationV2StageLabel">
+                    STAGE_03 / CURRENT
+                  </strong>
+
+                </div>
+
+                <span
+                  class="education-v2-stage-state is-current"
+                  id="educationV2State">
+                  ● CURRENT
+                </span>
+
+              </div>
+
+              <div class="education-v2-stage-core">
+
+                <div
+                  class="education-v2-stage-number"
+                  aria-hidden="true"
+                  id="educationV2Number">
+                  03
+                </div>
+
+                <div class="education-v2-stage-copy">
+
+                  <span
+                    class="education-v2-year"
+                    id="educationV2Year">
+                    2026 → 2027
+                  </span>
+
+                  <h3 id="educationV2Title">
+                    Artificial Intelligence
+                    <span>& Big Data</span>
+                  </h3>
+
+                  <p
+                    class="education-v2-type"
+                    id="educationV2Type">
+                    Specialization Course
+                  </p>
+
+                  <p
+                    class="education-v2-school"
+                    id="educationV2School">
+                    Institut Sa Palomera
+                  </p>
+
+                  <p
+                    class="education-v2-description"
+                    id="educationV2Description">
+                    Current specialization layer focused on Python,
+                    data, Big Data and Artificial Intelligence.
+                  </p>
+
+                  <div
+                    class="education-v2-tags"
+                    id="educationV2Tags">
+
+                    <span>Python</span>
+                    <span>Data</span>
+                    <span>Big Data</span>
+                    <span>AI</span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="education-v2-progress">
+
+                <div class="education-v2-progress-meta">
+
+                  <span>
+                    LEARNING_PATH
+                  </span>
+
+                  <strong id="educationV2ProgressLabel">
+                    03 / 03
+                  </strong>
+
+                </div>
+
+                <div
+                  class="education-v2-progress-track"
+                  aria-hidden="true">
+
+                  <i id="educationV2ProgressBar"></i>
+
+                  <span class="education-v2-progress-node node-01"></span>
+                  <span class="education-v2-progress-node node-02"></span>
+                  <span class="education-v2-progress-node node-03 is-active"></span>
+
+                </div>
+
+                <div class="education-v2-progress-labels">
+
+                  <span>FOUNDATION</span>
+                  <span>INFRASTRUCTURE</span>
+                  <span>INTELLIGENCE</span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- KNOWLEDGE TRAJECTORY -->
+
+            <aside class="education-v2-trajectory">
+
+              <div class="education-v2-trajectory-head">
+
+                <span>
+                  KNOWLEDGE_TRAJECTORY
+                </span>
+
+                <strong>
+                  LAYER EVOLUTION
+                </strong>
+
+              </div>
+
+              <div
+                class="education-v2-layer-map"
+                id="educationV2LayerMap">
+
+                <div
+                  class="education-v2-layer is-active"
+                  data-education-layer="1">
+
+                  <span>01</span>
+
+                  <div>
+                    <strong>HARDWARE</strong>
+                    <small>foundation</small>
+                  </div>
+
+                  <i></i>
+
+                </div>
+
+                <div
+                  class="education-v2-layer is-active"
+                  data-education-layer="2">
+
+                  <span>02</span>
+
+                  <div>
+                    <strong>SYSTEMS</strong>
+                    <small>administration</small>
+                  </div>
+
+                  <i></i>
+
+                </div>
+
+                <div
+                  class="education-v2-layer is-active"
+                  data-education-layer="3">
+
+                  <span>03</span>
+
+                  <div>
+                    <strong>INFRASTRUCTURE</strong>
+                    <small>operations</small>
+                  </div>
+
+                  <i></i>
+
+                </div>
+
+                <div
+                  class="education-v2-layer is-active"
+                  data-education-layer="4">
+
+                  <span>04</span>
+
+                  <div>
+                    <strong>CLOUD</strong>
+                    <small>platform direction</small>
+                  </div>
+
+                  <i></i>
+
+                </div>
+
+                <div
+                  class="education-v2-layer is-active"
+                  data-education-layer="5">
+
+                  <span>05</span>
+
+                  <div>
+                    <strong>DATA</strong>
+                    <small>current expansion</small>
+                  </div>
+
+                  <i></i>
+
+                </div>
+
+                <div
+                  class="education-v2-layer is-active"
+                  data-education-layer="6">
+
+                  <span>06</span>
+
+                  <div>
+                    <strong>INTELLIGENCE</strong>
+                    <small>current direction</small>
+                  </div>
+
+                  <i></i>
+
+                </div>
+
+              </div>
+
+            </aside>
+
+          </div>
+
+          <!-- STAGE BANK -->
+
+          <div class="education-v2-bank">
+
+            <button
+              type="button"
+              class="education-v2-bank-card"
+              data-education-bank="smx">
+
+              <div class="education-v2-bank-index">
+                01
+              </div>
+
+              <div class="education-v2-bank-copy">
+
+                <span>
+                  COMPLETE
+                </span>
+
+                <strong>
+                  Microcomputer Systems & Networks
+                </strong>
+
+                <small>
+                  Technician · SMX
+                </small>
+
+              </div>
+
+              <div class="education-v2-bank-year">
+                2022—24
+              </div>
+
+            </button>
+
+            <button
+              type="button"
+              class="education-v2-bank-card"
+              data-education-bank="asir">
+
+              <div class="education-v2-bank-index">
+                02
+              </div>
+
+              <div class="education-v2-bank-copy">
+
+                <span>
+                  COMPLETE
+                </span>
+
+                <strong>
+                  Networked Computer Systems Administration
+                </strong>
+
+                <small>
+                  Higher Technician · ASIR
+                </small>
+
+              </div>
+
+              <div class="education-v2-bank-year">
+                2024—26
+              </div>
+
+            </button>
+
+            <button
+              type="button"
+              class="education-v2-bank-card is-active"
+              data-education-bank="ai">
+
+              <div class="education-v2-bank-index">
+                03
+              </div>
+
+              <div class="education-v2-bank-copy">
+
+                <span>
+                  ● CURRENT
+                </span>
+
+                <strong>
+                  Artificial Intelligence & Big Data
+                </strong>
+
+                <small>
+                  Specialization Course
+                </small>
+
+              </div>
+
+              <div class="education-v2-bank-year">
+                2026—27
+              </div>
+
+            </button>
+
+          </div>
+
+          <!-- EDUCATION VECTOR -->
+
+          <div class="education-v2-vector">
+
+            <span>
+              HARDWARE
+            </span>
+
+            <i>→</i>
+
+            <span>
+              SYSTEMS
+            </span>
+
+            <i>→</i>
+
+            <span>
+              INFRASTRUCTURE
+            </span>
+
+            <i>→</i>
+
+            <span>
+              CLOUD
+            </span>
+
+            <i>→</i>
+
+            <span>
+              DATA
+            </span>
+
+            <i>→</i>
+
+            <span class="is-current">
+              INTELLIGENCE
+            </span>
+
+          </div>
+
+        </article>
 
       </div>
 
     </section>
 
     <!-- =================================================== -->
-    <!-- 09 / HUMAN PROTOCOL                                 -->
+    <!-- 09 / HUMAN V2 — PERSONAL OPERATING SYSTEM           -->
     <!-- =================================================== -->
 
     <section
-      class="section human-section"
+      class="section human-section human-v2-section"
       id="human">
 
       <div class="section-shell">
@@ -6780,195 +7091,718 @@
           <div>
 
             <p class="section-label">
-
-              HUMAN PROTOCOL
-
+              HUMAN OS / PERSONAL OPERATING SYSTEM
             </p>
 
             <h2>
-
               Technology is only
               <br>
               part of the system.
-
             </h2>
 
           </div>
 
         </div>
 
-        <div class="human-grid">
+        <article
+          class="human-v2-shell"
+          id="humanV2System"
+          data-reveal>
 
-          <!-- LANGUAGES -->
+          <!-- ================================================= -->
+          <!-- TOP BAR                                           -->
+          <!-- ================================================= -->
 
-          <article
-            class="human-card glass-card"
-            data-reveal>
+          <div class="human-v2-topbar">
 
-            <span class="card-code">
+            <div class="human-v2-window">
 
-              LANGUAGE_IO
+              <div class="window-dots">
+                <i></i>
+                <i></i>
+                <i></i>
+              </div>
 
+              <span>
+                human://ievgen/operating-system
+              </span>
+
+            </div>
+
+            <div class="human-v2-top-status">
+
+              <span class="human-v2-chip">
+                04 LANGUAGES
+              </span>
+
+              <span class="human-v2-chip">
+                06 PRINCIPLES
+              </span>
+
+              <span class="human-v2-chip is-online">
+                <i></i>
+                HUMAN ONLINE
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- ================================================= -->
+          <!-- MAIN SYSTEM                                       -->
+          <!-- ================================================= -->
+
+          <div class="human-v2-grid">
+
+            <!-- =============================================== -->
+            <!-- MODE RAIL                                       -->
+            <!-- =============================================== -->
+
+            <aside
+              class="human-v2-mode-rail"
+              aria-label="Human operating system modes">
+
+              <span class="human-v2-rail-label">
+                MODE_INDEX
+              </span>
+
+              <button
+                type="button"
+                class="human-v2-mode is-active"
+                data-human-mode="communication"
+                aria-pressed="true">
+
+                <span>01</span>
+
+                <div>
+                  <strong>COMMUNICATION</strong>
+                  <small>language layer</small>
+                </div>
+
+                <i></i>
+
+              </button>
+
+              <button
+                type="button"
+                class="human-v2-mode"
+                data-human-mode="principles"
+                aria-pressed="false">
+
+                <span>02</span>
+
+                <div>
+                  <strong>PRINCIPLES</strong>
+                  <small>operating rules</small>
+                </div>
+
+                <i></i>
+
+              </button>
+
+              <button
+                type="button"
+                class="human-v2-mode"
+                data-human-mode="workflow"
+                aria-pressed="false">
+
+                <span>03</span>
+
+                <div>
+                  <strong>BUILD LOOP</strong>
+                  <small>execution cycle</small>
+                </div>
+
+                <i></i>
+
+              </button>
+
+              <button
+                type="button"
+                class="human-v2-mode"
+                data-human-mode="direction"
+                aria-pressed="false">
+
+                <span>04</span>
+
+                <div>
+                  <strong>DIRECTION</strong>
+                  <small>current vector</small>
+                </div>
+
+                <i></i>
+
+              </button>
+
+              <div class="human-v2-rail-footer">
+
+                <span>
+                  PROFILE_STATE
+                </span>
+
+                <strong>
+                  BUILDING
+                </strong>
+
+              </div>
+
+            </aside>
+
+            <!-- =============================================== -->
+            <!-- HUMAN DISPLAY                                   -->
+            <!-- =============================================== -->
+
+            <div class="human-v2-display">
+
+              <div class="human-v2-display-head">
+
+                <div>
+
+                  <span>
+                    ACTIVE_MODULE
+                  </span>
+
+                  <strong id="humanV2ModeLabel">
+                    COMMUNICATION / LANGUAGE_IO
+                  </strong>
+
+                </div>
+
+                <div class="human-v2-display-state">
+
+                  <i></i>
+
+                  <span id="humanV2ModeState">
+                    READY
+                  </span>
+
+                </div>
+
+              </div>
+
+              <div class="human-v2-panels">
+
+                <!-- =========================================== -->
+                <!-- COMMUNICATION                               -->
+                <!-- =========================================== -->
+
+                <section
+                  class="human-v2-panel is-active"
+                  data-human-panel="communication"
+                  aria-label="Communication layer">
+
+                  <div class="human-v2-panel-intro">
+
+                    <span>
+                      LANGUAGE_IO
+                    </span>
+
+                    <h3>
+                      Communication
+                      <em>across environments.</em>
+                    </h3>
+
+                    <p>
+                      Native Spanish and Catalan, English at B1 / B2
+                      level, and basic Russian.
+                    </p>
+
+                  </div>
+
+                  <div class="human-v2-language-grid">
+
+                    <article class="human-v2-language is-native">
+
+                      <div class="human-v2-language-code">
+                        ES
+                      </div>
+
+                      <div>
+                        <span>Spanish</span>
+                        <strong>Native</strong>
+                      </div>
+
+                      <i></i>
+
+                    </article>
+
+                    <article class="human-v2-language is-native">
+
+                      <div class="human-v2-language-code">
+                        CA
+                      </div>
+
+                      <div>
+                        <span>Catalan</span>
+                        <strong>Native</strong>
+                      </div>
+
+                      <i></i>
+
+                    </article>
+
+                    <article class="human-v2-language is-working">
+
+                      <div class="human-v2-language-code">
+                        EN
+                      </div>
+
+                      <div>
+                        <span>English</span>
+                        <strong>B1 / B2</strong>
+                      </div>
+
+                      <i></i>
+
+                    </article>
+
+                    <article class="human-v2-language is-basic">
+
+                      <div class="human-v2-language-code">
+                        RU
+                      </div>
+
+                      <div>
+                        <span>Russian</span>
+                        <strong>Basic</strong>
+                      </div>
+
+                      <i></i>
+
+                    </article>
+
+                  </div>
+
+                </section>
+
+                <!-- =========================================== -->
+                <!-- PRINCIPLES                                  -->
+                <!-- =========================================== -->
+
+                <section
+                  class="human-v2-panel"
+                  data-human-panel="principles"
+                  aria-label="Operating principles"
+                  hidden>
+
+                  <div class="human-v2-panel-intro">
+
+                    <span>
+                      OPERATING_PRINCIPLES
+                    </span>
+
+                    <h3>
+                      Six rules.
+                      <em>One working mindset.</em>
+                    </h3>
+
+                    <p>
+                      A practical way of approaching technical work:
+                      understand it, build it, test it and improve it.
+                    </p>
+
+                  </div>
+
+                  <div class="human-v2-principles">
+
+                    <article
+                      class="human-v2-principle"
+                      data-human-principle="1">
+
+                      <span>01</span>
+                      <strong>Learn by building.</strong>
+
+                    </article>
+
+                    <article
+                      class="human-v2-principle"
+                      data-human-principle="2">
+
+                      <span>02</span>
+                      <strong>Understand the complete system.</strong>
+
+                    </article>
+
+                    <article
+                      class="human-v2-principle"
+                      data-human-principle="3">
+
+                      <span>03</span>
+                      <strong>Document what matters.</strong>
+
+                    </article>
+
+                    <article
+                      class="human-v2-principle"
+                      data-human-principle="4">
+
+                      <span>04</span>
+                      <strong>Automate repetitive work.</strong>
+
+                    </article>
+
+                    <article
+                      class="human-v2-principle"
+                      data-human-principle="5">
+
+                      <span>05</span>
+                      <strong>Debug before guessing.</strong>
+
+                    </article>
+
+                    <article
+                      class="human-v2-principle"
+                      data-human-principle="6">
+
+                      <span>06</span>
+                      <strong>Improve every iteration.</strong>
+
+                    </article>
+
+                  </div>
+
+                </section>
+
+                <!-- =========================================== -->
+                <!-- WORKFLOW                                    -->
+                <!-- =========================================== -->
+
+                <section
+                  class="human-v2-panel"
+                  data-human-panel="workflow"
+                  aria-label="Build loop"
+                  hidden>
+
+                  <div class="human-v2-panel-intro">
+
+                    <span>
+                      EXECUTION_LOOP
+                    </span>
+
+                    <h3>
+                      From question
+                      <em>to better iteration.</em>
+                    </h3>
+
+                    <p>
+                      A simple working loop built from the same principles:
+                      understand, build, test, document and improve.
+                    </p>
+
+                  </div>
+
+                  <div
+                    class="human-v2-workflow"
+                    id="humanV2Workflow">
+
+                    <div
+                      class="human-v2-workflow-step is-active"
+                      data-human-workflow-step="0">
+
+                      <span>01</span>
+                      <strong>UNDERSTAND</strong>
+                      <small>system first</small>
+
+                    </div>
+
+                    <i>→</i>
+
+                    <div
+                      class="human-v2-workflow-step"
+                      data-human-workflow-step="1">
+
+                      <span>02</span>
+                      <strong>BUILD</strong>
+                      <small>make it real</small>
+
+                    </div>
+
+                    <i>→</i>
+
+                    <div
+                      class="human-v2-workflow-step"
+                      data-human-workflow-step="2">
+
+                      <span>03</span>
+                      <strong>TEST</strong>
+                      <small>verify behaviour</small>
+
+                    </div>
+
+                    <i>→</i>
+
+                    <div
+                      class="human-v2-workflow-step"
+                      data-human-workflow-step="3">
+
+                      <span>04</span>
+                      <strong>DOCUMENT</strong>
+                      <small>keep the signal</small>
+
+                    </div>
+
+                    <i>→</i>
+
+                    <div
+                      class="human-v2-workflow-step"
+                      data-human-workflow-step="4">
+
+                      <span>05</span>
+                      <strong>ITERATE</strong>
+                      <small>improve again</small>
+
+                    </div>
+
+                  </div>
+
+                  <div class="human-v2-terminal">
+
+                    <span>
+                      ievgen@workflow:~$
+                    </span>
+
+                    <strong id="humanV2WorkflowCommand">
+                      understand --system
+                    </strong>
+
+                    <i class="terminal-cursor">
+                      _
+                    </i>
+
+                  </div>
+
+                </section>
+
+                <!-- =========================================== -->
+                <!-- DIRECTION                                   -->
+                <!-- =========================================== -->
+
+                <section
+                  class="human-v2-panel"
+                  data-human-panel="direction"
+                  aria-label="Current direction"
+                  hidden>
+
+                  <div class="human-v2-panel-intro">
+
+                    <span>
+                      CURRENT_VECTOR
+                    </span>
+
+                    <h3>
+                      The direction is
+                      <em>integration.</em>
+                    </h3>
+
+                    <p>
+                      Connecting systems, cloud, automation, security,
+                      data engineering and AI into one technical path.
+                    </p>
+
+                  </div>
+
+                  <div class="human-v2-vector-map">
+
+                    <span data-human-vector="cloud">
+                      CLOUD
+                    </span>
+
+                    <span data-human-vector="devops">
+                      DEVOPS
+                    </span>
+
+                    <span data-human-vector="automation">
+                      AUTOMATION
+                    </span>
+
+                    <span data-human-vector="security">
+                      SECURITY
+                    </span>
+
+                    <span data-human-vector="data">
+                      DATA ENGINEERING
+                    </span>
+
+                    <span data-human-vector="ai">
+                      AI
+                    </span>
+
+                    <div class="human-v2-vector-core">
+
+                      <small>
+                        CURRENT VECTOR
+                      </small>
+
+                      <strong>
+                        CONNECT
+                      </strong>
+
+                    </div>
+
+                  </div>
+
+                  <blockquote class="human-v2-quote">
+
+                    The goal is not to collect technologies.
+                    The goal is to understand how they work together.
+
+                  </blockquote>
+
+                </section>
+
+              </div>
+
+            </div>
+
+            <!-- =============================================== -->
+            <!-- INSPECTOR                                       -->
+            <!-- =============================================== -->
+
+            <aside class="human-v2-inspector">
+
+              <div class="human-v2-inspector-head">
+
+                <span>
+                  PROFILE_INSPECTOR
+                </span>
+
+                <strong id="humanV2InspectorTitle">
+                  COMMUNICATION
+                </strong>
+
+              </div>
+
+              <div class="human-v2-core">
+
+                <div class="human-v2-core-orbit orbit-a"></div>
+                <div class="human-v2-core-orbit orbit-b"></div>
+                <div class="human-v2-core-orbit orbit-c"></div>
+
+                <div class="human-v2-core-pulse pulse-a"></div>
+                <div class="human-v2-core-pulse pulse-b"></div>
+                <div class="human-v2-core-pulse pulse-c"></div>
+
+                <div class="human-v2-core-center">
+
+                  <small>
+                    HUMAN_OS
+                  </small>
+
+                  <strong id="humanV2CoreValue">
+                    LANGUAGE
+                  </strong>
+
+                  <span>
+                    ACTIVE
+                  </span>
+
+                </div>
+
+              </div>
+
+              <div class="human-v2-inspector-metrics">
+
+                <div>
+
+                  <span>
+                    LANGUAGES
+                  </span>
+
+                  <strong>
+                    04
+                  </strong>
+
+                </div>
+
+                <div>
+
+                  <span>
+                    PRINCIPLES
+                  </span>
+
+                  <strong>
+                    06
+                  </strong>
+
+                </div>
+
+                <div>
+
+                  <span>
+                    CURRENT
+                  </span>
+
+                  <strong>
+                    DATA + AI
+                  </strong>
+
+                </div>
+
+              </div>
+
+              <div class="human-v2-event-log">
+
+                <span class="human-v2-event-label">
+                  HUMAN_EVENT_STREAM
+                </span>
+
+                <div id="humanV2EventLog">
+
+                  <p>
+                    <span>--:--</span>
+                    human.profile.ready()
+                  </p>
+
+                  <p>
+                    <span>--:--</span>
+                    communication.layer()
+                  </p>
+
+                </div>
+
+              </div>
+
+            </aside>
+
+          </div>
+
+          <!-- ================================================= -->
+          <!-- SIGNAL RAIL                                       -->
+          <!-- ================================================= -->
+
+          <div class="human-v2-signal-rail">
+
+            <span>
+              UNDERSTAND
             </span>
 
-            <div class="language-row">
+            <i>→</i>
 
-              <strong>
-                ES
-              </strong>
-
-              <span>
-                Spanish
-              </span>
-
-              <small>
-                Native
-              </small>
-
-            </div>
-
-            <div class="language-row">
-
-              <strong>
-                CA
-              </strong>
-
-              <span>
-                Catalan
-              </span>
-
-              <small>
-                Native
-              </small>
-
-            </div>
-
-            <div class="language-row">
-
-              <strong>
-                EN
-              </strong>
-
-              <span>
-                English
-              </span>
-
-              <small>
-                B1 / B2
-              </small>
-
-            </div>
-
-            <div class="language-row">
-
-              <strong>
-                RU
-              </strong>
-
-              <span>
-                Russian
-              </span>
-
-              <small>
-                Basic
-              </small>
-
-            </div>
-
-          </article>
-
-          <!-- PRINCIPLES -->
-
-          <article
-            class="human-card glass-card"
-            data-reveal>
-
-            <span class="card-code">
-
-              OPERATING_PRINCIPLES
-
+            <span>
+              BUILD
             </span>
 
-            <ol class="principles">
+            <i>→</i>
 
-              <li>
-                Learn by building.
-              </li>
-
-              <li>
-                Understand the complete system.
-              </li>
-
-              <li>
-                Document what matters.
-              </li>
-
-              <li>
-                Automate repetitive work.
-              </li>
-
-              <li>
-                Debug before guessing.
-              </li>
-
-              <li>
-                Improve every iteration.
-              </li>
-
-            </ol>
-
-          </article>
-
-          <!-- DIRECTION -->
-
-          <article
-            class="human-card human-direction glass-card"
-            data-reveal>
-
-            <span class="card-code">
-
-              CURRENT_VECTOR
-
+            <span>
+              TEST
             </span>
 
-            <div class="direction-map">
+            <i>→</i>
 
-              <span>
-                CLOUD
-              </span>
+            <span>
+              DOCUMENT
+            </span>
 
-              <span>
-                DEVOPS
-              </span>
+            <i>→</i>
 
-              <span>
-                AUTOMATION
-              </span>
+            <span class="is-current">
+              ITERATE
+            </span>
 
-              <span>
-                SECURITY
-              </span>
+          </div>
 
-              <span>
-                DATA ENGINEERING
-              </span>
-
-              <span>
-                AI
-              </span>
-
-            </div>
-
-            <blockquote>
-
-              The goal is not to collect technologies.
-              The goal is to understand how they work together.
-
-            </blockquote>
-
-          </article>
-
-        </div>
+        </article>
 
       </div>
 
@@ -7839,7 +8673,7 @@
   <!-- ===================================================== -->
 
   <script
-    src="script.js?v=lab-v2-20260924-01"
+    src="script.js?v=human-v2-20260925-01"
     defer>
   </script>
 
