@@ -9948,8 +9948,737 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
 
+
   /* ====================================================================== */
-  /* 31 / SYSTEM READY                                                       */
+  /* 31 / CONNECTION V2 INTERACTION ENGINE                                 */
+  /* ====================================================================== */
+
+  const connectionV2System =
+    $("#connectionV2System");
+
+  const connectionRouteNodes =
+    $$("[data-connection-route]");
+
+  const connectionRouteTitle =
+    $("#connectionRouteTitle");
+
+  const connectionRouteEndpoint =
+    $("#connectionRouteEndpoint");
+
+  const connectionRouteType =
+    $("#connectionRouteType");
+
+  const connectionRouteState =
+    $("#connectionRouteState");
+
+  const connectionCommandState =
+    $("#connectionCommandState");
+
+  const connectionV2EventLog =
+    $("#connectionV2EventLog");
+
+  const connectionSessionTime =
+    $("#connectionSessionTime");
+
+  const copyPortfolioUrl =
+    $("#copyPortfolioUrl");
+
+  const copyPortfolioLabel =
+    $("#copyPortfolioLabel");
+
+
+  let connectionRouteIndex =
+    0;
+
+
+  let connectionCycleTimer =
+    null;
+
+
+  let connectionVisible =
+    false;
+
+
+  let connectionManualLock =
+    false;
+
+
+  let connectionCopyResetTimer =
+    null;
+
+
+  const CONNECTION_ROUTES =
+    connectionRouteNodes.map(
+      node => ({
+
+        node,
+
+        name:
+          node.dataset
+            .connectionRoute,
+
+        label:
+          node.dataset
+            .routeLabel,
+
+        type:
+          node.dataset
+            .routeType,
+
+        state:
+          node.dataset
+            .routeState
+
+      })
+    );
+
+
+  const formatConnectionTime =
+    () => {
+
+      return new Date()
+        .toLocaleTimeString(
+          [],
+          {
+            hour: "2-digit",
+            minute: "2-digit"
+          }
+        );
+
+    };
+
+
+  const updateConnectionTime =
+    () => {
+
+      if (!connectionSessionTime) {
+        return;
+      }
+
+
+      connectionSessionTime.textContent =
+        formatConnectionTime();
+
+    };
+
+
+  const pushConnectionEvent =
+    message => {
+
+      if (!connectionV2EventLog) {
+        return;
+      }
+
+
+      const eventLine =
+        document.createElement(
+          "p"
+        );
+
+
+      const label =
+        document.createElement(
+          "span"
+        );
+
+
+      label.textContent =
+        "[ route  ]";
+
+
+      eventLine.appendChild(
+        label
+      );
+
+
+      eventLine.appendChild(
+        document.createTextNode(
+          message
+        )
+      );
+
+
+      connectionV2EventLog.prepend(
+        eventLine
+      );
+
+
+      while (
+        connectionV2EventLog
+          .children
+          .length
+        > 4
+      ) {
+
+        connectionV2EventLog
+          .lastElementChild
+          ?.remove();
+
+      }
+
+    };
+
+
+  const setConnectionRoute =
+    (
+      routeIndex,
+      options = {}
+    ) => {
+
+      if (
+        CONNECTION_ROUTES.length
+        === 0
+      ) {
+
+        return;
+
+      }
+
+
+      connectionRouteIndex =
+        (
+          routeIndex
+          + CONNECTION_ROUTES.length
+        )
+        % CONNECTION_ROUTES.length;
+
+
+      const route =
+        CONNECTION_ROUTES[
+          connectionRouteIndex
+        ];
+
+
+      connectionRouteNodes
+        .forEach(node => {
+
+          node.classList.toggle(
+            "is-active",
+            node === route.node
+          );
+
+        });
+
+
+      const router =
+        $(".contact-v2-router");
+
+
+      router
+        ?.classList
+        .add(
+          "has-route-focus"
+        );
+
+
+      if (connectionV2System) {
+
+        connectionV2System
+          .classList
+          .remove(
+            "route-linkedin-active",
+            "route-github-active",
+            "route-portfolio-active"
+          );
+
+
+        connectionV2System
+          .classList
+          .add(
+            `route-${route.name}-active`
+          );
+
+      }
+
+
+      if (connectionRouteTitle) {
+
+        connectionRouteTitle
+          .textContent =
+            route.label;
+
+      }
+
+
+      if (connectionRouteEndpoint) {
+
+        connectionRouteEndpoint
+          .textContent =
+            route.label;
+
+      }
+
+
+      if (connectionRouteType) {
+
+        connectionRouteType
+          .textContent =
+            route.type;
+
+      }
+
+
+      if (connectionRouteState) {
+
+        connectionRouteState
+          .textContent =
+            route.state;
+
+      }
+
+
+      if (connectionCommandState) {
+
+        connectionCommandState
+          .textContent =
+            `route --${route.name}`;
+
+      }
+
+
+      if (!options.silent) {
+
+        pushConnectionEvent(
+          `route.select(${route.name})`
+        );
+
+      }
+
+    };
+
+
+  const stopConnectionCycle =
+    () => {
+
+      if (
+        connectionCycleTimer
+        !== null
+      ) {
+
+        clearInterval(
+          connectionCycleTimer
+        );
+
+
+        connectionCycleTimer =
+          null;
+
+      }
+
+    };
+
+
+  const startConnectionCycle =
+    () => {
+
+      stopConnectionCycle();
+
+
+      if (
+        !connectionV2System
+        || prefersReducedMotion
+        || document.hidden
+        || connectionManualLock
+      ) {
+
+        return;
+
+      }
+
+
+      connectionCycleTimer =
+        window.setInterval(
+          () => {
+
+            setConnectionRoute(
+              connectionRouteIndex + 1,
+              {
+                silent: true
+              }
+            );
+
+          },
+          2900
+        );
+
+    };
+
+
+  connectionRouteNodes
+    .forEach(
+      (
+        node,
+        index
+      ) => {
+
+        node.addEventListener(
+          "pointerenter",
+          () => {
+
+            setConnectionRoute(
+              index,
+              {
+                silent: true
+              }
+            );
+
+          }
+        );
+
+
+        node.addEventListener(
+          "focus",
+          () => {
+
+            setConnectionRoute(
+              index,
+              {
+                silent: true
+              }
+            );
+
+          }
+        );
+
+
+        node.addEventListener(
+          "click",
+          () => {
+
+            connectionManualLock =
+              true;
+
+
+            setConnectionRoute(
+              index
+            );
+
+
+            stopConnectionCycle();
+
+        }
+      );
+
+    });
+
+
+  const copyConnectionValue =
+    async () => {
+
+      if (!copyPortfolioUrl) {
+        return;
+      }
+
+
+      const value =
+        copyPortfolioUrl.dataset
+          .copyValue;
+
+
+      if (!value) {
+        return;
+      }
+
+
+      let copied =
+        false;
+
+
+      try {
+
+        if (
+          navigator.clipboard
+          && window.isSecureContext
+        ) {
+
+          await navigator.clipboard
+            .writeText(
+              value
+            );
+
+
+          copied =
+            true;
+
+        }
+
+      } catch {
+
+        copied =
+          false;
+
+      }
+
+
+      if (!copied) {
+
+        const temporary =
+          document.createElement(
+            "textarea"
+          );
+
+
+        temporary.value =
+          value;
+
+
+        temporary.setAttribute(
+          "readonly",
+          ""
+        );
+
+
+        temporary.style.position =
+          "fixed";
+
+
+        temporary.style.opacity =
+          "0";
+
+
+        document.body.appendChild(
+          temporary
+        );
+
+
+        temporary.select();
+
+
+        try {
+
+          copied =
+            document.execCommand(
+              "copy"
+            );
+
+        } catch {
+
+          copied =
+            false;
+
+        }
+
+
+        temporary.remove();
+
+      }
+
+
+      if (connectionCopyResetTimer) {
+
+        clearTimeout(
+          connectionCopyResetTimer
+        );
+
+      }
+
+
+      copyPortfolioUrl.classList
+        .toggle(
+          "is-copied",
+          copied
+        );
+
+
+      if (copyPortfolioLabel) {
+
+        copyPortfolioLabel
+          .textContent =
+            copied
+              ? "Copied ✓"
+              : "Copy unavailable";
+
+      }
+
+
+      pushConnectionEvent(
+        copied
+          ? "portfolio.url.copy(ok)"
+          : "portfolio.url.copy(failed)"
+      );
+
+
+      connectionCopyResetTimer =
+        window.setTimeout(
+          () => {
+
+            copyPortfolioUrl
+              .classList
+              .remove(
+                "is-copied"
+              );
+
+
+            if (copyPortfolioLabel) {
+
+              copyPortfolioLabel
+                .textContent =
+                  "Copy portfolio URL";
+
+            }
+
+          },
+          1800
+        );
+
+    };
+
+
+  copyPortfolioUrl
+    ?.addEventListener(
+      "click",
+      copyConnectionValue
+    );
+
+
+  $$("[data-connection-action]")
+    .forEach(link => {
+
+      link.addEventListener(
+        "click",
+        () => {
+
+          const action =
+            link.dataset
+              .connectionAction
+            || "external";
+
+
+          pushConnectionEvent(
+            `handoff.open(${action})`
+          );
+
+        }
+      );
+
+    });
+
+
+  if (
+    connectionV2System
+    && "IntersectionObserver"
+       in window
+  ) {
+
+    const connectionObserver =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            connectionVisible =
+              entry.isIntersecting;
+
+
+            connectionV2System
+              .classList
+              .toggle(
+                "is-active",
+                entry.isIntersecting
+              );
+
+
+            if (entry.isIntersecting) {
+
+              updateConnectionTime();
+
+
+              setConnectionRoute(
+                connectionRouteIndex,
+                {
+                  silent: true
+                }
+              );
+
+
+              startConnectionCycle();
+
+
+              pushConnectionEvent(
+                "handoff.system.ready()"
+              );
+
+            } else {
+
+              stopConnectionCycle();
+
+            }
+
+          });
+
+        },
+        {
+          threshold: .14
+        }
+      );
+
+
+    connectionObserver.observe(
+      connectionV2System
+    );
+
+  } else if (connectionV2System) {
+
+    connectionVisible =
+      true;
+
+
+    connectionV2System
+      .classList
+      .add(
+        "is-active"
+      );
+
+
+    updateConnectionTime();
+
+
+    setConnectionRoute(
+      0,
+      {
+        silent: true
+      }
+    );
+
+
+    startConnectionCycle();
+
+  }
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (!connectionV2System) {
+        return;
+      }
+
+
+      if (document.hidden) {
+
+        stopConnectionCycle();
+
+        return;
+
+      }
+
+
+      if (
+        connectionVisible
+        && !connectionManualLock
+      ) {
+
+        startConnectionCycle();
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 32 / SYSTEM READY                                                       */
   /* ====================================================================== */
 
   requestAnimationFrame(
