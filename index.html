@@ -109,7 +109,7 @@
 
   <link
     rel="stylesheet"
-    href="style.css?v=connection-v2-20260925-01">
+    href="style.css?v=stack-v3-20260925-01">
 
   <!-- ===================================================== -->
   <!-- STRUCTURED DATA                                       -->
@@ -4832,18 +4832,14 @@
     </section>
 
     <!-- =================================================== -->
-    <!-- 06 / STACK V2 — TECHNICAL UNIVERSE EXTREME          -->
+    <!-- 06 / STACK V3 — KNOWLEDGE GRAPH OS                  -->
     <!-- =================================================== -->
 
     <section
-      class="section section-dark stack-section stack-v2-section"
+      class="section section-dark stack-section stack-v3-section"
       id="stack">
 
       <div class="section-shell">
-
-        <!-- ================================================= -->
-        <!-- SECTION HEADER                                    -->
-        <!-- ================================================= -->
 
         <div
           class="section-heading"
@@ -4856,32 +4852,29 @@
           <div>
 
             <p class="section-label">
-              TECHNICAL UNIVERSE / KNOWLEDGE GRAPH
+              TECHNICAL UNIVERSE / KNOWLEDGE GRAPH OS
             </p>
 
             <h2>
-              The stack is a system.
+              Find the technology.
               <br>
-              Not a list.
+              Trace where it becomes real.
             </h2>
 
           </div>
 
         </div>
 
-        <!-- ================================================= -->
-        <!-- TECHNICAL UNIVERSE                                -->
-        <!-- ================================================= -->
-
         <article
-          class="stack-v2-shell"
+          class="stack-v3-shell"
+          id="stackV3System"
           data-reveal>
 
           <!-- TOP BAR -->
 
-          <div class="stack-v2-topbar">
+          <div class="stack-v3-topbar">
 
-            <div class="stack-v2-window">
+            <div class="stack-v3-window">
 
               <div class="window-dots">
                 <i></i>
@@ -4890,704 +4883,611 @@
               </div>
 
               <span>
-                technical-universe://knowledge-graph
+                stack://knowledge-graph/v3
               </span>
 
             </div>
 
-            <div class="stack-v2-runtime">
+            <div class="stack-v3-runtime">
 
-              <span class="stack-v2-chip is-live">
+              <span class="stack-v3-chip is-live">
                 <i></i>
-                GRAPH ONLINE
+                GRAPH OS ONLINE
               </span>
 
-              <span class="stack-v2-chip">
+              <span class="stack-v3-chip">
                 08 DOMAINS
               </span>
 
-              <span class="stack-v2-chip">
+              <span class="stack-v3-chip">
                 50 TOOLS
+              </span>
+
+              <span class="stack-v3-chip">
+                PROOF LINKS
               </span>
 
             </div>
 
           </div>
 
-          <!-- DASHBOARD -->
+          <!-- QUERY / FILTER CONTROL -->
 
-          <div class="stack-v2-dashboard">
+          <div class="stack-v3-querybar">
 
-            <!-- DOMAIN RAIL -->
+            <label
+              class="stack-v3-search"
+              for="stackV3Search">
 
-            <aside
-              class="stack-domain-rail"
-              aria-label="Technical domains">
-
-              <span class="stack-rail-label">
-                DOMAIN_INDEX
+              <span>
+                SEARCH
               </span>
 
-              <button
-                type="button"
-                class="stack-domain-button is-active"
-                data-stack-domain="systems"
-                aria-pressed="true">
+              <input
+                id="stackV3Search"
+                type="search"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="Kubernetes, pfSense, PostgreSQL..."
+                aria-label="Search technologies">
 
-                <span>01</span>
-                <strong>SYSTEMS</strong>
-                <small>07 tools</small>
+              <kbd>
+                /
+              </kbd>
 
-              </button>
+            </label>
 
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="cloud"
-                aria-pressed="false">
+            <button
+              type="button"
+              class="stack-v3-clear"
+              id="stackV3Clear">
+              CLEAR
+            </button>
 
-                <span>02</span>
-                <strong>CLOUD</strong>
-                <small>06 tools</small>
+            <div class="stack-v3-result-state">
 
-              </button>
+              <span>
+                RESULT_SET
+              </span>
 
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="network"
-                aria-pressed="false">
+              <strong id="stackV3ResultCount">
+                50
+              </strong>
 
-                <span>03</span>
-                <strong>NETWORK</strong>
-                <small>07 tools</small>
+            </div>
 
-              </button>
+          </div>
 
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="security"
-                aria-pressed="false">
+          <div
+            class="stack-v3-filters"
+            id="stackV3Filters"
+            role="group"
+            aria-label="Filter technologies by domain">
 
-                <span>04</span>
-                <strong>SECURITY</strong>
-                <small>05 tools</small>
+            <button
+              type="button"
+              class="stack-v3-filter is-active"
+              data-stack-v3-filter="all"
+              aria-pressed="true">
+              ALL
+            </button>
 
-              </button>
+            <button
+              type="button"
+              class="stack-v3-filter"
+              data-stack-v3-filter="systems"
+              aria-pressed="false">
+              SYSTEMS
+            </button>
 
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="observe"
-                aria-pressed="false">
+            <button
+              type="button"
+              class="stack-v3-filter"
+              data-stack-v3-filter="cloud"
+              aria-pressed="false">
+              CLOUD
+            </button>
 
-                <span>05</span>
-                <strong>OBSERVE</strong>
-                <small>05 tools</small>
+            <button
+              type="button"
+              class="stack-v3-filter"
+              data-stack-v3-filter="network"
+              aria-pressed="false">
+              NETWORK
+            </button>
 
-              </button>
+            <button
+              type="button"
+              class="stack-v3-filter"
+              data-stack-v3-filter="security"
+              aria-pressed="false">
+              SECURITY
+            </button>
 
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="automation"
-                aria-pressed="false">
+            <button
+              type="button"
+              class="stack-v3-filter"
+              data-stack-v3-filter="observe"
+              aria-pressed="false">
+              OBSERVE
+            </button>
 
-                <span>06</span>
-                <strong>AUTOMATION</strong>
-                <small>06 tools</small>
+            <button
+              type="button"
+              class="stack-v3-filter"
+              data-stack-v3-filter="automation"
+              aria-pressed="false">
+              AUTOMATION
+            </button>
 
-              </button>
+            <button
+              type="button"
+              class="stack-v3-filter"
+              data-stack-v3-filter="data"
+              aria-pressed="false">
+              DATA + AI
+            </button>
 
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="data"
-                aria-pressed="false">
+            <button
+              type="button"
+              class="stack-v3-filter"
+              data-stack-v3-filter="digital"
+              aria-pressed="false">
+              DIGITAL
+            </button>
 
-                <span>07</span>
-                <strong>DATA + AI</strong>
-                <small>08 tools</small>
+          </div>
 
-              </button>
+          <!-- MAIN GRAPH OS -->
 
-              <button
-                type="button"
-                class="stack-domain-button"
-                data-stack-domain="digital"
-                aria-pressed="false">
+          <div class="stack-v3-layout">
 
-                <span>08</span>
-                <strong>DIGITAL</strong>
-                <small>06 tools</small>
+            <!-- DOMAIN NAV -->
 
-              </button>
+            <aside
+              class="stack-v3-domain-rail"
+              aria-label="Technical domain navigation">
+
+              <div class="stack-v3-panel-label">
+
+                <span>
+                  DOMAIN_INDEX
+                </span>
+
+                <strong id="stackV3DomainState">
+                  ALL_DOMAINS
+                </strong>
+
+              </div>
+
+              <div
+                class="stack-v3-domain-list"
+                id="stackV3DomainList">
+
+                <button
+                  type="button"
+                  class="stack-v3-domain"
+                  data-stack-v3-domain="systems">
+
+                  <span>01</span>
+
+                  <div>
+                    <strong>SYSTEMS</strong>
+                    <small>07 technologies</small>
+                  </div>
+
+                  <i></i>
+
+                </button>
+
+                <button
+                  type="button"
+                  class="stack-v3-domain"
+                  data-stack-v3-domain="cloud">
+
+                  <span>02</span>
+
+                  <div>
+                    <strong>CLOUD</strong>
+                    <small>06 technologies</small>
+                  </div>
+
+                  <i></i>
+
+                </button>
+
+                <button
+                  type="button"
+                  class="stack-v3-domain"
+                  data-stack-v3-domain="network">
+
+                  <span>03</span>
+
+                  <div>
+                    <strong>NETWORK</strong>
+                    <small>07 technologies</small>
+                  </div>
+
+                  <i></i>
+
+                </button>
+
+                <button
+                  type="button"
+                  class="stack-v3-domain"
+                  data-stack-v3-domain="security">
+
+                  <span>04</span>
+
+                  <div>
+                    <strong>SECURITY</strong>
+                    <small>05 technologies</small>
+                  </div>
+
+                  <i></i>
+
+                </button>
+
+                <button
+                  type="button"
+                  class="stack-v3-domain"
+                  data-stack-v3-domain="observe">
+
+                  <span>05</span>
+
+                  <div>
+                    <strong>OBSERVE</strong>
+                    <small>05 technologies</small>
+                  </div>
+
+                  <i></i>
+
+                </button>
+
+                <button
+                  type="button"
+                  class="stack-v3-domain"
+                  data-stack-v3-domain="automation">
+
+                  <span>06</span>
+
+                  <div>
+                    <strong>AUTOMATION</strong>
+                    <small>06 technologies</small>
+                  </div>
+
+                  <i></i>
+
+                </button>
+
+                <button
+                  type="button"
+                  class="stack-v3-domain"
+                  data-stack-v3-domain="data">
+
+                  <span>07</span>
+
+                  <div>
+                    <strong>DATA + AI</strong>
+                    <small>08 technologies</small>
+                  </div>
+
+                  <i></i>
+
+                </button>
+
+                <button
+                  type="button"
+                  class="stack-v3-domain"
+                  data-stack-v3-domain="digital">
+
+                  <span>08</span>
+
+                  <div>
+                    <strong>DIGITAL</strong>
+                    <small>06 technologies</small>
+                  </div>
+
+                  <i></i>
+
+                </button>
+
+              </div>
+
+              <div class="stack-v3-domain-footer">
+
+                <span>
+                  NAVIGATION
+                </span>
+
+                <strong>
+                  CLICK / ↑ ↓
+                </strong>
+
+              </div>
 
             </aside>
 
-            <!-- UNIVERSE -->
+            <!-- KNOWLEDGE GRAPH -->
 
-            <div class="stack-universe-panel">
+            <div class="stack-v3-graph-panel">
 
-              <div class="stack-universe-toolbar">
+              <div class="stack-v3-panel-head">
 
                 <div>
-                  <span>RELATION_MAP</span>
-                  <strong id="stackUniverseMode">
-                    SYSTEMS FOUNDATION
+
+                  <span>
+                    RELATION_MAP
+                  </span>
+
+                  <strong id="stackV3GraphMode">
+                    ALL DOMAINS / SYSTEM VIEW
                   </strong>
+
                 </div>
 
-                <div class="stack-universe-legend">
-                  <span><i class="legend-core"></i> DOMAIN</span>
-                  <span><i class="legend-tech"></i> TECHNOLOGY</span>
-                  <span><i class="legend-path"></i> RELATION</span>
+                <div class="stack-v3-legend">
+
+                  <span>
+                    <i class="is-domain"></i>
+                    DOMAIN
+                  </span>
+
+                  <span>
+                    <i class="is-relation"></i>
+                    RELATION
+                  </span>
+
+                  <span>
+                    <i class="is-proof"></i>
+                    PROOF
+                  </span>
+
                 </div>
 
               </div>
 
               <div
-                class="stack-universe-map"
-                id="stackUniverseMap">
+                class="stack-v3-graph"
+                id="stackV3Graph">
 
                 <svg
-                  class="stack-universe-svg"
-                  viewBox="0 0 1000 680"
+                  class="stack-v3-graph-svg"
+                  viewBox="0 0 900 620"
                   role="img"
-                  aria-labelledby="stackUniverseTitle stackUniverseDesc">
+                  aria-labelledby="stackV3GraphTitle stackV3GraphDesc">
 
-                  <title id="stackUniverseTitle">
-                    Ievgen Soloviov technical universe knowledge graph
+                  <title id="stackV3GraphTitle">
+                    Technical knowledge graph
                   </title>
 
-                  <desc id="stackUniverseDesc">
-                    Conceptual relationship map connecting systems,
-                    cloud native, networking, security, observability,
-                    automation, data and AI, and digital tooling.
+                  <desc id="stackV3GraphDesc">
+                    Eight technical domains connected around a central
+                    technical universe, with cross-domain relationships.
                   </desc>
 
-                  <defs>
-
-                    <radialGradient id="stackCoreGradient">
-                      <stop offset="0%" stop-color="#38bdf8" stop-opacity=".18"></stop>
-                      <stop offset="55%" stop-color="#8b5cf6" stop-opacity=".08"></stop>
-                      <stop offset="100%" stop-color="#040711" stop-opacity="0"></stop>
-                    </radialGradient>
-
-                    <linearGradient id="stackFlowGradient" x1="0" x2="1">
-                      <stop offset="0%" stop-color="#38bdf8"></stop>
-                      <stop offset="48%" stop-color="#8b5cf6"></stop>
-                      <stop offset="100%" stop-color="#2dd4bf"></stop>
-                    </linearGradient>
-
-                    <filter
-                      id="stackPulseGlow"
-                      x="-200%"
-                      y="-200%"
-                      width="500%"
-                      height="500%">
-
-                      <feGaussianBlur
-                        stdDeviation="5"
-                        result="stackPulseBlur">
-                      </feGaussianBlur>
-
-                      <feMerge>
-                        <feMergeNode in="stackPulseBlur"></feMergeNode>
-                        <feMergeNode in="SourceGraphic"></feMergeNode>
-                      </feMerge>
-
-                    </filter>
-
-                  </defs>
-
-                  <!-- BACKGROUND GRID -->
-
-                  <g
-                    class="stack-universe-grid"
-                    aria-hidden="true">
-
-                    <circle cx="500" cy="340" r="90"></circle>
-                    <circle cx="500" cy="340" r="190"></circle>
-                    <circle cx="500" cy="340" r="290"></circle>
-
-                    <path d="M80 340H920"></path>
-                    <path d="M500 55V625"></path>
-                    <path d="M180 120L820 560"></path>
-                    <path d="M820 120L180 560"></path>
-
+                  <g class="stack-v3-grid-lines" aria-hidden="true">
+                    <path d="M60 100H840 M60 190H840 M60 280H840 M60 370H840 M60 460H840 M60 550H840"></path>
+                    <path d="M130 55V575 M260 55V575 M390 55V575 M520 55V575 M650 55V575 M780 55V575"></path>
                   </g>
 
-                  <!-- CORE -->
+                  <g class="stack-v3-core-links">
+                    <line x1="450" y1="310" x2="185" y2="112" data-stack-v3-edge="systems cloud"></line>
+                    <line x1="450" y1="310" x2="450" y2="88" data-stack-v3-edge="cloud automation"></line>
+                    <line x1="450" y1="310" x2="715" y2="112" data-stack-v3-edge="network security"></line>
+                    <line x1="450" y1="310" x2="770" y2="310" data-stack-v3-edge="security observe"></line>
+                    <line x1="450" y1="310" x2="715" y2="508" data-stack-v3-edge="observe data"></line>
+                    <line x1="450" y1="310" x2="450" y2="532" data-stack-v3-edge="data digital"></line>
+                    <line x1="450" y1="310" x2="185" y2="508" data-stack-v3-edge="digital automation"></line>
+                    <line x1="450" y1="310" x2="130" y2="310" data-stack-v3-edge="systems network"></line>
+                  </g>
 
-                  <circle
-                    class="stack-core-halo"
-                    cx="500"
-                    cy="340"
-                    r="115"
-                    fill="url(#stackCoreGradient)">
-                  </circle>
+                  <g class="stack-v3-cross-links">
+                    <path d="M185 112 Q315 25 450 88" data-stack-v3-edge="systems cloud"></path>
+                    <path d="M450 88 Q600 30 715 112" data-stack-v3-edge="cloud network"></path>
+                    <path d="M715 112 Q820 185 770 310" data-stack-v3-edge="network security"></path>
+                    <path d="M770 310 Q825 425 715 508" data-stack-v3-edge="security observe"></path>
+                    <path d="M715 508 Q585 590 450 532" data-stack-v3-edge="observe data"></path>
+                    <path d="M450 532 Q300 592 185 508" data-stack-v3-edge="data digital"></path>
+                    <path d="M185 508 Q70 425 130 310" data-stack-v3-edge="digital automation"></path>
+                    <path d="M130 310 Q70 190 185 112" data-stack-v3-edge="automation systems"></path>
+                    <path d="M450 88 Q675 195 715 508" data-stack-v3-edge="cloud observe"></path>
+                    <path d="M185 112 Q330 305 450 532" data-stack-v3-edge="systems data"></path>
+                  </g>
 
-                  <g class="stack-core-node">
+                  <g
+                    class="stack-v3-core-node"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Show all technical domains"
+                    data-stack-v3-domain-node="all">
 
                     <circle
-                      cx="500"
-                      cy="340"
-                      r="57">
+                      class="stack-v3-core-ring ring-outer"
+                      cx="450"
+                      cy="310"
+                      r="95">
+                    </circle>
+
+                    <circle
+                      class="stack-v3-core-ring ring-inner"
+                      cx="450"
+                      cy="310"
+                      r="68">
+                    </circle>
+
+                    <circle
+                      class="stack-v3-core-fill"
+                      cx="450"
+                      cy="310"
+                      r="54">
                     </circle>
 
                     <text
-                      class="stack-core-kicker"
-                      x="500"
-                      y="326"
+                      class="stack-v3-core-kicker"
+                      x="450"
+                      y="293"
                       text-anchor="middle">
-                      TECHNICAL
+                      STACK_V3
                     </text>
 
                     <text
-                      class="stack-core-title"
-                      x="500"
-                      y="346"
+                      class="stack-v3-core-title"
+                      x="450"
+                      y="316"
                       text-anchor="middle">
-                      UNIVERSE
+                      IEVGEN
                     </text>
 
                     <text
-                      class="stack-core-meta"
-                      x="500"
-                      y="365"
+                      class="stack-v3-core-state"
+                      x="450"
+                      y="337"
                       text-anchor="middle">
-                      IEVGEN / 2026
+                      KNOWLEDGE GRAPH
                     </text>
 
                   </g>
 
-                  <!-- CORE RADIAL LINKS -->
+                  <g
+                    class="stack-v3-domain-node"
+                    data-stack-v3-domain-node="systems"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Systems domain"
+                    transform="translate(185 112)">
 
-                  <g class="stack-core-links">
-
-                    <path id="stack-core-systems" d="M457 302 L238 202"></path>
-                    <path id="stack-core-cloud" d="M500 282 L500 155"></path>
-                    <path id="stack-core-network" d="M543 302 L762 202"></path>
-                    <path id="stack-core-security" d="M555 357 L805 405"></path>
-                    <path id="stack-core-observe" d="M535 387 L652 542"></path>
-                    <path id="stack-core-data" d="M465 387 L348 542"></path>
-                    <path id="stack-core-automation" d="M445 357 L195 405"></path>
-                    <path id="stack-core-digital" d="M500 397 L500 470"></path>
-
-                  </g>
-
-                  <!-- CROSS DOMAIN RELATIONSHIPS -->
-
-                  <g class="stack-domain-links">
-
-                    <path
-                      id="stack-edge-systems-cloud"
-                      class="stack-edge"
-                      data-stack-edge="systems cloud"
-                      d="M250 178 C320 100 405 98 458 126">
-                    </path>
-
-                    <path
-                      id="stack-edge-cloud-network"
-                      class="stack-edge"
-                      data-stack-edge="cloud network"
-                      d="M542 126 C610 96 705 105 750 178">
-                    </path>
-
-                    <path
-                      id="stack-edge-network-security"
-                      class="stack-edge"
-                      data-stack-edge="network security"
-                      d="M812 225 C860 270 876 330 850 365">
-                    </path>
-
-                    <path
-                      id="stack-edge-security-observe"
-                      class="stack-edge"
-                      data-stack-edge="security observe"
-                      d="M810 443 C780 500 730 540 690 555">
-                    </path>
-
-                    <path
-                      id="stack-edge-observe-data"
-                      class="stack-edge"
-                      data-stack-edge="observe data"
-                      d="M610 583 C540 615 460 615 390 583">
-                    </path>
-
-                    <path
-                      id="stack-edge-data-automation"
-                      class="stack-edge"
-                      data-stack-edge="data automation"
-                      d="M310 555 C245 530 205 480 190 445">
-                    </path>
-
-                    <path
-                      id="stack-edge-automation-systems"
-                      class="stack-edge"
-                      data-stack-edge="automation systems"
-                      d="M150 365 C125 310 145 250 188 220">
-                    </path>
-
-                    <path
-                      id="stack-edge-cloud-observe"
-                      class="stack-edge stack-edge-major"
-                      data-stack-edge="cloud observe"
-                      d="M520 160 C625 230 690 360 670 520">
-                    </path>
-
-                    <path
-                      id="stack-edge-systems-data"
-                      class="stack-edge stack-edge-major"
-                      data-stack-edge="systems data"
-                      d="M220 225 C240 350 270 460 330 520">
-                    </path>
-
-                    <path
-                      id="stack-edge-automation-cloud"
-                      class="stack-edge"
-                      data-stack-edge="automation cloud"
-                      d="M205 385 C280 300 375 210 465 155">
-                    </path>
-
-                    <path
-                      id="stack-edge-data-digital"
-                      class="stack-edge"
-                      data-stack-edge="data digital"
-                      d="M380 530 C425 505 455 490 475 470">
-                    </path>
-
-                    <path
-                      id="stack-edge-digital-cloud"
-                      class="stack-edge"
-                      data-stack-edge="digital cloud"
-                      d="M525 470 C560 405 560 235 525 160">
-                    </path>
+                    <circle r="49"></circle>
+                    <text class="domain-index" y="-8" text-anchor="middle">01</text>
+                    <text class="domain-title" y="10" text-anchor="middle">SYSTEMS</text>
+                    <text class="domain-count" y="27" text-anchor="middle">07 TOOLS</text>
 
                   </g>
-
-                  <!-- SYSTEMS -->
 
                   <g
-                    class="stack-domain-node stack-domain-systems is-active"
-                    data-stack-node="systems"
-                    tabindex="0">
+                    class="stack-v3-domain-node"
+                    data-stack-v3-domain-node="cloud"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Cloud domain"
+                    transform="translate(450 88)">
 
-                    <circle cx="210" cy="195" r="47"></circle>
-
-                    <text class="stack-domain-index" x="210" y="183" text-anchor="middle">01</text>
-                    <text class="stack-domain-title" x="210" y="202" text-anchor="middle">SYSTEMS</text>
-                    <text class="stack-domain-meta" x="210" y="219" text-anchor="middle">FOUNDATION</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="systems">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Linux" data-stack-domain-ref="systems">
-                      <circle cx="115" cy="120" r="22"></circle>
-                      <text x="115" y="124" text-anchor="middle">LINUX</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Windows Server" data-stack-domain-ref="systems">
-                      <circle cx="100" cy="220" r="22"></circle>
-                      <text x="100" y="217" text-anchor="middle">WINDOWS</text>
-                      <text x="100" y="228" text-anchor="middle">SERVER</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Active Directory" data-stack-domain-ref="systems">
-                      <circle cx="190" cy="95" r="22"></circle>
-                      <text x="190" y="92" text-anchor="middle">ACTIVE</text>
-                      <text x="190" y="103" text-anchor="middle">DIRECTORY</text>
-                    </g>
+                    <circle r="49"></circle>
+                    <text class="domain-index" y="-8" text-anchor="middle">02</text>
+                    <text class="domain-title" y="10" text-anchor="middle">CLOUD</text>
+                    <text class="domain-count" y="27" text-anchor="middle">06 TOOLS</text>
 
                   </g>
-
-                  <!-- CLOUD -->
 
                   <g
-                    class="stack-domain-node stack-domain-cloud"
-                    data-stack-node="cloud"
-                    tabindex="0">
+                    class="stack-v3-domain-node"
+                    data-stack-v3-domain-node="network"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Network domain"
+                    transform="translate(715 112)">
 
-                    <circle cx="500" cy="125" r="47"></circle>
-
-                    <text class="stack-domain-index" x="500" y="113" text-anchor="middle">02</text>
-                    <text class="stack-domain-title" x="500" y="132" text-anchor="middle">CLOUD</text>
-                    <text class="stack-domain-meta" x="500" y="149" text-anchor="middle">NATIVE</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="cloud">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Docker" data-stack-domain-ref="cloud">
-                      <circle cx="390" cy="80" r="22"></circle>
-                      <text x="390" y="84" text-anchor="middle">DOCKER</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Kubernetes" data-stack-domain-ref="cloud">
-                      <circle cx="500" cy="45" r="25"></circle>
-                      <text x="500" y="49" text-anchor="middle">K8S</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Istio" data-stack-domain-ref="cloud">
-                      <circle cx="610" cy="80" r="22"></circle>
-                      <text x="610" y="84" text-anchor="middle">ISTIO</text>
-                    </g>
+                    <circle r="49"></circle>
+                    <text class="domain-index" y="-8" text-anchor="middle">03</text>
+                    <text class="domain-title" y="10" text-anchor="middle">NETWORK</text>
+                    <text class="domain-count" y="27" text-anchor="middle">07 TOOLS</text>
 
                   </g>
-
-                  <!-- NETWORK -->
 
                   <g
-                    class="stack-domain-node stack-domain-network"
-                    data-stack-node="network"
-                    tabindex="0">
+                    class="stack-v3-domain-node"
+                    data-stack-v3-domain-node="security"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Security domain"
+                    transform="translate(770 310)">
 
-                    <circle cx="790" cy="195" r="47"></circle>
-
-                    <text class="stack-domain-index" x="790" y="183" text-anchor="middle">03</text>
-                    <text class="stack-domain-title" x="790" y="202" text-anchor="middle">NETWORK</text>
-                    <text class="stack-domain-meta" x="790" y="219" text-anchor="middle">CONNECTIVITY</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="network">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="TCP/IP" data-stack-domain-ref="network">
-                      <circle cx="810" cy="95" r="22"></circle>
-                      <text x="810" y="99" text-anchor="middle">TCP/IP</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="VLAN" data-stack-domain-ref="network">
-                      <circle cx="900" cy="150" r="22"></circle>
-                      <text x="900" y="154" text-anchor="middle">VLAN</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="pfSense" data-stack-domain-ref="network">
-                      <circle cx="905" cy="245" r="22"></circle>
-                      <text x="905" y="249" text-anchor="middle">pfSense</text>
-                    </g>
+                    <circle r="49"></circle>
+                    <text class="domain-index" y="-8" text-anchor="middle">04</text>
+                    <text class="domain-title" y="10" text-anchor="middle">SECURITY</text>
+                    <text class="domain-count" y="27" text-anchor="middle">05 TOOLS</text>
 
                   </g>
-
-                  <!-- SECURITY -->
 
                   <g
-                    class="stack-domain-node stack-domain-security"
-                    data-stack-node="security"
-                    tabindex="0">
+                    class="stack-v3-domain-node"
+                    data-stack-v3-domain-node="observe"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Observability domain"
+                    transform="translate(715 508)">
 
-                    <circle cx="835" cy="405" r="47"></circle>
-
-                    <text class="stack-domain-index" x="835" y="393" text-anchor="middle">04</text>
-                    <text class="stack-domain-title" x="835" y="412" text-anchor="middle">SECURITY</text>
-                    <text class="stack-domain-meta" x="835" y="429" text-anchor="middle">PROTECTION</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="security">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Firewall" data-stack-domain-ref="security">
-                      <circle cx="920" cy="335" r="22"></circle>
-                      <text x="920" y="339" text-anchor="middle">FIREWALL</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Suricata" data-stack-domain-ref="security">
-                      <circle cx="935" cy="430" r="22"></circle>
-                      <text x="935" y="434" text-anchor="middle">SURICATA</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="SSL / TLS" data-stack-domain-ref="security">
-                      <circle cx="870" cy="505" r="22"></circle>
-                      <text x="870" y="509" text-anchor="middle">SSL/TLS</text>
-                    </g>
+                    <circle r="49"></circle>
+                    <text class="domain-index" y="-8" text-anchor="middle">05</text>
+                    <text class="domain-title" y="10" text-anchor="middle">OBSERVE</text>
+                    <text class="domain-count" y="27" text-anchor="middle">05 TOOLS</text>
 
                   </g>
-
-                  <!-- OBSERVABILITY -->
 
                   <g
-                    class="stack-domain-node stack-domain-observe"
-                    data-stack-node="observe"
-                    tabindex="0">
+                    class="stack-v3-domain-node"
+                    data-stack-v3-domain-node="data"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Data and AI domain"
+                    transform="translate(450 532)">
 
-                    <circle cx="660" cy="570" r="47"></circle>
-
-                    <text class="stack-domain-index" x="660" y="558" text-anchor="middle">05</text>
-                    <text class="stack-domain-title" x="660" y="577" text-anchor="middle">OBSERVE</text>
-                    <text class="stack-domain-meta" x="660" y="594" text-anchor="middle">VISIBILITY</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="observe">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Prometheus" data-stack-domain-ref="observe">
-                      <circle cx="750" cy="600" r="22"></circle>
-                      <text x="750" y="604" text-anchor="middle">PROM</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Grafana" data-stack-domain-ref="observe">
-                      <circle cx="680" cy="645" r="22"></circle>
-                      <text x="680" y="649" text-anchor="middle">GRAFANA</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Kiali" data-stack-domain-ref="observe">
-                      <circle cx="590" cy="630" r="22"></circle>
-                      <text x="590" y="634" text-anchor="middle">KIALI</text>
-                    </g>
+                    <circle r="49"></circle>
+                    <text class="domain-index" y="-8" text-anchor="middle">07</text>
+                    <text class="domain-title" y="10" text-anchor="middle">DATA + AI</text>
+                    <text class="domain-count" y="27" text-anchor="middle">08 TOOLS</text>
 
                   </g>
-
-                  <!-- DATA + AI -->
 
                   <g
-                    class="stack-domain-node stack-domain-data"
-                    data-stack-node="data"
-                    tabindex="0">
+                    class="stack-v3-domain-node"
+                    data-stack-v3-domain-node="digital"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Digital domain"
+                    transform="translate(185 508)">
 
-                    <circle cx="340" cy="570" r="47"></circle>
-
-                    <text class="stack-domain-index" x="340" y="558" text-anchor="middle">07</text>
-                    <text class="stack-domain-title" x="340" y="577" text-anchor="middle">DATA + AI</text>
-                    <text class="stack-domain-meta" x="340" y="594" text-anchor="middle">INTELLIGENCE</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="data">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Python" data-stack-domain-ref="data">
-                      <circle cx="250" cy="600" r="22"></circle>
-                      <text x="250" y="604" text-anchor="middle">PYTHON</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="PostgreSQL" data-stack-domain-ref="data">
-                      <circle cx="320" cy="645" r="22"></circle>
-                      <text x="320" y="649" text-anchor="middle">POSTGRES</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Big Data" data-stack-domain-ref="data">
-                      <circle cx="410" cy="630" r="22"></circle>
-                      <text x="410" y="634" text-anchor="middle">BIG DATA</text>
-                    </g>
-
-                    <g class="stack-tech-node stack-tech-ai" tabindex="0" data-stack-tech="Artificial Intelligence" data-stack-domain-ref="data">
-                      <circle cx="190" cy="545" r="24"></circle>
-                      <text x="190" y="549" text-anchor="middle">AI</text>
-                    </g>
+                    <circle r="49"></circle>
+                    <text class="domain-index" y="-8" text-anchor="middle">08</text>
+                    <text class="domain-title" y="10" text-anchor="middle">DIGITAL</text>
+                    <text class="domain-count" y="27" text-anchor="middle">06 TOOLS</text>
 
                   </g>
-
-                  <!-- AUTOMATION -->
 
                   <g
-                    class="stack-domain-node stack-domain-automation"
-                    data-stack-node="automation"
-                    tabindex="0">
+                    class="stack-v3-domain-node"
+                    data-stack-v3-domain-node="automation"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Automation domain"
+                    transform="translate(130 310)">
 
-                    <circle cx="165" cy="405" r="47"></circle>
-
-                    <text class="stack-domain-index" x="165" y="393" text-anchor="middle">06</text>
-                    <text class="stack-domain-title" x="165" y="412" text-anchor="middle">AUTOMATE</text>
-                    <text class="stack-domain-meta" x="165" y="429" text-anchor="middle">OPERATIONS</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="automation">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Bash" data-stack-domain-ref="automation">
-                      <circle cx="80" cy="335" r="22"></circle>
-                      <text x="80" y="339" text-anchor="middle">BASH</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Ansible" data-stack-domain-ref="automation">
-                      <circle cx="65" cy="430" r="22"></circle>
-                      <text x="65" y="434" text-anchor="middle">ANSIBLE</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="GitHub" data-stack-domain-ref="automation">
-                      <circle cx="130" cy="505" r="22"></circle>
-                      <text x="130" y="509" text-anchor="middle">GITHUB</text>
-                    </g>
+                    <circle r="49"></circle>
+                    <text class="domain-index" y="-8" text-anchor="middle">06</text>
+                    <text class="domain-title" y="10" text-anchor="middle">AUTOMATE</text>
+                    <text class="domain-count" y="27" text-anchor="middle">06 TOOLS</text>
 
                   </g>
-
-                  <!-- DIGITAL -->
-
-                  <g
-                    class="stack-domain-node stack-domain-digital"
-                    data-stack-node="digital"
-                    tabindex="0">
-
-                    <circle cx="500" cy="470" r="43"></circle>
-
-                    <text class="stack-domain-index" x="500" y="458" text-anchor="middle">08</text>
-                    <text class="stack-domain-title" x="500" y="477" text-anchor="middle">DIGITAL</text>
-                    <text class="stack-domain-meta" x="500" y="494" text-anchor="middle">WEB + CRM</text>
-
-                  </g>
-
-                  <g class="stack-satellite-group" data-stack-domain-ref="digital">
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="WordPress" data-stack-domain-ref="digital">
-                      <circle cx="555" cy="420" r="20"></circle>
-                      <text x="555" y="424" text-anchor="middle">WP</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="Zoho CRM" data-stack-domain-ref="digital">
-                      <circle cx="445" cy="420" r="20"></circle>
-                      <text x="445" y="424" text-anchor="middle">ZOHO</text>
-                    </g>
-
-                    <g class="stack-tech-node" tabindex="0" data-stack-tech="HTML" data-stack-domain-ref="digital">
-                      <circle cx="500" cy="535" r="20"></circle>
-                      <text x="500" y="539" text-anchor="middle">HTML</text>
-                    </g>
-
-                  </g>
-
-                  <!-- LIVE PULSES -->
-
-                  <circle
-                    id="stackPulsePrimary"
-                    class="stack-live-pulse stack-live-pulse-primary"
-                    cx="250"
-                    cy="178"
-                    r="6"
-                    filter="url(#stackPulseGlow)">
-                  </circle>
-
-                  <circle
-                    id="stackPulseSecondary"
-                    class="stack-live-pulse stack-live-pulse-secondary"
-                    cx="542"
-                    cy="126"
-                    r="4.5"
-                    filter="url(#stackPulseGlow)">
-                  </circle>
 
                 </svg>
 
-              </div>
+                <div
+                  class="stack-v3-focus-card"
+                  id="stackV3FocusCard">
 
-              <div class="stack-universe-footer">
+                  <span>
+                    ACTIVE_TECH
+                  </span>
 
-                <span>
-                  CONCEPTUAL RELATION MAP
-                </span>
+                  <strong id="stackV3FocusTech">
+                    Select a technology
+                  </strong>
 
-                <i></i>
+                  <small id="stackV3FocusDomain">
+                    Search or browse the registry
+                  </small>
 
-                <span id="stackActivePath">
-                  SYSTEMS → CLOUD → NETWORK
-                </span>
-
-                <i></i>
-
-                <span>
-                  HOVER / CLICK TO INSPECT
-                </span>
+                </div>
 
               </div>
 
@@ -5595,84 +5495,113 @@
 
             <!-- INSPECTOR -->
 
-            <aside class="stack-inspector">
+            <aside class="stack-v3-inspector">
 
-              <div class="stack-inspector-head">
+              <div class="stack-v3-panel-head">
 
-                <span>
-                  NODE_INSPECTOR
+                <div>
+
+                  <span>
+                    TECH_INSPECTOR
+                  </span>
+
+                  <strong id="stackV3InspectorCode">
+                    GRAPH_READY
+                  </strong>
+
+                </div>
+
+                <span
+                  class="stack-v3-inspector-status"
+                  id="stackV3InspectorStatus">
+                  SELECT
                 </span>
-
-                <i class="stack-inspector-live"></i>
 
               </div>
 
-              <div class="stack-inspector-body">
+              <div class="stack-v3-inspector-body">
 
                 <span
-                  class="stack-inspector-code"
-                  id="stackInspectorCode">
-                  DOMAIN_01
+                  class="stack-v3-inspector-domain"
+                  id="stackV3InspectorDomain">
+                  TECHNICAL UNIVERSE
                 </span>
 
-                <h3 id="stackInspectorTitle">
-                  Systems
+                <h3 id="stackV3InspectorTitle">
+                  Select a technology.
                 </h3>
 
-                <p id="stackInspectorDescription">
-                  Foundation layer for services, users and workloads.
+                <p id="stackV3InspectorDescription">
+                  Search the registry or select a domain to inspect
+                  technologies, relationships and portfolio evidence.
                 </p>
 
-                <div class="stack-inspector-metrics">
+                <div class="stack-v3-inspector-metrics">
 
                   <div>
-                    <span>DOMAIN</span>
-                    <strong id="stackInspectorDomain">SYSTEMS</strong>
+
+                    <span>
+                      DOMAIN
+                    </span>
+
+                    <strong id="stackV3MetricDomain">
+                      ALL
+                    </strong>
+
                   </div>
 
                   <div>
-                    <span>TOOLS</span>
-                    <strong id="stackInspectorCount">07</strong>
+
+                    <span>
+                      RELATIONS
+                    </span>
+
+                    <strong id="stackV3MetricRelations">
+                      --
+                    </strong>
+
                   </div>
 
                   <div>
-                    <span>STATE</span>
-                    <strong class="is-online" id="stackInspectorState">ACTIVE</strong>
+
+                    <span>
+                      USED IN
+                    </span>
+
+                    <strong id="stackV3MetricProof">
+                      --
+                    </strong>
+
                   </div>
 
                 </div>
 
-                <span class="stack-inspector-label">
-                  DOMAIN TOOLSET
+                <span class="stack-v3-inspector-label">
+                  RELATED_TECH
                 </span>
 
                 <div
-                  class="stack-inspector-techs"
-                  id="stackInspectorTechs">
+                  class="stack-v3-related"
+                  id="stackV3Related">
 
-                  <span>Linux</span>
-                  <span>Ubuntu</span>
-                  <span>Windows Server</span>
-                  <span>Active Directory</span>
-                  <span>DNS</span>
-                  <span>DHCP</span>
-                  <span>Virtualization</span>
+                  <span>
+                    Select technology
+                  </span>
 
                 </div>
 
-                <div class="stack-inspector-signal">
+                <span class="stack-v3-inspector-label">
+                  USED_IN / PORTFOLIO_PROOF
+                </span>
 
-                  <span>
-                    RELATION SIGNAL
-                  </span>
+                <div
+                  class="stack-v3-proof-list"
+                  id="stackV3ProofList">
 
-                  <div class="stack-signal-track">
-                    <i></i>
-                  </div>
-
-                  <strong id="stackInspectorRelation">
-                    FOUNDATION → PLATFORM
-                  </strong>
+                  <p>
+                    Proof links appear when a technology is connected
+                    to a project or section in this portfolio.
+                  </p>
 
                 </div>
 
@@ -5682,235 +5611,189 @@
 
           </div>
 
-          <!-- FULL DOMAIN BANK -->
+          <!-- TECHNOLOGY REGISTRY -->
 
-          <div class="stack-domain-bank">
+          <div class="stack-v3-registry">
 
-            <article
-              class="stack-bank-card is-active"
-              data-stack-bank="systems"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Systems domain">
+            <div class="stack-v3-registry-head">
 
-              <div class="stack-bank-head">
-                <span>01</span>
-                <strong>SYSTEMS</strong>
-                <small>FOUNDATION</small>
+              <div>
+
+                <span>
+                  TECHNOLOGY_REGISTRY
+                </span>
+
+                <strong id="stackV3RegistryState">
+                  ALL / 50 TECHNOLOGIES
+                </strong>
+
               </div>
 
-              <div class="stack-bank-techs">
-                <span>Linux</span>
-                <span>Ubuntu</span>
-                <span>Windows Server</span>
-                <span>Active Directory</span>
-                <span>DNS</span>
-                <span>DHCP</span>
-                <span>Virtualization</span>
+              <div class="stack-v3-registry-legend">
+
+                <span>
+                  CLICK → INSPECT
+                </span>
+
+                <span>
+                  PROOF → NAVIGATE
+                </span>
+
               </div>
 
-            </article>
+            </div>
 
-            <article
-              class="stack-bank-card"
-              data-stack-bank="cloud"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Cloud Native domain">
+            <div
+              class="stack-v3-tech-grid"
+              id="stackV3TechGrid"
+              aria-live="polite">
+            </div>
 
-              <div class="stack-bank-head">
-                <span>02</span>
-                <strong>CLOUD NATIVE</strong>
-                <small>PLATFORM</small>
-              </div>
+            <div
+              class="stack-v3-empty"
+              id="stackV3Empty"
+              hidden>
 
-              <div class="stack-bank-techs">
-                <span>Docker</span>
-                <span>Compose</span>
-                <span>Swarm</span>
-                <span>Kubernetes</span>
-                <span>Helm</span>
-                <span>Istio</span>
-              </div>
+              <span>
+                NO_MATCH
+              </span>
 
-            </article>
+              <strong>
+                No technology matches this query.
+              </strong>
 
-            <article
-              class="stack-bank-card"
-              data-stack-bank="network"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Network domain">
+              <button
+                type="button"
+                id="stackV3EmptyReset">
+                RESET FILTERS
+              </button>
 
-              <div class="stack-bank-head">
-                <span>03</span>
-                <strong>NETWORK</strong>
-                <small>CONNECTIVITY</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>TCP/IP</span>
-                <span>Subnetting</span>
-                <span>VLAN</span>
-                <span>Routing</span>
-                <span>Switching</span>
-                <span>LAN / DMZ</span>
-                <span>pfSense</span>
-              </div>
-
-            </article>
-
-            <article
-              class="stack-bank-card"
-              data-stack-bank="security"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Security domain">
-
-              <div class="stack-bank-head">
-                <span>04</span>
-                <strong>SECURITY</strong>
-                <small>PROTECTION</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>Firewall</span>
-                <span>Suricata</span>
-                <span>IDS / IPS</span>
-                <span>iptables</span>
-                <span>SSL / TLS</span>
-              </div>
-
-            </article>
-
-            <article
-              class="stack-bank-card"
-              data-stack-bank="observe"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Observability domain">
-
-              <div class="stack-bank-head">
-                <span>05</span>
-                <strong>OBSERVE</strong>
-                <small>VISIBILITY</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>Prometheus</span>
-                <span>Grafana</span>
-                <span>Kiali</span>
-                <span>Zabbix</span>
-                <span>SNMP</span>
-              </div>
-
-            </article>
-
-            <article
-              class="stack-bank-card"
-              data-stack-bank="automation"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Automation domain">
-
-              <div class="stack-bank-head">
-                <span>06</span>
-                <strong>AUTOMATION</strong>
-                <small>OPERATIONS</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>Bash</span>
-                <span>PowerShell</span>
-                <span>Ansible</span>
-                <span>YAML</span>
-                <span>Git</span>
-                <span>GitHub</span>
-              </div>
-
-            </article>
-
-            <article
-              class="stack-bank-card"
-              data-stack-bank="data"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Data and AI domain">
-
-              <div class="stack-bank-head">
-                <span>07</span>
-                <strong>DATA + AI</strong>
-                <small>INTELLIGENCE</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>Python</span>
-                <span>SQL</span>
-                <span>PostgreSQL</span>
-                <span>MySQL</span>
-                <span>Redis</span>
-                <span>Big Data</span>
-                <span>Data Analysis</span>
-                <span>Artificial Intelligence</span>
-              </div>
-
-            </article>
-
-            <article
-              class="stack-bank-card"
-              data-stack-bank="digital"
-              role="button"
-              tabindex="0"
-              aria-label="Inspect Digital domain">
-
-              <div class="stack-bank-head">
-                <span>08</span>
-                <strong>DIGITAL</strong>
-                <small>WEB + CRM</small>
-              </div>
-
-              <div class="stack-bank-techs">
-                <span>WordPress</span>
-                <span>Zoho CRM</span>
-                <span>Photoshop</span>
-                <span>HTML</span>
-                <span>CSS</span>
-                <span>Plone CMS</span>
-              </div>
-
-            </article>
+            </div>
 
           </div>
 
-          <!-- TELEMETRY -->
+          <!-- PORTFOLIO EVIDENCE -->
 
-          <div class="stack-v2-telemetry">
+          <div class="stack-v3-evidence">
 
-            <div>
-              <span>FOUNDATION</span>
-              <strong>SYSTEMS + NETWORK</strong>
+            <div class="stack-v3-evidence-head">
+
+              <span>
+                PROOF_SYSTEMS
+              </span>
+
+              <strong>
+                STACK → REAL PORTFOLIO CONTEXT
+              </strong>
+
             </div>
+
+            <div class="stack-v3-evidence-grid">
+
+              <button
+                type="button"
+                class="stack-v3-evidence-card"
+                data-stack-v3-proof="flagship">
+
+                <span>
+                  SYSTEM_01
+                </span>
+
+                <strong>
+                  Modern Infrastructure Platform
+                </strong>
+
+                <small>
+                  Compose · Swarm · Kubernetes · Helm · Istio · Observability
+                </small>
+
+                <i>
+                  OPEN FLAGSHIP →
+                </i>
+
+              </button>
+
+              <button
+                type="button"
+                class="stack-v3-evidence-card"
+                data-stack-v3-proof="hotel">
+
+                <span>
+                  SYSTEM_02
+                </span>
+
+                <strong>
+                  Hotel Management Platform
+                </strong>
+
+                <small>
+                  Python · PostgreSQL · APIs · Data Analysis
+                </small>
+
+                <i>
+                  OPEN PROJECT →
+                </i>
+
+              </button>
+
+              <button
+                type="button"
+                class="stack-v3-evidence-card"
+                data-stack-v3-proof="techsolutions">
+
+                <span>
+                  SYSTEM_03
+                </span>
+
+                <strong>
+                  TechSolutions IS
+                </strong>
+
+                <small>
+                  Windows Server · Linux · Active Directory · pfSense
+                </small>
+
+                <i>
+                  OPEN PROJECT →
+                </i>
+
+              </button>
+
+            </div>
+
+          </div>
+
+          <!-- FOOTER SIGNAL -->
+
+          <div class="stack-v3-footer">
+
+            <span>
+              SEARCH
+            </span>
 
             <i>→</i>
 
-            <div>
-              <span>PLATFORM</span>
-              <strong>CLOUD + AUTOMATION</strong>
-            </div>
+            <span>
+              FILTER
+            </span>
 
             <i>→</i>
 
-            <div>
-              <span>VISIBILITY</span>
-              <strong>SECURITY + OBSERVE</strong>
-            </div>
+            <span>
+              INSPECT
+            </span>
 
             <i>→</i>
 
-            <div>
-              <span>EXPANSION</span>
-              <strong>DATA + AI</strong>
-            </div>
+            <span>
+              RELATE
+            </span>
+
+            <i>→</i>
+
+            <span class="is-current">
+              PROVE
+            </span>
 
           </div>
 
@@ -9312,7 +9195,7 @@
   <!-- ===================================================== -->
 
   <script
-    src="script.js?v=connection-v2-20260925-01"
+    src="script.js?v=stack-v3-20260925-01"
     defer>
   </script>
 
