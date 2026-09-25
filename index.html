@@ -109,7 +109,7 @@
 
   <link
     rel="stylesheet"
-    href="style.css?v=human-v2-20260925-01">
+    href="style.css?v=public-signal-v2-20260925-01">
 
   <!-- ===================================================== -->
   <!-- STRUCTURED DATA                                       -->
@@ -7809,11 +7809,11 @@
     </section>
 
     <!-- =================================================== -->
-    <!-- 10 / LIVE SIGNAL                                    -->
+    <!-- 10 / PUBLIC SIGNAL V2 — LIVE TELEMETRY               -->
     <!-- =================================================== -->
 
     <section
-      class="section section-dark signal-section"
+      class="section section-dark signal-section signal-v2-section"
       id="signal">
 
       <div class="section-shell">
@@ -7829,281 +7829,660 @@
           <div>
 
             <p class="section-label">
-
-              PUBLIC SIGNAL
-
+              PUBLIC SIGNAL / LIVE TELEMETRY
             </p>
 
             <h2>
-
               The work continues
               <br>
               outside this page.
-
             </h2>
 
           </div>
 
         </div>
 
-        <div class="signal-grid">
+        <article
+          class="signal-v2-shell"
+          id="signalV2System"
+          data-reveal>
 
-          <!-- GITHUB -->
+          <!-- ================================================= -->
+          <!-- TOP BAR                                           -->
+          <!-- ================================================= -->
 
-          <article
-            class="signal-card signal-github"
-            data-reveal>
+          <div class="signal-v2-topbar">
 
-            <div class="signal-card-top">
+            <div class="signal-v2-window">
+
+              <div class="window-dots">
+                <i></i>
+                <i></i>
+                <i></i>
+              </div>
 
               <span>
-                GITHUB / LIVE
+                public://ievgen/live-telemetry
               </span>
-
-              <i class="live-dot"></i>
 
             </div>
 
-            <h3>
+            <div class="signal-v2-top-status">
 
-              Technical repositories
+              <span class="signal-v2-chip">
+                GITHUB API
+              </span>
 
-            </h3>
+              <span class="signal-v2-chip">
+                03 ENDPOINTS
+              </span>
 
-            <p>
+              <span class="signal-v2-chip is-online">
+                <i></i>
+                SIGNAL ONLINE
+              </span>
 
-              Projects, documentation, infrastructure labs
-              and ongoing technical work.
+            </div>
 
-            </p>
+          </div>
 
-            <div class="github-live-stats">
+          <!-- ================================================= -->
+          <!-- MAIN TELEMETRY GRID                               -->
+          <!-- ================================================= -->
 
-              <div>
+          <div class="signal-v2-grid">
 
-                <strong
-                  data-github-stat="repos">
+            <!-- =============================================== -->
+            <!-- LIVE CODE SIGNAL                                -->
+            <!-- =============================================== -->
 
-                  --
+            <section class="signal-v2-code-panel">
 
-                </strong>
+              <div class="signal-v2-panel-head">
+
+                <div>
+
+                  <span>
+                    CHANNEL_01
+                  </span>
+
+                  <strong>
+                    GITHUB / LIVE CODE SIGNAL
+                  </strong>
+
+                </div>
+
+                <div class="signal-v2-api-state">
+
+                  <i></i>
+
+                  <span id="signalGithubApiState">
+                    CONNECTING
+                  </span>
+
+                </div>
+
+              </div>
+
+              <div class="signal-v2-code-copy">
+
+                <span class="signal-v2-kicker">
+                  PUBLIC DEVELOPMENT TRACE
+                </span>
+
+                <h3>
+                  A live trace of
+                  <em>what I'm building.</em>
+                </h3>
+
+                <p>
+                  Public repositories, technical documentation,
+                  infrastructure labs and ongoing project work.
+                </p>
+
+              </div>
+
+              <div class="signal-v2-metrics">
+
+                <div>
+
+                  <span>
+                    PUBLIC REPOS
+                  </span>
+
+                  <strong data-github-stat="repos">
+                    --
+                  </strong>
+
+                  <small>
+                    github.profile.public_repos
+                  </small>
+
+                </div>
+
+                <div>
+
+                  <span>
+                    FOLLOWERS
+                  </span>
+
+                  <strong data-github-stat="followers">
+                    --
+                  </strong>
+
+                  <small>
+                    github.profile.followers
+                  </small>
+
+                </div>
+
+                <div>
+
+                  <span>
+                    FOLLOWING
+                  </span>
+
+                  <strong data-github-stat="following">
+                    --
+                  </strong>
+
+                  <small>
+                    github.profile.following
+                  </small>
+
+                </div>
+
+                <div>
+
+                  <span>
+                    LAST SYNC
+                  </span>
+
+                  <strong
+                    class="signal-v2-sync"
+                    id="signalSyncTime">
+                    --
+                  </strong>
+
+                  <small>
+                    client.telemetry
+                  </small>
+
+                </div>
+
+              </div>
+
+              <div class="signal-v2-repo-block">
+
+                <div class="signal-v2-repo-head">
+
+                  <span>
+                    LATEST_UPDATED_REPOSITORIES
+                  </span>
+
+                  <small>
+                    LIVE / PUBLIC
+                  </small>
+
+                </div>
+
+                <div
+                  class="signal-v2-repo-feed"
+                  id="signalRepoFeed"
+                  aria-live="polite">
+
+                  <div class="signal-v2-repo-loading">
+                    indexing public repositories...
+                  </div>
+
+                </div>
+
+              </div>
+
+              <a
+                class="signal-v2-primary-link"
+                href="https://github.com/IevgenSoloviov"
+                target="_blank"
+                rel="noopener noreferrer">
 
                 <span>
-                  PUBLIC REPOS
+                  github.com/IevgenSoloviov
+                </span>
+
+                <strong>
+                  OPEN PROFILE ↗
+                </strong>
+
+              </a>
+
+            </section>
+
+            <!-- =============================================== -->
+            <!-- PUBLIC NODE                                     -->
+            <!-- =============================================== -->
+
+            <aside class="signal-v2-node-panel">
+
+              <div class="signal-v2-panel-head">
+
+                <div>
+
+                  <span>
+                    CHANNEL_MAP
+                  </span>
+
+                  <strong>
+                    PUBLIC NODE
+                  </strong>
+
+                </div>
+
+                <div class="signal-v2-api-state is-static">
+
+                  <i></i>
+
+                  <span>
+                    ROUTED
+                  </span>
+
+                </div>
+
+              </div>
+
+              <div
+                class="signal-v2-node-map"
+                aria-label="Public profile endpoints">
+
+                <div class="signal-v2-orbit signal-v2-orbit-a"></div>
+                <div class="signal-v2-orbit signal-v2-orbit-b"></div>
+                <div class="signal-v2-orbit signal-v2-orbit-c"></div>
+
+                <span class="signal-v2-route route-a"></span>
+                <span class="signal-v2-route route-b"></span>
+                <span class="signal-v2-route route-c"></span>
+
+                <div class="signal-v2-core">
+
+                  <small>
+                    PUBLIC_ID
+                  </small>
+
+                  <strong>
+                    IEVGEN
+                  </strong>
+
+                  <span>
+                    SIGNAL
+                  </span>
+
+                </div>
+
+                <a
+                  class="signal-v2-node signal-v2-node-github"
+                  href="https://github.com/IevgenSoloviov"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-signal-endpoint="github">
+
+                  <i></i>
+
+                  <span>
+                    GITHUB
+                  </span>
+
+                  <small>
+                    LIVE API
+                  </small>
+
+                </a>
+
+                <a
+                  class="signal-v2-node signal-v2-node-linkedin"
+                  href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-signal-endpoint="linkedin">
+
+                  <i></i>
+
+                  <span>
+                    LINKEDIN
+                  </span>
+
+                  <small>
+                    PROFILE
+                  </small>
+
+                </a>
+
+                <a
+                  class="signal-v2-node signal-v2-node-portfolio"
+                  href="https://ievgensoloviov.github.io/my-portfolio/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-signal-endpoint="portfolio">
+
+                  <i></i>
+
+                  <span>
+                    PORTFOLIO
+                  </span>
+
+                  <small>
+                    CURRENT
+                  </small>
+
+                </a>
+
+              </div>
+
+              <div class="signal-v2-node-status">
+
+                <p>
+
+                  <span>
+                    github.endpoint
+                  </span>
+
+                  <strong id="signalGithubEndpointStatus">
+                    CHECKING
+                  </strong>
+
+                </p>
+
+                <p>
+
+                  <span>
+                    linkedin.endpoint
+                  </span>
+
+                  <strong>
+                    EXTERNAL
+                  </strong>
+
+                </p>
+
+                <p>
+
+                  <span>
+                    portfolio.endpoint
+                  </span>
+
+                  <strong>
+                    ONLINE
+                  </strong>
+
+                </p>
+
+              </div>
+
+            </aside>
+
+            <!-- =============================================== -->
+            <!-- RUNTIME PROFILE                                 -->
+            <!-- =============================================== -->
+
+            <section class="signal-v2-runtime-panel">
+
+              <div class="signal-v2-panel-head">
+
+                <div>
+
+                  <span>
+                    PROFILE_RUNTIME
+                  </span>
+
+                  <strong>
+                    CURRENT SIGNAL
+                  </strong>
+
+                </div>
+
+                <span class="signal-v2-runtime-tag">
+                  2026
                 </span>
 
               </div>
 
-              <div>
+              <div class="signal-v2-runtime-grid">
 
-                <strong
-                  data-github-stat="followers">
+                <article>
 
-                  --
+                  <span>
+                    SYSTEMS
+                  </span>
 
-                </strong>
+                  <strong>
+                    STABLE
+                  </strong>
 
-                <span>
-                  FOLLOWERS
+                  <i class="is-stable"></i>
+
+                </article>
+
+                <article>
+
+                  <span>
+                    NETWORKING
+                  </span>
+
+                  <strong>
+                    STABLE
+                  </strong>
+
+                  <i class="is-stable"></i>
+
+                </article>
+
+                <article>
+
+                  <span>
+                    CLOUD_NATIVE
+                  </span>
+
+                  <strong>
+                    ACTIVE
+                  </strong>
+
+                  <i class="is-active"></i>
+
+                </article>
+
+                <article>
+
+                  <span>
+                    AUTOMATION
+                  </span>
+
+                  <strong>
+                    ACTIVE
+                  </strong>
+
+                  <i class="is-active"></i>
+
+                </article>
+
+                <article>
+
+                  <span>
+                    BIG_DATA
+                  </span>
+
+                  <strong>
+                    BUILDING
+                  </strong>
+
+                  <i class="is-building"></i>
+
+                </article>
+
+                <article>
+
+                  <span>
+                    AI
+                  </span>
+
+                  <strong>
+                    BUILDING
+                  </strong>
+
+                  <i class="is-building"></i>
+
+                </article>
+
+              </div>
+
+            </section>
+
+            <!-- =============================================== -->
+            <!-- EXTERNAL ENDPOINTS                              -->
+            <!-- =============================================== -->
+
+            <section class="signal-v2-endpoints-panel">
+
+              <div class="signal-v2-panel-head">
+
+                <div>
+
+                  <span>
+                    PUBLIC_ROUTES
+                  </span>
+
+                  <strong>
+                    EXTERNAL ENDPOINTS
+                  </strong>
+
+                </div>
+
+                <span class="signal-v2-runtime-tag">
+                  OPEN
                 </span>
 
               </div>
 
-              <div>
+              <div class="signal-v2-endpoints">
 
-                <strong
-                  data-github-stat="following">
+                <a
+                  href="https://github.com/IevgenSoloviov"
+                  target="_blank"
+                  rel="noopener noreferrer">
 
-                  --
+                  <span>
+                    01 / CODE
+                  </span>
 
-                </strong>
+                  <strong>
+                    GitHub
+                  </strong>
 
-                <span>
-                  FOLLOWING
-                </span>
+                  <small>
+                    repositories + documentation
+                  </small>
+
+                  <i>
+                    ↗
+                  </i>
+
+                </a>
+
+                <a
+                  href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299"
+                  target="_blank"
+                  rel="noopener noreferrer">
+
+                  <span>
+                    02 / PROFESSIONAL
+                  </span>
+
+                  <strong>
+                    LinkedIn
+                  </strong>
+
+                  <small>
+                    experience + network
+                  </small>
+
+                  <i>
+                    ↗
+                  </i>
+
+                </a>
+
+                <a
+                  href="https://ievgensoloviov.github.io/my-portfolio/"
+                  target="_blank"
+                  rel="noopener noreferrer">
+
+                  <span>
+                    03 / SYSTEM
+                  </span>
+
+                  <strong>
+                    Portfolio
+                  </strong>
+
+                  <small>
+                    architecture + projects
+                  </small>
+
+                  <i>
+                    ↗
+                  </i>
+
+                </a>
 
               </div>
 
-            </div>
+            </section>
 
-            <a
-              href="https://github.com/IevgenSoloviov"
-              target="_blank"
-              rel="noopener noreferrer">
+          </div>
 
-              github.com/IevgenSoloviov
+          <!-- ================================================= -->
+          <!-- LIVE EVENT STREAM                                 -->
+          <!-- ================================================= -->
 
-              <span>
-                ↗
-              </span>
+          <div class="signal-v2-stream">
 
-            </a>
+            <div class="signal-v2-stream-label">
 
-          </article>
+              <span class="live-dot"></span>
 
-          <!-- LINKEDIN -->
-
-          <article
-            class="signal-card signal-linkedin"
-            data-reveal>
-
-            <div class="signal-card-top">
-
-              <span>
-                LINKEDIN / PROFESSIONAL
-              </span>
-
-              <i class="signal signal-blue"></i>
+              PUBLIC_EVENT_STREAM
 
             </div>
 
-            <h3>
-
-              Professional profile
-
-            </h3>
-
-            <p>
-
-              Education, professional experience,
-              skills and professional network.
-
-            </p>
-
-            <div class="signal-stack">
-
-              <span>
-                Systems
-              </span>
-
-              <span>
-                Linux
-              </span>
-
-              <span>
-                Docker
-              </span>
-
-              <span>
-                Kubernetes
-              </span>
-
-              <span>
-                Networking
-              </span>
-
-            </div>
-
-            <a
-              href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299"
-              target="_blank"
-              rel="noopener noreferrer">
-
-              View LinkedIn
-
-              <span>
-                ↗
-              </span>
-
-            </a>
-
-          </article>
-
-          <!-- CURRENT STATUS -->
-
-          <article
-            class="signal-card signal-status"
-            data-reveal>
-
-            <div class="signal-card-top">
-
-              <span>
-                RUNTIME / STATUS
-              </span>
-
-              <i class="live-dot"></i>
-
-            </div>
-
-            <div class="runtime-log">
+            <div
+              class="signal-v2-stream-events"
+              id="signalV2EventLog"
+              aria-live="polite">
 
               <p>
-
-                <span>
-                  SYSTEMS
-                </span>
-
-                <strong>
-                  STABLE
-                </strong>
-
+                <span>--:--</span>
+                public.signal.ready()
               </p>
 
               <p>
-
-                <span>
-                  NETWORKING
-                </span>
-
-                <strong>
-                  STABLE
-                </strong>
-
-              </p>
-
-              <p>
-
-                <span>
-                  CLOUD_NATIVE
-                </span>
-
-                <strong>
-                  ACTIVE
-                </strong>
-
-              </p>
-
-              <p>
-
-                <span>
-                  PYTHON
-                </span>
-
-                <strong>
-                  BUILDING
-                </strong>
-
-              </p>
-
-              <p>
-
-                <span>
-                  BIG_DATA
-                </span>
-
-                <strong>
-                  BUILDING
-                </strong>
-
-              </p>
-
-              <p>
-
-                <span>
-                  AI
-                </span>
-
-                <strong>
-                  BUILDING
-                </strong>
-
+                <span>--:--</span>
+                endpoints.route()
               </p>
 
             </div>
 
-          </article>
+            <div class="signal-v2-stream-state">
 
-        </div>
+              <span>
+                OUTPUT
+              </span>
+
+              <strong>
+                PUBLIC
+              </strong>
+
+            </div>
+
+          </div>
+
+        </article>
 
       </div>
 
@@ -8673,7 +9052,7 @@
   <!-- ===================================================== -->
 
   <script
-    src="script.js?v=human-v2-20260925-01"
+    src="script.js?v=public-signal-v2-20260925-01"
     defer>
   </script>
 
