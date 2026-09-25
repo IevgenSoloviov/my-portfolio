@@ -7666,8 +7666,1455 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
 
+
   /* ====================================================================== */
-  /* 28 / SYSTEM READY                                                       */
+  /* 28 / EDUCATION V2 INTERACTION ENGINE                                  */
+  /* ====================================================================== */
+
+  const educationV2System =
+    $("#educationV2System");
+
+  const educationV2Stages =
+    $$(".education-v2-stage");
+
+  const educationV2BankCards =
+    $$(".education-v2-bank-card");
+
+  const educationV2StageLabel =
+    $("#educationV2StageLabel");
+
+  const educationV2State =
+    $("#educationV2State");
+
+  const educationV2Number =
+    $("#educationV2Number");
+
+  const educationV2Year =
+    $("#educationV2Year");
+
+  const educationV2Title =
+    $("#educationV2Title");
+
+  const educationV2Type =
+    $("#educationV2Type");
+
+  const educationV2School =
+    $("#educationV2School");
+
+  const educationV2Description =
+    $("#educationV2Description");
+
+  const educationV2Tags =
+    $("#educationV2Tags");
+
+  const educationV2ProgressLabel =
+    $("#educationV2ProgressLabel");
+
+  const educationV2ProgressBar =
+    $("#educationV2ProgressBar");
+
+  const educationV2ProgressNodes =
+    $$(".education-v2-progress-node");
+
+  const educationV2Layers =
+    $$(".education-v2-layer");
+
+
+  const EDUCATION_V2_DATA = {
+
+    smx: {
+      index: 1,
+      number: "01",
+      label: "STAGE_01 / COMPLETE",
+      state: "COMPLETE",
+      current: false,
+      year: "2022 → 2024",
+      title:
+        "Microcomputer Systems & Networks",
+      titleAccent:
+        "",
+      type:
+        "Technician · SMX",
+      school:
+        "Institut Sa Palomera",
+      description:
+        "Foundation stage focused on hardware, support, networks and operating systems.",
+      tags: [
+        "Hardware",
+        "Support",
+        "Networks",
+        "Operating Systems"
+      ],
+      layers: 2,
+      progress: .34
+    },
+
+    asir: {
+      index: 2,
+      number: "02",
+      label: "STAGE_02 / COMPLETE",
+      state: "COMPLETE",
+      current: false,
+      year: "2024 → 2026",
+      title:
+        "Networked Computer Systems Administration",
+      titleAccent:
+        "",
+      type:
+        "Higher Technician · ASIR",
+      school:
+        "Institut Sa Palomera",
+      description:
+        "Systems and networking stage expanded into infrastructure, cloud-native direction and databases.",
+      tags: [
+        "Systems",
+        "Networking",
+        "Cloud Native",
+        "Databases"
+      ],
+      layers: 4,
+      progress: .67
+    },
+
+    ai: {
+      index: 3,
+      number: "03",
+      label: "STAGE_03 / CURRENT",
+      state: "● CURRENT",
+      current: true,
+      year: "2026 → 2027",
+      title:
+        "Artificial Intelligence",
+      titleAccent:
+        "& Big Data",
+      type:
+        "Specialization Course",
+      school:
+        "Institut Sa Palomera",
+      description:
+        "Current specialization layer focused on Python, data, Big Data and Artificial Intelligence.",
+      tags: [
+        "Python",
+        "Data",
+        "Big Data",
+        "AI"
+      ],
+      layers: 6,
+      progress: 1
+    }
+
+  };
+
+
+  const educationV2Order =
+    [
+      "smx",
+      "asir",
+      "ai"
+    ];
+
+
+  let educationV2Active =
+    "ai";
+
+
+  let educationV2CycleTimer =
+    null;
+
+
+  let educationV2Visible =
+    false;
+
+
+  let educationV2CycleIndex =
+    2;
+
+
+  const renderEducationV2Tags =
+    tags => {
+
+      if (!educationV2Tags) {
+        return;
+      }
+
+
+      educationV2Tags.innerHTML =
+        "";
+
+
+      tags.forEach(tag => {
+
+        const chip =
+          document.createElement(
+            "span"
+          );
+
+
+        chip.textContent =
+          tag;
+
+
+        educationV2Tags.appendChild(
+          chip
+        );
+
+      });
+
+    };
+
+
+  const renderEducationV2Title =
+    data => {
+
+      if (!educationV2Title) {
+        return;
+      }
+
+
+      educationV2Title.innerHTML =
+        "";
+
+
+      educationV2Title.appendChild(
+        document.createTextNode(
+          data.title
+        )
+      );
+
+
+      if (data.titleAccent) {
+
+        const accent =
+          document.createElement(
+            "span"
+          );
+
+
+        accent.textContent =
+          data.titleAccent;
+
+
+        educationV2Title.appendChild(
+          accent
+        );
+
+      }
+
+    };
+
+
+  const activateEducationV2 =
+    (
+      key,
+      userInitiated = false
+    ) => {
+
+      const data =
+        EDUCATION_V2_DATA[key];
+
+
+      if (!data) {
+        return;
+      }
+
+
+      educationV2Active =
+        key;
+
+
+      educationV2CycleIndex =
+        educationV2Order
+          .indexOf(
+            key
+          );
+
+
+      educationV2Stages
+        .forEach(stage => {
+
+          const active =
+            stage.dataset.educationStage
+            === key;
+
+
+          stage.classList.toggle(
+            "is-active",
+            active
+          );
+
+
+          stage.setAttribute(
+            "aria-pressed",
+            String(active)
+          );
+
+        });
+
+
+      educationV2BankCards
+        .forEach(card => {
+
+          card.classList.toggle(
+            "is-active",
+            card.dataset.educationBank
+            === key
+          );
+
+        });
+
+
+      if (educationV2StageLabel) {
+        educationV2StageLabel.textContent =
+          data.label;
+      }
+
+
+      if (educationV2State) {
+
+        educationV2State.textContent =
+          data.state;
+
+
+        educationV2State.classList.toggle(
+          "is-current",
+          data.current
+        );
+
+      }
+
+
+      if (educationV2Number) {
+        educationV2Number.textContent =
+          data.number;
+      }
+
+
+      if (educationV2Year) {
+        educationV2Year.textContent =
+          data.year;
+      }
+
+
+      renderEducationV2Title(
+        data
+      );
+
+
+      if (educationV2Type) {
+        educationV2Type.textContent =
+          data.type;
+      }
+
+
+      if (educationV2School) {
+        educationV2School.textContent =
+          data.school;
+      }
+
+
+      if (educationV2Description) {
+        educationV2Description.textContent =
+          data.description;
+      }
+
+
+      renderEducationV2Tags(
+        data.tags
+      );
+
+
+      if (educationV2ProgressLabel) {
+
+        educationV2ProgressLabel.textContent =
+          `${String(data.index).padStart(2, "0")} / 03`;
+
+      }
+
+
+      if (educationV2ProgressBar) {
+
+        educationV2ProgressBar.style
+          .transform =
+            `scaleX(${data.progress})`;
+
+      }
+
+
+      educationV2ProgressNodes
+        .forEach(
+          (node, index) => {
+
+            node.classList.toggle(
+              "is-active",
+              index < data.index
+            );
+
+          }
+        );
+
+
+      educationV2Layers
+        .forEach(layer => {
+
+          const layerIndex =
+            Number(
+              layer.dataset
+                .educationLayer
+            );
+
+
+          layer.classList.toggle(
+            "is-active",
+            layerIndex
+            <= data.layers
+          );
+
+        });
+
+
+      if (userInitiated) {
+
+        stopEducationV2Cycle();
+
+      }
+
+    };
+
+
+  const stopEducationV2Cycle =
+    () => {
+
+      if (
+        educationV2CycleTimer
+        !== null
+      ) {
+
+        clearInterval(
+          educationV2CycleTimer
+        );
+
+
+        educationV2CycleTimer =
+          null;
+
+      }
+
+    };
+
+
+  const startEducationV2Cycle =
+    () => {
+
+      stopEducationV2Cycle();
+
+
+      if (
+        !educationV2System
+        || prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+      }
+
+
+      educationV2CycleTimer =
+        window.setInterval(
+          () => {
+
+            educationV2CycleIndex =
+              (
+                educationV2CycleIndex
+                + 1
+              )
+              % educationV2Order.length;
+
+
+            activateEducationV2(
+              educationV2Order[
+                educationV2CycleIndex
+              ]
+            );
+
+          },
+          4200
+        );
+
+    };
+
+
+  educationV2Stages
+    .forEach(stage => {
+
+      stage.addEventListener(
+        "click",
+        () => {
+
+          activateEducationV2(
+            stage.dataset.educationStage,
+            true
+          );
+
+        }
+      );
+
+    });
+
+
+  educationV2BankCards
+    .forEach(card => {
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          activateEducationV2(
+            card.dataset.educationBank,
+            true
+          );
+
+        }
+      );
+
+    });
+
+
+  if (
+    educationV2System
+    && "IntersectionObserver"
+       in window
+  ) {
+
+    const educationV2Observer =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            educationV2Visible =
+              entry.isIntersecting;
+
+
+            if (entry.isIntersecting) {
+
+              startEducationV2Cycle();
+
+            } else {
+
+              stopEducationV2Cycle();
+
+            }
+
+          });
+
+        },
+        {
+          threshold: .18
+        }
+      );
+
+
+    educationV2Observer.observe(
+      educationV2System
+    );
+
+  } else if (educationV2System) {
+
+    educationV2Visible =
+      true;
+
+
+    startEducationV2Cycle();
+
+  }
+
+
+  if (educationV2System) {
+
+    activateEducationV2(
+      "ai"
+    );
+
+  }
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (!educationV2System) {
+        return;
+      }
+
+
+      if (document.hidden) {
+
+        stopEducationV2Cycle();
+
+        return;
+
+      }
+
+
+      if (educationV2Visible) {
+
+        startEducationV2Cycle();
+
+      }
+
+    }
+  );
+
+
+
+  /* ====================================================================== */
+  /* 29 / HUMAN V2 INTERACTION ENGINE                                      */
+  /* ====================================================================== */
+
+  const humanV2System =
+    $("#humanV2System");
+
+  const humanV2ModeButtons =
+    $$(".human-v2-mode");
+
+  const humanV2Panels =
+    $$(".human-v2-panel");
+
+  const humanV2ModeLabel =
+    $("#humanV2ModeLabel");
+
+  const humanV2ModeState =
+    $("#humanV2ModeState");
+
+  const humanV2InspectorTitle =
+    $("#humanV2InspectorTitle");
+
+  const humanV2CoreValue =
+    $("#humanV2CoreValue");
+
+  const humanV2EventLog =
+    $("#humanV2EventLog");
+
+  const humanV2WorkflowSteps =
+    $$(".human-v2-workflow-step");
+
+  const humanV2WorkflowCommand =
+    $("#humanV2WorkflowCommand");
+
+  const humanV2Principles =
+    $$(".human-v2-principle");
+
+  const humanV2VectorNodes =
+    $$("[data-human-vector]");
+
+
+  const HUMAN_V2_MODES = {
+
+    communication: {
+      label:
+        "COMMUNICATION / LANGUAGE_IO",
+      inspector:
+        "COMMUNICATION",
+      core:
+        "LANGUAGE",
+      state:
+        "READY",
+      event:
+        "communication.layer()"
+    },
+
+    principles: {
+      label:
+        "PRINCIPLES / OPERATING_RULES",
+      inspector:
+        "PRINCIPLES",
+      core:
+        "RULESET",
+      state:
+        "06 LOADED",
+      event:
+        "principles.load(6)"
+    },
+
+    workflow: {
+      label:
+        "BUILD_LOOP / EXECUTION_CYCLE",
+      inspector:
+        "BUILD LOOP",
+      core:
+        "ITERATE",
+      state:
+        "RUNNING",
+      event:
+        "workflow.sequence()"
+    },
+
+    direction: {
+      label:
+        "DIRECTION / CURRENT_VECTOR",
+      inspector:
+        "DIRECTION",
+      core:
+        "CONNECT",
+      state:
+        "ACTIVE",
+      event:
+        "vector.integrate()"
+    }
+
+  };
+
+
+  const humanV2ModeOrder =
+    [
+      "communication",
+      "principles",
+      "workflow",
+      "direction"
+    ];
+
+
+  const humanV2WorkflowCommands =
+    [
+      "understand --system",
+      "build --solution",
+      "test --behaviour",
+      "document --signal",
+      "iterate --improve"
+    ];
+
+
+  let humanV2ActiveMode =
+    "communication";
+
+
+  let humanV2CycleIndex =
+    0;
+
+
+  let humanV2CycleTimer =
+    null;
+
+
+  let humanV2WorkflowTimer =
+    null;
+
+
+  let humanV2PrincipleTimer =
+    null;
+
+
+  let humanV2VectorTimer =
+    null;
+
+
+  let humanV2Visible =
+    false;
+
+
+  const formatHumanV2Time =
+    () => {
+
+      const now =
+        new Date();
+
+
+      return now
+        .toLocaleTimeString(
+          [],
+          {
+            minute: "2-digit",
+            second: "2-digit"
+          }
+        );
+
+    };
+
+
+  const pushHumanV2Event =
+    message => {
+
+      if (!humanV2EventLog) {
+        return;
+      }
+
+
+      const line =
+        document.createElement(
+          "p"
+        );
+
+
+      const time =
+        document.createElement(
+          "span"
+        );
+
+
+      time.textContent =
+        formatHumanV2Time();
+
+
+      line.appendChild(
+        time
+      );
+
+
+      line.appendChild(
+        document.createTextNode(
+          message
+        )
+      );
+
+
+      humanV2EventLog.prepend(
+        line
+      );
+
+
+      while (
+        humanV2EventLog.children.length
+        > 5
+      ) {
+
+        humanV2EventLog
+          .lastElementChild
+          ?.remove();
+
+      }
+
+    };
+
+
+  const stopHumanV2Workflow =
+    () => {
+
+      if (
+        humanV2WorkflowTimer
+        !== null
+      ) {
+
+        clearInterval(
+          humanV2WorkflowTimer
+        );
+
+
+        humanV2WorkflowTimer =
+          null;
+
+      }
+
+    };
+
+
+  const stopHumanV2Principles =
+    () => {
+
+      if (
+        humanV2PrincipleTimer
+        !== null
+      ) {
+
+        clearInterval(
+          humanV2PrincipleTimer
+        );
+
+
+        humanV2PrincipleTimer =
+          null;
+
+      }
+
+    };
+
+
+  const stopHumanV2Vector =
+    () => {
+
+      if (
+        humanV2VectorTimer
+        !== null
+      ) {
+
+        clearInterval(
+          humanV2VectorTimer
+        );
+
+
+        humanV2VectorTimer =
+          null;
+
+      }
+
+    };
+
+
+  const stopHumanV2SubAnimations =
+    () => {
+
+      stopHumanV2Workflow();
+      stopHumanV2Principles();
+      stopHumanV2Vector();
+
+
+      humanV2WorkflowSteps
+        .forEach(step => {
+
+          step.classList.remove(
+            "is-active"
+          );
+
+        });
+
+
+      humanV2Principles
+        .forEach(principle => {
+
+          principle.classList.remove(
+            "is-active"
+          );
+
+        });
+
+
+      humanV2VectorNodes
+        .forEach(node => {
+
+          node.classList.remove(
+            "is-active"
+          );
+
+        });
+
+    };
+
+
+  const startHumanV2Workflow =
+    () => {
+
+      stopHumanV2SubAnimations();
+
+
+      if (
+        humanV2WorkflowSteps.length
+        === 0
+      ) {
+
+        return;
+
+      }
+
+
+      let index =
+        0;
+
+
+      const activate =
+        () => {
+
+          humanV2WorkflowSteps
+            .forEach(
+              (step, stepIndex) => {
+
+                step.classList.toggle(
+                  "is-active",
+                  stepIndex === index
+                );
+
+              }
+            );
+
+
+          if (humanV2WorkflowCommand) {
+
+            humanV2WorkflowCommand
+              .textContent =
+                humanV2WorkflowCommands[index]
+                || humanV2WorkflowCommands[0];
+
+          }
+
+
+          index =
+            (
+              index + 1
+            )
+            % humanV2WorkflowSteps.length;
+
+        };
+
+
+      activate();
+
+
+      if (
+        prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+
+      }
+
+
+      humanV2WorkflowTimer =
+        window.setInterval(
+          activate,
+          1250
+        );
+
+    };
+
+
+  const startHumanV2Principles =
+    () => {
+
+      stopHumanV2SubAnimations();
+
+
+      if (
+        humanV2Principles.length
+        === 0
+      ) {
+
+        return;
+
+      }
+
+
+      let index =
+        0;
+
+
+      const activate =
+        () => {
+
+          humanV2Principles
+            .forEach(
+              (principle, principleIndex) => {
+
+                principle.classList.toggle(
+                  "is-active",
+                  principleIndex === index
+                );
+
+              }
+            );
+
+
+          index =
+            (
+              index + 1
+            )
+            % humanV2Principles.length;
+
+        };
+
+
+      activate();
+
+
+      if (
+        prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+
+      }
+
+
+      humanV2PrincipleTimer =
+        window.setInterval(
+          activate,
+          1150
+        );
+
+    };
+
+
+  const startHumanV2Vector =
+    () => {
+
+      stopHumanV2SubAnimations();
+
+
+      if (
+        humanV2VectorNodes.length
+        === 0
+      ) {
+
+        return;
+
+      }
+
+
+      let index =
+        0;
+
+
+      const activate =
+        () => {
+
+          humanV2VectorNodes
+            .forEach(
+              (node, nodeIndex) => {
+
+                node.classList.toggle(
+                  "is-active",
+                  nodeIndex === index
+                );
+
+              }
+            );
+
+
+          index =
+            (
+              index + 1
+            )
+            % humanV2VectorNodes.length;
+
+        };
+
+
+      activate();
+
+
+      if (
+        prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+
+      }
+
+
+      humanV2VectorTimer =
+        window.setInterval(
+          activate,
+          1200
+        );
+
+    };
+
+
+  const setHumanV2Mode =
+    (
+      mode,
+      userInitiated = false
+    ) => {
+
+      const config =
+        HUMAN_V2_MODES[mode];
+
+
+      if (!config) {
+        return;
+      }
+
+
+      humanV2ActiveMode =
+        mode;
+
+
+      humanV2CycleIndex =
+        humanV2ModeOrder
+          .indexOf(
+            mode
+          );
+
+
+      humanV2ModeButtons
+        .forEach(button => {
+
+          const active =
+            button.dataset.humanMode
+            === mode;
+
+
+          button.classList.toggle(
+            "is-active",
+            active
+          );
+
+
+          button.setAttribute(
+            "aria-pressed",
+            String(active)
+          );
+
+        });
+
+
+      humanV2Panels
+        .forEach(panel => {
+
+          const active =
+            panel.dataset.humanPanel
+            === mode;
+
+
+          panel.hidden =
+            !active;
+
+
+          panel.classList.toggle(
+            "is-active",
+            active
+          );
+
+        });
+
+
+      if (humanV2ModeLabel) {
+
+        humanV2ModeLabel.textContent =
+          config.label;
+
+      }
+
+
+      if (humanV2ModeState) {
+
+        humanV2ModeState.textContent =
+          config.state;
+
+      }
+
+
+      if (humanV2InspectorTitle) {
+
+        humanV2InspectorTitle.textContent =
+          config.inspector;
+
+      }
+
+
+      if (humanV2CoreValue) {
+
+        humanV2CoreValue.textContent =
+          config.core;
+
+      }
+
+
+      pushHumanV2Event(
+        config.event
+      );
+
+
+      if (mode === "workflow") {
+
+        startHumanV2Workflow();
+
+      } else if (mode === "principles") {
+
+        startHumanV2Principles();
+
+      } else if (mode === "direction") {
+
+        startHumanV2Vector();
+
+      } else {
+
+        stopHumanV2SubAnimations();
+
+      }
+
+
+      if (userInitiated) {
+
+        stopHumanV2Cycle();
+
+      }
+
+    };
+
+
+  const stopHumanV2Cycle =
+    () => {
+
+      if (
+        humanV2CycleTimer
+        !== null
+      ) {
+
+        clearInterval(
+          humanV2CycleTimer
+        );
+
+
+        humanV2CycleTimer =
+          null;
+
+      }
+
+    };
+
+
+  const startHumanV2Cycle =
+    () => {
+
+      stopHumanV2Cycle();
+
+
+      if (
+        !humanV2System
+        || prefersReducedMotion
+        || document.hidden
+      ) {
+
+        return;
+
+      }
+
+
+      humanV2CycleTimer =
+        window.setInterval(
+          () => {
+
+            humanV2CycleIndex =
+              (
+                humanV2CycleIndex
+                + 1
+              )
+              % humanV2ModeOrder.length;
+
+
+            setHumanV2Mode(
+              humanV2ModeOrder[
+                humanV2CycleIndex
+              ]
+            );
+
+          },
+          5200
+        );
+
+    };
+
+
+  humanV2ModeButtons
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          setHumanV2Mode(
+            button.dataset.humanMode,
+            true
+          );
+
+        }
+      );
+
+    });
+
+
+  if (
+    humanV2System
+    && "IntersectionObserver"
+       in window
+  ) {
+
+    const humanV2Observer =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            humanV2Visible =
+              entry.isIntersecting;
+
+
+            if (entry.isIntersecting) {
+
+              pushHumanV2Event(
+                "human.viewport.active()"
+              );
+
+
+              startHumanV2Cycle();
+
+            } else {
+
+              stopHumanV2Cycle();
+              stopHumanV2SubAnimations();
+
+            }
+
+          });
+
+        },
+        {
+          threshold: .16
+        }
+      );
+
+
+    humanV2Observer.observe(
+      humanV2System
+    );
+
+  } else if (humanV2System) {
+
+    humanV2Visible =
+      true;
+
+
+    startHumanV2Cycle();
+
+  }
+
+
+  if (humanV2System) {
+
+    setHumanV2Mode(
+      "communication"
+    );
+
+  }
+
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (!humanV2System) {
+        return;
+      }
+
+
+      if (document.hidden) {
+
+        stopHumanV2Cycle();
+        stopHumanV2SubAnimations();
+
+        return;
+
+      }
+
+
+      if (humanV2Visible) {
+
+        setHumanV2Mode(
+          humanV2ActiveMode
+        );
+
+
+        startHumanV2Cycle();
+
+      }
+
+    }
+  );
+
+
+  /* ====================================================================== */
+  /* 30 / SYSTEM READY                                                       */
   /* ====================================================================== */
 
   requestAnimationFrame(
