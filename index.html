@@ -109,7 +109,7 @@
 
   <link
     rel="stylesheet"
-    href="style.css?v=public-signal-v2-20260925-01">
+    href="style.css?v=connection-v2-20260925-01">
 
   <!-- ===================================================== -->
   <!-- STRUCTURED DATA                                       -->
@@ -452,6 +452,11 @@
     <a href="#signal">
       <span>10</span>
       <small>Signal</small>
+    </a>
+
+    <a href="#contact">
+      <span>11</span>
+      <small>Connection</small>
     </a>
 
   </aside>
@@ -8489,192 +8494,447 @@
     </section>
 
     <!-- =================================================== -->
-    <!-- 11 / CONTACT                                        -->
+    <!-- 11 / CONNECTION V2 — FINAL SYSTEM HANDOFF             -->
     <!-- =================================================== -->
 
     <section
-      class="contact-section"
+      class="contact-section contact-v2-section"
       id="contact">
 
       <div
-        class="contact-shell"
+        class="contact-v2-shell"
+        id="connectionV2System"
         data-reveal>
 
-        <span class="section-label">
+        <!-- ================================================= -->
+        <!-- FINAL SYSTEM HEADER                               -->
+        <!-- ================================================= -->
 
-          11 / CONNECTION
+        <div class="contact-v2-topbar">
 
-        </span>
-
-        <p class="contact-pretitle">
-
-          ievgen@portfolio:~$ connect --next
-
-        </p>
-
-        <h2>
-
-          Let's build
-
-          <br>
-
-          <span>
-            the next system.
-          </span>
-
-        </h2>
-
-        <p class="contact-description">
-
-          Interested in opportunities related to systems,
-          infrastructure, networking, cloud-native platforms,
-          automation, data and emerging AI technologies.
-
-        </p>
-
-        <div class="contact-actions">
-
-          <a
-            href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-primary">
-
-            Connect on LinkedIn
-
-            <span>
-              ↗
-            </span>
-
-          </a>
-
-          <a
-            href="https://github.com/IevgenSoloviov"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-secondary">
-
-            Explore GitHub
-
-            <span>
-              ↗
-            </span>
-
-          </a>
-
-          <a
-            href="#hero"
-            class="btn btn-ghost">
-
-            Return to system
-
-            <span>
-              ↑
-            </span>
-
-          </a>
-
-        </div>
-
-        <!-- CONNECTION TERMINAL -->
-
-        <div class="connection-terminal">
-
-          <div class="connection-terminal-top">
+          <div class="contact-v2-window">
 
             <div class="window-dots">
-
               <i></i>
               <i></i>
               <i></i>
-
             </div>
 
             <span>
-              connection://status
+              connection://final-system-handoff
             </span>
 
           </div>
 
-          <div class="connection-terminal-body">
+          <div class="contact-v2-top-status">
 
-            <p>
+            <span>
+              CHAPTER_11
+            </span>
 
-              <span>
-                portfolio
-              </span>
-
-              <strong>
-                ONLINE
-              </strong>
-
-            </p>
-
-            <p>
-
-              <span>
-                github
-              </span>
-
-              <strong>
-                ONLINE
-              </strong>
-
-            </p>
-
-            <p>
-
-              <span>
-                linkedin
-              </span>
-
-              <strong>
-                ONLINE
-              </strong>
-
-            </p>
-
-            <p>
-
-              <span>
-                opportunities
-              </span>
-
-              <strong>
-                OPEN
-              </strong>
-
-            </p>
-
-            <div class="connection-command">
-
-              awaiting_next_connection
-
-              <i class="terminal-cursor">
-                _
-              </i>
-
-            </div>
+            <span class="is-ready">
+              <i></i>
+              READY
+            </span>
 
           </div>
 
         </div>
 
-        <div class="connection-status">
+        <!-- ================================================= -->
+        <!-- MAIN HANDOFF                                      -->
+        <!-- ================================================= -->
 
-          <span>
+        <div class="contact-v2-main">
 
-            CONNECTION_STATUS
+          <div class="contact-v2-copy">
 
-          </span>
+            <span class="contact-v2-kicker">
+              FINAL HANDOFF / NEXT CONNECTION
+            </span>
 
-          <strong>
+            <p class="contact-v2-command">
+              ievgen@portfolio:~$ connect --next
+            </p>
 
-            READY
+            <h2>
+              The system is built.
+              <span>
+                The next one starts here.
+              </span>
+            </h2>
 
-          </strong>
+            <p class="contact-v2-description">
+              Systems, networking and cloud-native foundations are already
+              connected. Data and AI are the next layer. If there is a
+              project, technical challenge or opportunity worth building,
+              this is the handoff point.
+            </p>
+
+            <div class="contact-v2-actions">
+
+              <a
+                href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-v2-btn contact-v2-btn-primary"
+                data-connection-action="linkedin">
+
+                <span>
+                  START CONNECTION
+                </span>
+
+                <strong>
+                  LinkedIn ↗
+                </strong>
+
+              </a>
+
+              <a
+                href="https://github.com/IevgenSoloviov"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-v2-btn"
+                data-connection-action="github">
+
+                <span>
+                  INSPECT WORK
+                </span>
+
+                <strong>
+                  GitHub ↗
+                </strong>
+
+              </a>
+
+              <button
+                type="button"
+                class="contact-v2-btn contact-v2-copy-btn"
+                id="copyPortfolioUrl"
+                data-copy-value="https://ievgensoloviov.github.io/my-portfolio/">
+
+                <span>
+                  SHARE SYSTEM
+                </span>
+
+                <strong id="copyPortfolioLabel">
+                  Copy portfolio URL
+                </strong>
+
+              </button>
+
+            </div>
+
+            <div class="contact-v2-vector">
+
+              <div>
+                <small>FOUNDATION</small>
+                <strong>SYSTEMS + NETWORK</strong>
+              </div>
+
+              <i>→</i>
+
+              <div>
+                <small>PLATFORM</small>
+                <strong>CLOUD NATIVE</strong>
+              </div>
+
+              <i>→</i>
+
+              <div>
+                <small>NEXT LAYER</small>
+                <strong>DATA + AI</strong>
+              </div>
+
+              <i>→</i>
+
+              <div class="is-next">
+                <small>HANDOFF</small>
+                <strong>NEXT SYSTEM</strong>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- ================================================= -->
+          <!-- CONNECTION ROUTER                                 -->
+          <!-- ================================================= -->
+
+          <aside class="contact-v2-router">
+
+            <div class="contact-v2-router-head">
+
+              <div>
+
+                <span>
+                  ROUTE_SELECTOR
+                </span>
+
+                <strong id="connectionRouteTitle">
+                  LINKEDIN
+                </strong>
+
+              </div>
+
+              <div class="contact-v2-router-state">
+                <i></i>
+                ROUTED
+              </div>
+
+            </div>
+
+            <div class="contact-v2-route-map">
+
+              <div class="contact-v2-route-orbit route-orbit-a"></div>
+              <div class="contact-v2-route-orbit route-orbit-b"></div>
+              <div class="contact-v2-route-orbit route-orbit-c"></div>
+
+              <div class="contact-v2-route-line route-line-a"></div>
+              <div class="contact-v2-route-line route-line-b"></div>
+              <div class="contact-v2-route-line route-line-c"></div>
+
+              <div class="contact-v2-route-core">
+
+                <small>
+                  CORE
+                </small>
+
+                <strong>
+                  IEVGEN
+                </strong>
+
+                <span>
+                  READY
+                </span>
+
+              </div>
+
+              <a
+                href="https://www.linkedin.com/in/ievgen-soloviov-0709bb299"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-v2-route-node route-linkedin is-active"
+                data-connection-route="linkedin"
+                data-route-label="LINKEDIN"
+                data-route-type="PROFESSIONAL NETWORK"
+                data-route-state="EXTERNAL">
+
+                <i></i>
+
+                <strong>
+                  LINKEDIN
+                </strong>
+
+                <small>
+                  professional
+                </small>
+
+              </a>
+
+              <a
+                href="https://github.com/IevgenSoloviov"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-v2-route-node route-github"
+                data-connection-route="github"
+                data-route-label="GITHUB"
+                data-route-type="CODE + DOCUMENTATION"
+                data-route-state="PUBLIC">
+
+                <i></i>
+
+                <strong>
+                  GITHUB
+                </strong>
+
+                <small>
+                  repositories
+                </small>
+
+              </a>
+
+              <a
+                href="https://ievgensoloviov.github.io/my-portfolio/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-v2-route-node route-portfolio"
+                data-connection-route="portfolio"
+                data-route-label="PORTFOLIO"
+                data-route-type="TECHNICAL SYSTEM"
+                data-route-state="ONLINE">
+
+                <i></i>
+
+                <strong>
+                  PORTFOLIO
+                </strong>
+
+                <small>
+                  current build
+                </small>
+
+              </a>
+
+            </div>
+
+            <div class="contact-v2-inspector">
+
+              <div>
+                <span>
+                  ENDPOINT
+                </span>
+
+                <strong id="connectionRouteEndpoint">
+                  LINKEDIN
+                </strong>
+              </div>
+
+              <div>
+                <span>
+                  TYPE
+                </span>
+
+                <strong id="connectionRouteType">
+                  PROFESSIONAL NETWORK
+                </strong>
+              </div>
+
+              <div>
+                <span>
+                  STATE
+                </span>
+
+                <strong
+                  class="is-state"
+                  id="connectionRouteState">
+                  EXTERNAL
+                </strong>
+              </div>
+
+            </div>
+
+          </aside>
+
+        </div>
+
+        <!-- ================================================= -->
+        <!-- HANDOFF TERMINAL                                  -->
+        <!-- ================================================= -->
+
+        <div class="contact-v2-terminal">
+
+          <div class="contact-v2-terminal-head">
+
+            <span>
+              FINAL_HANDOFF.log
+            </span>
+
+            <span id="connectionSessionTime">
+              --:--
+            </span>
+
+          </div>
+
+          <div
+            class="contact-v2-terminal-log"
+            id="connectionV2EventLog"
+            aria-live="polite">
+
+            <p>
+              <span>[ system ]</span>
+              portfolio.complete()
+            </p>
+
+            <p>
+              <span>[ route  ]</span>
+              public.endpoints.ready()
+            </p>
+
+            <p>
+              <span>[ next   ]</span>
+              awaiting_connection
+            </p>
+
+          </div>
+
+          <div class="contact-v2-terminal-command">
+
+            <span>
+              ievgen@portfolio:~$
+            </span>
+
+            <strong id="connectionCommandState">
+              ./handoff --ready
+            </strong>
+
+            <i class="terminal-cursor">
+              _
+            </i>
+
+          </div>
+
+        </div>
+
+        <!-- ================================================= -->
+        <!-- FINAL STATUS STRIP                                -->
+        <!-- ================================================= -->
+
+        <div class="contact-v2-final-strip">
+
+          <div>
+
+            <span>
+              PORTFOLIO
+            </span>
+
+            <strong>
+              COMPLETE
+            </strong>
+
+          </div>
 
           <i></i>
+
+          <div>
+
+            <span>
+              PUBLIC SIGNAL
+            </span>
+
+            <strong>
+              ONLINE
+            </strong>
+
+          </div>
+
+          <i></i>
+
+          <div>
+
+            <span>
+              CONNECTION
+            </span>
+
+            <strong>
+              READY
+            </strong>
+
+          </div>
+
+          <i></i>
+
+          <div>
+
+            <span>
+              NEXT
+            </span>
+
+            <strong class="is-next">
+              BUILD
+            </strong>
+
+          </div>
 
         </div>
 
@@ -9052,7 +9312,7 @@
   <!-- ===================================================== -->
 
   <script
-    src="script.js?v=public-signal-v2-20260925-01"
+    src="script.js?v=connection-v2-20260925-01"
     defer>
   </script>
 
