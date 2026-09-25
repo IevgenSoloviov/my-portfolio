@@ -5311,81 +5311,100 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ====================================================================== */
-  /* 26 / STACK V2 — TECHNICAL UNIVERSE INTERACTION ENGINE                  */
+  /* 26 / STACK V3 — KNOWLEDGE GRAPH OS                                    */
   /* ====================================================================== */
 
-  const stackV2Shell =
-    $(".stack-v2-shell");
+  const stackV3System =
+    $("#stackV3System");
 
-  const stackV2Map =
-    $("#stackUniverseMap");
+  const stackV3Search =
+    $("#stackV3Search");
 
-  const stackV2DomainButtons =
-    $$(".stack-domain-button");
+  const stackV3Clear =
+    $("#stackV3Clear");
 
-  const stackV2DomainNodes =
-    $$(".stack-domain-node");
+  const stackV3EmptyReset =
+    $("#stackV3EmptyReset");
 
-  const stackV2TechNodes =
-    $$(".stack-tech-node");
+  const stackV3Filters =
+    $$(".stack-v3-filter");
 
-  const stackV2Edges =
-    $$(".stack-edge");
+  const stackV3Domains =
+    $$(".stack-v3-domain");
 
-  const stackV2SatelliteGroups =
-    $$(".stack-satellite-group");
+  const stackV3DomainNodes =
+    $$("[data-stack-v3-domain-node]");
 
-  const stackV2BankCards =
-    $$(".stack-bank-card");
+  const stackV3Edges =
+    $$("[data-stack-v3-edge]");
 
-  const stackV2PulsePrimary =
-    $("#stackPulsePrimary");
+  const stackV3TechGrid =
+    $("#stackV3TechGrid");
 
-  const stackV2PulseSecondary =
-    $("#stackPulseSecondary");
+  const stackV3Empty =
+    $("#stackV3Empty");
 
-  const stackV2ModeLabel =
-    $("#stackUniverseMode");
+  const stackV3ResultCount =
+    $("#stackV3ResultCount");
 
-  const stackV2ActivePath =
-    $("#stackActivePath");
+  const stackV3RegistryState =
+    $("#stackV3RegistryState");
 
-  const stackV2InspectorCode =
-    $("#stackInspectorCode");
+  const stackV3DomainState =
+    $("#stackV3DomainState");
 
-  const stackV2InspectorTitle =
-    $("#stackInspectorTitle");
+  const stackV3GraphMode =
+    $("#stackV3GraphMode");
 
-  const stackV2InspectorDescription =
-    $("#stackInspectorDescription");
+  const stackV3FocusTech =
+    $("#stackV3FocusTech");
 
-  const stackV2InspectorDomain =
-    $("#stackInspectorDomain");
+  const stackV3FocusDomain =
+    $("#stackV3FocusDomain");
 
-  const stackV2InspectorCount =
-    $("#stackInspectorCount");
+  const stackV3InspectorCode =
+    $("#stackV3InspectorCode");
 
-  const stackV2InspectorTechs =
-    $("#stackInspectorTechs");
+  const stackV3InspectorStatus =
+    $("#stackV3InspectorStatus");
 
-  const stackV2InspectorRelation =
-    $("#stackInspectorRelation");
+  const stackV3InspectorDomain =
+    $("#stackV3InspectorDomain");
+
+  const stackV3InspectorTitle =
+    $("#stackV3InspectorTitle");
+
+  const stackV3InspectorDescription =
+    $("#stackV3InspectorDescription");
+
+  const stackV3MetricDomain =
+    $("#stackV3MetricDomain");
+
+  const stackV3MetricRelations =
+    $("#stackV3MetricRelations");
+
+  const stackV3MetricProof =
+    $("#stackV3MetricProof");
+
+  const stackV3Related =
+    $("#stackV3Related");
+
+  const stackV3ProofList =
+    $("#stackV3ProofList");
+
+  const stackV3EvidenceCards =
+    $$(".stack-v3-evidence-card");
 
 
-  const STACK_V2_DATA = {
+  const STACK_V3_DOMAINS = {
 
     systems: {
       code: "DOMAIN_01",
-      title: "Systems",
       label: "SYSTEMS",
-      mode: "SYSTEMS FOUNDATION",
-      count: "07",
+      title: "Systems",
+      mode: "SYSTEMS / FOUNDATION",
       description:
-        "Foundation layer for services, users and workloads.",
-      relation:
-        "FOUNDATION → PLATFORM",
-      path:
-        "SYSTEMS → CLOUD → NETWORK",
+        "Operating systems, identity and infrastructure service foundations.",
       techs: [
         "Linux",
         "Ubuntu",
@@ -5399,16 +5418,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cloud: {
       code: "DOMAIN_02",
-      title: "Cloud Native",
       label: "CLOUD",
-      mode: "CLOUD-NATIVE PLATFORM",
-      count: "06",
+      title: "Cloud Native",
+      mode: "CLOUD / PLATFORM",
       description:
-        "Containerization, orchestration, lifecycle and service-mesh tooling.",
-      relation:
-        "CONTAINERS → ORCHESTRATION",
-      path:
-        "DOCKER → KUBERNETES → ISTIO",
+        "Containers, orchestration, lifecycle and service-mesh platforms.",
       techs: [
         "Docker",
         "Compose",
@@ -5421,16 +5435,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     network: {
       code: "DOMAIN_03",
-      title: "Networking",
       label: "NETWORK",
-      mode: "NETWORK CONNECTIVITY",
-      count: "07",
+      title: "Networking",
+      mode: "NETWORK / CONNECTIVITY",
       description:
-        "Connectivity, segmentation, routing and network-service foundations.",
-      relation:
-        "CONNECTIVITY → SEGMENTATION",
-      path:
-        "TCP/IP → VLAN → ROUTING → PFSENSE",
+        "Connectivity, segmentation, routing and network infrastructure.",
       techs: [
         "TCP/IP",
         "Subnetting",
@@ -5444,16 +5453,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     security: {
       code: "DOMAIN_04",
-      title: "Security",
       label: "SECURITY",
-      mode: "SECURITY CONTROL",
-      count: "05",
+      title: "Security",
+      mode: "SECURITY / CONTROL",
       description:
-        "Protection, traffic control and defensive network tooling.",
-      relation:
-        "CONTROL → DETECTION",
-      path:
-        "FIREWALL → IDS / IPS → SSL / TLS",
+        "Traffic control, defensive tooling and secure communication.",
       techs: [
         "Firewall",
         "Suricata",
@@ -5465,16 +5469,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     observe: {
       code: "DOMAIN_05",
-      title: "Observability",
       label: "OBSERVE",
-      mode: "OBSERVABILITY SIGNAL",
-      count: "05",
+      title: "Observability",
+      mode: "OBSERVE / VISIBILITY",
       description:
-        "Monitoring and visibility across systems and cloud-native platforms.",
-      relation:
-        "METRICS → VISIBILITY",
-      path:
-        "PROMETHEUS → GRAFANA → KIALI",
+        "Metrics, monitoring and platform visibility.",
       techs: [
         "Prometheus",
         "Grafana",
@@ -5486,16 +5485,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     automation: {
       code: "DOMAIN_06",
-      title: "Automation",
       label: "AUTOMATION",
-      mode: "AUTOMATED OPERATIONS",
-      count: "06",
+      title: "Automation",
+      mode: "AUTOMATION / OPERATIONS",
       description:
         "Scripting, configuration and versioned operational workflows.",
-      relation:
-        "SCRIPT → CONFIGURE → VERSION",
-      path:
-        "BASH → ANSIBLE → GIT → GITHUB",
       techs: [
         "Bash",
         "PowerShell",
@@ -5508,16 +5502,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     data: {
       code: "DOMAIN_07",
-      title: "Data + AI",
       label: "DATA + AI",
-      mode: "DATA + INTELLIGENCE",
-      count: "08",
+      title: "Data + AI",
+      mode: "DATA / INTELLIGENCE",
       description:
         "Programming, databases, analysis, Big Data and Artificial Intelligence.",
-      relation:
-        "DATA → ANALYSIS → AI",
-      path:
-        "PYTHON → SQL → BIG DATA → AI",
       techs: [
         "Python",
         "SQL",
@@ -5532,16 +5521,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     digital: {
       code: "DOMAIN_08",
-      title: "Digital",
       label: "DIGITAL",
-      mode: "WEB + CRM WORKFLOWS",
-      count: "06",
+      title: "Digital",
+      mode: "DIGITAL / WEB + CRM",
       description:
         "Web platforms, CRM systems, content and digital workflows.",
-      relation:
-        "CONTENT → CRM → WEB",
-      path:
-        "WORDPRESS → ZOHO CRM → HTML / CSS",
       techs: [
         "WordPress",
         "Zoho CRM",
@@ -5555,854 +5539,1455 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 
-  const STACK_V2_DOMAIN_ORDER = [
+  const STACK_V3_DOMAIN_ORDER = [
     "systems",
     "cloud",
     "network",
     "security",
     "observe",
-    "data",
     "automation",
+    "data",
     "digital"
   ];
 
 
-  const STACK_V2_PULSE_ROUTE = [
-    "stack-edge-systems-cloud",
-    "stack-edge-cloud-network",
-    "stack-edge-network-security",
-    "stack-edge-security-observe",
-    "stack-edge-observe-data",
-    "stack-edge-data-automation",
-    "stack-edge-automation-systems",
-    "stack-edge-automation-cloud",
-    "stack-edge-cloud-observe",
-    "stack-edge-systems-data",
-    "stack-edge-data-digital",
-    "stack-edge-digital-cloud"
-  ];
+  const STACK_V3_PROOFS = {
+
+    flagship: {
+      label:
+        "Modern Infrastructure Platform",
+      type:
+        "FLAGSHIP",
+      section:
+        "#flagship",
+      target:
+        ".flagship-v2-shell"
+    },
+
+    hotel: {
+      label:
+        "Hotel Management Platform",
+      type:
+        "PROJECT",
+      section:
+        "#projects",
+      target:
+        '[data-project-system="hotel"]'
+    },
+
+    techsolutions: {
+      label:
+        "TechSolutions IS",
+      type:
+        "PROJECT",
+      section:
+        "#projects",
+      target:
+        '[data-project-system="techsolutions"]'
+    },
+
+    lab: {
+      label:
+        "Technical Lab",
+      type:
+        "LAB",
+      section:
+        "#lab",
+      target:
+        "#technicalLabConsole"
+    },
+
+    mission: {
+      label:
+        "Current Mission",
+      type:
+        "LEARNING",
+      section:
+        "#mission",
+      target:
+        ".mission-layout"
+    },
+
+    education: {
+      label:
+        "AI & Big Data Specialization",
+      type:
+        "EDUCATION",
+      section:
+        "#education",
+      target:
+        "#educationV2System"
+    },
+
+    experience: {
+      label:
+        "Field Experience",
+      type:
+        "EXPERIENCE",
+      section:
+        "#experience",
+      target:
+        ".experience-timeline"
+    },
+
+    signal: {
+      label:
+        "Public Signal",
+      type:
+        "PUBLIC",
+      section:
+        "#signal",
+      target:
+        "#signalV2System"
+    }
+
+  };
 
 
-  let stackV2ActiveDomain =
-    "systems";
+  const STACK_V3_TECH_META = {
+
+    "Linux": {
+      proofs: ["techsolutions", "lab"],
+      related: ["Ubuntu", "Windows Server", "Bash", "pfSense"]
+    },
+
+    "Ubuntu": {
+      proofs: ["lab"],
+      related: ["Linux", "Bash", "Docker"]
+    },
+
+    "Windows Server": {
+      proofs: ["techsolutions"],
+      related: ["Active Directory", "DNS", "DHCP", "Linux"]
+    },
+
+    "Active Directory": {
+      proofs: ["techsolutions"],
+      related: ["Windows Server", "DNS", "DHCP"]
+    },
+
+    "DNS": {
+      proofs: ["techsolutions"],
+      related: ["DHCP", "Active Directory", "TCP/IP"]
+    },
+
+    "DHCP": {
+      proofs: ["techsolutions"],
+      related: ["DNS", "Active Directory", "TCP/IP"]
+    },
+
+    "Virtualization": {
+      proofs: [],
+      related: ["Linux", "Windows Server", "Docker"]
+    },
+
+    "Docker": {
+      proofs: ["flagship", "lab"],
+      related: ["Compose", "Swarm", "Kubernetes", "YAML"]
+    },
+
+    "Compose": {
+      proofs: ["flagship"],
+      related: ["Docker", "Swarm", "Kubernetes", "YAML"]
+    },
+
+    "Swarm": {
+      proofs: ["flagship"],
+      related: ["Docker", "Compose", "Kubernetes"]
+    },
+
+    "Kubernetes": {
+      proofs: ["flagship", "lab"],
+      related: ["Docker", "Helm", "Istio", "Prometheus"]
+    },
+
+    "Helm": {
+      proofs: ["flagship"],
+      related: ["Kubernetes", "YAML", "Istio"]
+    },
+
+    "Istio": {
+      proofs: ["flagship"],
+      related: ["Kubernetes", "Kiali", "Prometheus", "Grafana"]
+    },
+
+    "TCP/IP": {
+      proofs: ["techsolutions", "lab"],
+      related: ["Subnetting", "Routing", "VLAN", "pfSense"]
+    },
+
+    "Subnetting": {
+      proofs: ["techsolutions"],
+      related: ["TCP/IP", "VLAN", "Routing"]
+    },
+
+    "VLAN": {
+      proofs: ["techsolutions"],
+      related: ["Subnetting", "Switching", "LAN / DMZ", "pfSense"]
+    },
+
+    "Routing": {
+      proofs: ["techsolutions", "lab"],
+      related: ["TCP/IP", "pfSense", "VLAN"]
+    },
+
+    "Switching": {
+      proofs: ["techsolutions"],
+      related: ["VLAN", "LAN / DMZ", "TCP/IP"]
+    },
+
+    "LAN / DMZ": {
+      proofs: ["techsolutions"],
+      related: ["VLAN", "pfSense", "Firewall"]
+    },
+
+    "pfSense": {
+      proofs: ["techsolutions", "lab"],
+      related: ["Firewall", "LAN / DMZ", "Routing", "VLAN"]
+    },
+
+    "Firewall": {
+      proofs: ["techsolutions"],
+      related: ["pfSense", "iptables", "Suricata", "SSL / TLS"]
+    },
+
+    "Suricata": {
+      proofs: [],
+      related: ["IDS / IPS", "Firewall", "iptables"]
+    },
+
+    "IDS / IPS": {
+      proofs: [],
+      related: ["Suricata", "Firewall", "SNMP"]
+    },
+
+    "iptables": {
+      proofs: ["lab"],
+      related: ["Firewall", "Linux", "Suricata"]
+    },
+
+    "SSL / TLS": {
+      proofs: [],
+      related: ["Firewall", "Nginx", "Security"]
+    },
+
+    "Prometheus": {
+      proofs: ["flagship", "lab"],
+      related: ["Grafana", "Kiali", "Kubernetes", "SNMP"]
+    },
+
+    "Grafana": {
+      proofs: ["flagship", "lab"],
+      related: ["Prometheus", "Kiali", "Zabbix"]
+    },
+
+    "Kiali": {
+      proofs: ["flagship", "lab"],
+      related: ["Istio", "Prometheus", "Grafana"]
+    },
+
+    "Zabbix": {
+      proofs: ["lab"],
+      related: ["SNMP", "Grafana", "Prometheus"]
+    },
+
+    "SNMP": {
+      proofs: ["lab"],
+      related: ["Zabbix", "Prometheus", "Networking"]
+    },
+
+    "Bash": {
+      proofs: ["lab"],
+      related: ["Linux", "Ansible", "Git"]
+    },
+
+    "PowerShell": {
+      proofs: [],
+      related: ["Windows Server", "Active Directory", "Git"]
+    },
+
+    "Ansible": {
+      proofs: [],
+      related: ["Bash", "YAML", "Git"]
+    },
+
+    "YAML": {
+      proofs: ["flagship"],
+      related: ["Kubernetes", "Helm", "Ansible", "Git"]
+    },
+
+    "Git": {
+      proofs: ["flagship", "signal"],
+      related: ["GitHub", "YAML", "Bash"]
+    },
+
+    "GitHub": {
+      proofs: ["flagship", "signal"],
+      related: ["Git", "YAML", "Documentation"]
+    },
+
+    "Python": {
+      proofs: ["hotel", "mission", "education"],
+      related: ["PostgreSQL", "SQL", "Data Analysis", "Artificial Intelligence"]
+    },
+
+    "SQL": {
+      proofs: ["hotel", "education"],
+      related: ["PostgreSQL", "MySQL", "Python", "Data Analysis"]
+    },
+
+    "PostgreSQL": {
+      proofs: ["hotel"],
+      related: ["SQL", "Python", "Data Analysis"]
+    },
+
+    "MySQL": {
+      proofs: ["flagship"],
+      related: ["SQL", "Redis", "Kubernetes"]
+    },
+
+    "Redis": {
+      proofs: ["flagship"],
+      related: ["MySQL", "Kubernetes", "Python"]
+    },
+
+    "Big Data": {
+      proofs: ["mission", "education"],
+      related: ["Python", "Data Analysis", "Artificial Intelligence"]
+    },
+
+    "Data Analysis": {
+      proofs: ["hotel", "education"],
+      related: ["Python", "SQL", "Big Data"]
+    },
+
+    "Artificial Intelligence": {
+      proofs: ["mission", "education"],
+      related: ["Python", "Big Data", "Data Analysis"]
+    },
+
+    "WordPress": {
+      proofs: ["experience"],
+      related: ["Zoho CRM", "HTML", "CSS", "Photoshop"]
+    },
+
+    "Zoho CRM": {
+      proofs: ["experience"],
+      related: ["WordPress", "HTML", "Digital"]
+    },
+
+    "Photoshop": {
+      proofs: ["experience"],
+      related: ["WordPress", "HTML", "CSS"]
+    },
+
+    "HTML": {
+      proofs: ["experience"],
+      related: ["CSS", "WordPress", "Plone CMS"]
+    },
+
+    "CSS": {
+      proofs: ["experience"],
+      related: ["HTML", "WordPress", "Plone CMS"]
+    },
+
+    "Plone CMS": {
+      proofs: ["experience"],
+      related: ["HTML", "CSS", "WordPress"]
+    }
+
+  };
 
 
-  let stackV2DomainIndex =
-    0;
+  const normalizeStackV3 =
+    value =>
+      String(value || "")
+        .toLowerCase()
+        .replaceAll("/", " ")
+        .replaceAll("+", " ")
+        .replace(/\s+/g, " ")
+        .trim();
 
 
-  let stackV2CycleTimer =
-    null;
+  const getStackV3TechDomain =
+    tech => {
 
-
-  let stackV2PulseFramePrimary =
-    null;
-
-
-  let stackV2PulseFrameSecondary =
-    null;
-
-
-  let stackV2PulseToken =
-    0;
-
-
-  let stackV2Visible =
-    false;
-
-
-  let stackV2UserHoldUntil =
-    0;
-
-
-  const updateStackV2Inspector =
-    domain => {
-
-      const data =
-        STACK_V2_DATA[domain];
-
-
-      if (!data) {
-        return;
-      }
-
-
-      if (stackV2ModeLabel) {
-        stackV2ModeLabel.textContent =
-          data.mode;
-      }
-
-
-      if (stackV2ActivePath) {
-        stackV2ActivePath.textContent =
-          data.path;
-      }
-
-
-      if (stackV2InspectorCode) {
-        stackV2InspectorCode.textContent =
-          data.code;
-      }
-
-
-      if (stackV2InspectorTitle) {
-        stackV2InspectorTitle.textContent =
-          data.title;
-      }
-
-
-      if (stackV2InspectorDescription) {
-        stackV2InspectorDescription.textContent =
-          data.description;
-      }
-
-
-      if (stackV2InspectorDomain) {
-        stackV2InspectorDomain.textContent =
-          data.label;
-      }
-
-
-      if (stackV2InspectorCount) {
-        stackV2InspectorCount.textContent =
-          data.count;
-      }
-
-
-      if (stackV2InspectorRelation) {
-        stackV2InspectorRelation.textContent =
-          data.relation;
-      }
-
-
-      if (stackV2InspectorTechs) {
-
-        stackV2InspectorTechs.innerHTML =
-          "";
-
-
-        data.techs.forEach(tech => {
-
-          const item =
-            document.createElement(
-              "span"
-            );
-
-
-          item.textContent =
-            tech;
-
-
-          stackV2InspectorTechs.appendChild(
-            item
-          );
-
-        });
-
-      }
+      return STACK_V3_DOMAIN_ORDER
+        .find(domain =>
+          STACK_V3_DOMAINS[domain]
+            .techs
+            .includes(tech)
+        )
+        || null;
 
     };
 
 
-  const clearStackV2Focus =
+  const STACK_V3_TECHS =
+    STACK_V3_DOMAIN_ORDER
+      .flatMap(domain =>
+        STACK_V3_DOMAINS[domain]
+          .techs
+          .map((name, index) => {
+
+            const meta =
+              STACK_V3_TECH_META[name]
+              || {
+                proofs: [],
+                related: []
+              };
+
+
+            return {
+              name,
+              domain,
+              index:
+                index + 1,
+              proofs:
+                meta.proofs || [],
+              related:
+                meta.related || []
+            };
+
+          })
+      );
+
+
+  let stackV3ActiveDomain =
+    "all";
+
+
+  let stackV3SelectedTech =
+    null;
+
+
+  let stackV3ProofHighlightTimer =
+    null;
+
+
+  const getStackV3Query =
+    () =>
+      normalizeStackV3(
+        stackV3Search?.value
+      );
+
+
+  const getFilteredStackV3Techs =
     () => {
 
-      stackV2DomainButtons
-        .forEach(button => {
-
-          button.classList.remove(
-            "is-active"
-          );
+      const query =
+        getStackV3Query();
 
 
-          button.setAttribute(
-            "aria-pressed",
-            "false"
-          );
+      return STACK_V3_TECHS
+        .filter(tech => {
 
-        });
-
-
-      stackV2DomainNodes
-        .forEach(node => {
-
-          node.classList.remove(
-            "is-active"
-          );
-
-        });
+          const domainMatch =
+            stackV3ActiveDomain
+            === "all"
+            || tech.domain
+               === stackV3ActiveDomain;
 
 
-      stackV2Edges
-        .forEach(edge => {
+          const queryMatch =
+            !query
+            || normalizeStackV3(
+              [
+                tech.name,
+                STACK_V3_DOMAINS[
+                  tech.domain
+                ].title,
+                STACK_V3_DOMAINS[
+                  tech.domain
+                ].label
+              ].join(" ")
+            ).includes(query);
 
-          edge.classList.remove(
-            "is-active"
-          );
 
-        });
-
-
-      stackV2SatelliteGroups
-        .forEach(group => {
-
-          group.classList.remove(
-            "is-active"
-          );
+          return domainMatch
+            && queryMatch;
 
         });
-
-
-      stackV2BankCards
-        .forEach(card => {
-
-          card.classList.remove(
-            "is-active"
-          );
-
-        });
-
-
-      stackV2Map
-        ?.classList
-        .remove(
-          "has-domain-focus"
-        );
 
     };
 
 
-  const activateStackV2Domain =
-    (
-      domain,
-      userInitiated = false
-    ) => {
+  const navigateStackV3Proof =
+    proofKey => {
 
-      const data =
-        STACK_V2_DATA[domain];
+      const proof =
+        STACK_V3_PROOFS[
+          proofKey
+        ];
 
 
-      if (!data) {
+      if (!proof) {
         return;
       }
 
 
-      stackV2ActiveDomain =
-        domain;
+      const section =
+        $(proof.section);
 
 
-      stackV2DomainIndex =
-        Math.max(
-          STACK_V2_DOMAIN_ORDER.indexOf(
-            domain
-          ),
-          0
-        );
+      const target =
+        $(proof.target);
 
 
-      if (userInitiated) {
-
-        stackV2UserHoldUntil =
-          Date.now() + 8500;
-
-      }
-
-
-      clearStackV2Focus();
-
-
-      stackV2Map
-        ?.classList
-        .add(
-          "has-domain-focus"
-        );
-
-
-      stackV2DomainButtons
-        .filter(button =>
-          button.dataset.stackDomain
-          === domain
-        )
-        .forEach(button => {
-
-          button.classList.add(
-            "is-active"
-          );
-
-
-          button.setAttribute(
-            "aria-pressed",
-            "true"
-          );
-
-        });
-
-
-      stackV2DomainNodes
-        .filter(node =>
-          node.dataset.stackNode
-          === domain
-        )
-        .forEach(node => {
-
-          node.classList.add(
-            "is-active"
-          );
-
-        });
-
-
-      stackV2SatelliteGroups
-        .filter(group =>
-          group.dataset.stackDomainRef
-          === domain
-        )
-        .forEach(group => {
-
-          group.classList.add(
-            "is-active"
-          );
-
-        });
-
-
-      stackV2Edges
-        .filter(edge => {
-
-          const edgeDomains =
-            (
-              edge.dataset.stackEdge
-              || ""
-            )
-              .split(" ");
-
-
-          return edgeDomains.includes(
-            domain
-          );
-
-        })
-        .forEach(edge => {
-
-          edge.classList.add(
-            "is-active"
-          );
-
-        });
-
-
-      stackV2BankCards
-        .filter(card =>
-          card.dataset.stackBank
-          === domain
-        )
-        .forEach(card => {
-
-          card.classList.add(
-            "is-active"
-          );
-
-        });
-
-
-      updateStackV2Inspector(
-        domain
-      );
-
-    };
-
-
-  const inspectStackV2Technology =
-    node => {
-
-      if (!node) {
+      if (!section) {
         return;
       }
 
 
-      const tech =
-        node.dataset.stackTech;
-
-
-      const domain =
-        node.dataset.stackDomainRef;
-
-
-      if (
-        !tech
-        || !domain
-        || !STACK_V2_DATA[domain]
-      ) {
-        return;
-      }
-
-
-      activateStackV2Domain(
-        domain,
-        true
+      scrollToTarget(
+        section
       );
 
 
-      stackV2TechNodes
-        .forEach(item => {
+      if (stackV3ProofHighlightTimer) {
 
-          item.classList.toggle(
-            "is-active",
-            item === node
-          );
-
-        });
-
-
-      if (stackV2InspectorTitle) {
-        stackV2InspectorTitle.textContent =
-          tech;
-      }
-
-
-      if (stackV2InspectorDescription) {
-        stackV2InspectorDescription.textContent =
-          `${tech} / ${STACK_V2_DATA[domain].title}`;
-      }
-
-    };
-
-
-  const placeStackV2PulseOnPath =
-    (
-      pulse,
-      path,
-      progress
-    ) => {
-
-      if (
-        !pulse
-        || !path
-        || typeof path.getTotalLength
-           !== "function"
-      ) {
-        return;
-      }
-
-
-      const totalLength =
-        path.getTotalLength();
-
-
-      const point =
-        path.getPointAtLength(
-          totalLength * progress
+        clearTimeout(
+          stackV3ProofHighlightTimer
         );
 
-
-      pulse.setAttribute(
-        "cx",
-        point.x
-      );
-
-
-      pulse.setAttribute(
-        "cy",
-        point.y
-      );
-
-    };
-
-
-  const stopStackV2PulseFrames =
-    () => {
-
-      stackV2PulseToken += 1;
-
-
-      if (
-        stackV2PulseFramePrimary
-        !== null
-      ) {
-
-        cancelAnimationFrame(
-          stackV2PulseFramePrimary
-        );
-
-
-        stackV2PulseFramePrimary =
-          null;
-
       }
 
 
-      if (
-        stackV2PulseFrameSecondary
-        !== null
-      ) {
+      window.setTimeout(
+        () => {
 
-        cancelAnimationFrame(
-          stackV2PulseFrameSecondary
-        );
+          if (!target) {
+            return;
+          }
 
 
-        stackV2PulseFrameSecondary =
-          null;
+          $$(".stack-v3-proof-highlight")
+            .forEach(element => {
 
-      }
-
-    };
-
-
-  const animateStackV2Pulse =
-    (
-      pulse,
-      path,
-      duration,
-      token,
-      frameSlot
-    ) => {
-
-      return new Promise(resolve => {
-
-        if (
-          prefersReducedMotion
-          || !pulse
-          || !path
-        ) {
-
-          placeStackV2PulseOnPath(
-            pulse,
-            path,
-            1
-          );
-
-
-          resolve();
-
-          return;
-
-        }
-
-
-        const start =
-          performance.now();
-
-
-        const frame =
-          now => {
-
-            if (
-              token
-              !== stackV2PulseToken
-            ) {
-
-              resolve();
-
-              return;
-
-            }
-
-
-            const progress =
-              clamp(
-                (now - start) / duration,
-                0,
-                1
+              element.classList.remove(
+                "stack-v3-proof-highlight"
               );
 
-
-            const eased =
-              progress
-              * progress
-              * (3 - 2 * progress);
+            });
 
 
-            placeStackV2PulseOnPath(
-              pulse,
-              path,
-              eased
-            );
-
-
-            if (progress < 1) {
-
-              const id =
-                requestAnimationFrame(
-                  frame
-                );
-
-
-              if (frameSlot === "primary") {
-                stackV2PulseFramePrimary = id;
-              } else {
-                stackV2PulseFrameSecondary = id;
-              }
-
-            } else {
-
-              if (frameSlot === "primary") {
-                stackV2PulseFramePrimary = null;
-              } else {
-                stackV2PulseFrameSecondary = null;
-              }
-
-
-              resolve();
-
-            }
-
-          };
-
-
-        const id =
-          requestAnimationFrame(
-            frame
+          target.classList.add(
+            "stack-v3-proof-highlight"
           );
 
 
-        if (frameSlot === "primary") {
-          stackV2PulseFramePrimary = id;
-        } else {
-          stackV2PulseFrameSecondary = id;
-        }
+          stackV3ProofHighlightTimer =
+            window.setTimeout(
+              () => {
+
+                target.classList.remove(
+                  "stack-v3-proof-highlight"
+                );
+
+              },
+              2300
+            );
+
+        },
+        prefersReducedMotion
+          ? 0
+          : 520
+      );
+
+    };
+
+
+  const renderStackV3Related =
+    tech => {
+
+      if (!stackV3Related) {
+        return;
+      }
+
+
+      stackV3Related.replaceChildren();
+
+
+      const related =
+        tech.related
+          .filter(name =>
+            STACK_V3_TECHS.some(
+              item =>
+                item.name === name
+            )
+          )
+          .slice(0, 5);
+
+
+      if (related.length === 0) {
+
+        const fallback =
+          document.createElement(
+            "span"
+          );
+
+
+        fallback.textContent =
+          "Domain relationship";
+
+
+        stackV3Related.appendChild(
+          fallback
+        );
+
+
+        return;
+
+      }
+
+
+      related.forEach(name => {
+
+        const button =
+          document.createElement(
+            "button"
+          );
+
+
+        button.type =
+          "button";
+
+
+        button.textContent =
+          name;
+
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            selectStackV3Tech(
+              name,
+              true
+            );
+
+          }
+        );
+
+
+        stackV3Related.appendChild(
+          button
+        );
 
       });
 
     };
 
 
-  const getStackV2DomainEdges =
-    domain =>
-      stackV2Edges.filter(edge =>
-        (
-          edge.dataset.stackEdge
-          || ""
-        )
-          .split(" ")
-          .includes(domain)
-      );
+  const renderStackV3Proofs =
+    tech => {
 
-
-  const runStackV2PulseSequence =
-    async () => {
-
-      if (
-        !stackV2Shell
-        || !stackV2Map
-      ) {
+      if (!stackV3ProofList) {
         return;
       }
 
 
-      stopStackV2PulseFrames();
+      stackV3ProofList.replaceChildren();
 
 
-      const token =
-        stackV2PulseToken;
+      if (tech.proofs.length === 0) {
+
+        const fallback =
+          document.createElement(
+            "p"
+          );
 
 
-      stackV2Shell.classList.add(
-        "is-running"
-      );
+        fallback.textContent =
+          "No dedicated project link is assigned in the current portfolio.";
 
 
-      const activeEdges =
-        getStackV2DomainEdges(
-          stackV2ActiveDomain
+        stackV3ProofList.appendChild(
+          fallback
         );
 
 
-      const primaryPath =
-        activeEdges[0]
-        || document.getElementById(
-          STACK_V2_PULSE_ROUTE[0]
-        );
-
-
-      const secondaryPath =
-        activeEdges[1]
-        || document.getElementById(
-          STACK_V2_PULSE_ROUTE[1]
-        );
-
-
-      const jobs = [];
-
-
-      if (
-        stackV2PulsePrimary
-        && primaryPath
-      ) {
-
-        jobs.push(
-          animateStackV2Pulse(
-            stackV2PulsePrimary,
-            primaryPath,
-            1200,
-            token,
-            "primary"
-          )
-        );
+        return;
 
       }
 
 
+      tech.proofs
+        .forEach(proofKey => {
+
+          const proof =
+            STACK_V3_PROOFS[
+              proofKey
+            ];
+
+
+          if (!proof) {
+            return;
+          }
+
+
+          const button =
+            document.createElement(
+              "button"
+            );
+
+
+          button.type =
+            "button";
+
+
+          button.className =
+            "stack-v3-proof-button";
+
+
+          const copy =
+            document.createElement(
+              "div"
+            );
+
+
+          const type =
+            document.createElement(
+              "span"
+            );
+
+
+          type.textContent =
+            proof.type;
+
+
+          const label =
+            document.createElement(
+              "strong"
+            );
+
+
+          label.textContent =
+            proof.label;
+
+
+          copy.append(
+            type,
+            label
+          );
+
+
+          const arrow =
+            document.createElement(
+              "i"
+            );
+
+
+          arrow.textContent =
+            "→";
+
+
+          button.append(
+            copy,
+            arrow
+          );
+
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              navigateStackV3Proof(
+                proofKey
+              );
+
+            }
+          );
+
+
+          stackV3ProofList.appendChild(
+            button
+          );
+
+        });
+
+    };
+
+
+  const updateStackV3GraphFocus =
+    domain => {
+
+      const activeDomain =
+        domain || "all";
+
+
+      stackV3DomainNodes
+        .forEach(node => {
+
+          const nodeDomain =
+            node.dataset
+              .stackV3DomainNode;
+
+
+          const isCore =
+            nodeDomain === "all";
+
+
+          const active =
+            activeDomain === "all"
+              ? isCore
+              : nodeDomain
+                === activeDomain;
+
+
+          const dimmed =
+            activeDomain !== "all"
+            && !isCore
+            && nodeDomain
+               !== activeDomain;
+
+
+          node.classList.toggle(
+            "is-active",
+            active
+          );
+
+
+          node.classList.toggle(
+            "is-dimmed",
+            dimmed
+          );
+
+        });
+
+
+      stackV3Edges
+        .forEach(edge => {
+
+          const domains =
+            String(
+              edge.dataset
+                .stackV3Edge
+              || ""
+            ).split(" ");
+
+
+          const active =
+            activeDomain === "all"
+            || domains.includes(
+              activeDomain
+            );
+
+
+          edge.classList.toggle(
+            "is-active",
+            activeDomain !== "all"
+            && active
+          );
+
+
+          edge.classList.toggle(
+            "is-dimmed",
+            activeDomain !== "all"
+            && !active
+          );
+
+        });
+
+    };
+
+
+  const updateStackV3DomainUI =
+    () => {
+
+      stackV3Filters
+        .forEach(button => {
+
+          const active =
+            button.dataset
+              .stackV3Filter
+            === stackV3ActiveDomain;
+
+
+          button.classList.toggle(
+            "is-active",
+            active
+          );
+
+
+          button.setAttribute(
+            "aria-pressed",
+            String(active)
+          );
+
+        });
+
+
+      stackV3Domains
+        .forEach(button => {
+
+          const domain =
+            button.dataset
+              .stackV3Domain;
+
+
+          const active =
+            domain
+            === stackV3ActiveDomain;
+
+
+          button.classList.toggle(
+            "is-active",
+            active
+          );
+
+
+          button.classList.toggle(
+            "is-dimmed",
+            stackV3ActiveDomain !== "all"
+            && !active
+          );
+
+        });
+
+
+      const domainData =
+        STACK_V3_DOMAINS[
+          stackV3ActiveDomain
+        ];
+
+
+      if (stackV3DomainState) {
+
+        stackV3DomainState.textContent =
+          domainData
+            ? domainData.label
+            : "ALL_DOMAINS";
+
+      }
+
+
+      if (stackV3GraphMode) {
+
+        stackV3GraphMode.textContent =
+          domainData
+            ? domainData.mode
+            : "ALL DOMAINS / SYSTEM VIEW";
+
+      }
+
+
+      updateStackV3GraphFocus(
+        stackV3ActiveDomain
+      );
+
+    };
+
+
+  const renderStackV3Registry =
+    () => {
+
+      if (!stackV3TechGrid) {
+        return;
+      }
+
+
+      const techs =
+        getFilteredStackV3Techs();
+
+
+      stackV3TechGrid.replaceChildren();
+
+
+      techs.forEach(
+        (
+          tech,
+          visibleIndex
+        ) => {
+
+          const button =
+            document.createElement(
+              "button"
+            );
+
+
+          button.type =
+            "button";
+
+
+          button.className =
+            "stack-v3-tech";
+
+
+          if (
+            tech.proofs.length
+            > 0
+          ) {
+
+            button.classList.add(
+              "has-proof"
+            );
+
+          }
+
+
+          if (
+            stackV3SelectedTech
+            === tech.name
+          ) {
+
+            button.classList.add(
+              "is-active"
+            );
+
+          }
+
+
+          button.dataset
+            .stackV3Tech =
+              tech.name;
+
+
+          const dot =
+            document.createElement(
+              "i"
+            );
+
+
+          const copy =
+            document.createElement(
+              "div"
+            );
+
+
+          const title =
+            document.createElement(
+              "strong"
+            );
+
+
+          title.textContent =
+            tech.name;
+
+
+          const subtitle =
+            document.createElement(
+              "small"
+            );
+
+
+          subtitle.textContent =
+            STACK_V3_DOMAINS[
+              tech.domain
+            ].label;
+
+
+          copy.append(
+            title,
+            subtitle
+          );
+
+
+          const index =
+            document.createElement(
+              "span"
+            );
+
+
+          index.textContent =
+            String(
+              visibleIndex + 1
+            ).padStart(2, "0");
+
+
+          button.append(
+            dot,
+            copy,
+            index
+          );
+
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              selectStackV3Tech(
+                tech.name,
+                true
+              );
+
+            }
+          );
+
+
+          stackV3TechGrid.appendChild(
+            button
+          );
+
+        });
+
+
+      if (stackV3ResultCount) {
+
+        stackV3ResultCount.textContent =
+          String(
+            techs.length
+          ).padStart(2, "0");
+
+      }
+
+
+      if (stackV3RegistryState) {
+
+        const domainLabel =
+          stackV3ActiveDomain === "all"
+            ? "ALL"
+            : STACK_V3_DOMAINS[
+                stackV3ActiveDomain
+              ].label;
+
+
+        stackV3RegistryState.textContent =
+          `${domainLabel} / ${String(techs.length).padStart(2, "0")} TECHNOLOGIES`;
+
+      }
+
+
+      if (stackV3Empty) {
+
+        stackV3Empty.hidden =
+          techs.length !== 0;
+
+      }
+
+    };
+
+
+  const selectStackV3Domain =
+    (
+      domain,
+      focusSearch = false
+    ) => {
+
       if (
-        stackV2PulseSecondary
-        && secondaryPath
+        domain !== "all"
+        && !STACK_V3_DOMAINS[
+          domain
+        ]
       ) {
 
-        jobs.push(
-          wait(260)
-            .then(() =>
-              animateStackV2Pulse(
-                stackV2PulseSecondary,
-                secondaryPath,
-                1450,
-                token,
-                "secondary"
-              )
+        return;
+
+      }
+
+
+      stackV3ActiveDomain =
+        domain;
+
+
+      updateStackV3DomainUI();
+
+
+      renderStackV3Registry();
+
+
+      if (
+        focusSearch
+        && stackV3Search
+      ) {
+
+        stackV3Search.focus();
+
+      }
+
+    };
+
+
+  function selectStackV3Tech(
+    name,
+    preserveQuery = false
+  ) {
+
+    const tech =
+      STACK_V3_TECHS
+        .find(item =>
+          item.name === name
+        );
+
+
+    if (!tech) {
+      return;
+    }
+
+
+    stackV3SelectedTech =
+      tech.name;
+
+
+    if (
+      !preserveQuery
+      && stackV3Search
+    ) {
+
+      stackV3Search.value =
+        "";
+
+    }
+
+
+    stackV3ActiveDomain =
+      tech.domain;
+
+
+    updateStackV3DomainUI();
+
+
+    renderStackV3Registry();
+
+
+    const domain =
+      STACK_V3_DOMAINS[
+        tech.domain
+      ];
+
+
+    if (stackV3FocusTech) {
+
+      stackV3FocusTech.textContent =
+        tech.name;
+
+    }
+
+
+    if (stackV3FocusDomain) {
+
+      stackV3FocusDomain.textContent =
+        `${domain.label} / ${tech.proofs.length ? "PORTFOLIO LINKED" : "KNOWLEDGE NODE"}`;
+
+    }
+
+
+    if (stackV3InspectorCode) {
+
+      stackV3InspectorCode.textContent =
+        `${domain.code} / TECH`;
+
+    }
+
+
+    if (stackV3InspectorStatus) {
+
+      stackV3InspectorStatus.textContent =
+        tech.proofs.length
+          ? "PROOF LINKED"
+          : "KNOWLEDGE";
+
+    }
+
+
+    if (stackV3InspectorDomain) {
+
+      stackV3InspectorDomain.textContent =
+        domain.title;
+
+    }
+
+
+    if (stackV3InspectorTitle) {
+
+      stackV3InspectorTitle.textContent =
+        tech.name;
+
+    }
+
+
+    if (stackV3InspectorDescription) {
+
+      stackV3InspectorDescription.textContent =
+        `${tech.name} is part of the ${domain.title} domain. ${domain.description}`;
+
+    }
+
+
+    if (stackV3MetricDomain) {
+
+      stackV3MetricDomain.textContent =
+        domain.label;
+
+    }
+
+
+    const validRelations =
+      tech.related
+        .filter(item =>
+          STACK_V3_TECHS
+            .some(known =>
+              known.name === item
             )
         );
 
-      }
+
+    if (stackV3MetricRelations) {
+
+      stackV3MetricRelations.textContent =
+        String(
+          validRelations.length
+        ).padStart(2, "0");
+
+    }
 
 
-      await Promise.all(jobs);
+    if (stackV3MetricProof) {
+
+      stackV3MetricProof.textContent =
+        String(
+          tech.proofs.length
+        ).padStart(2, "0");
+
+    }
 
 
-      stackV2Shell.classList.remove(
-        "is-running"
-      );
-
-    };
+    renderStackV3Related(
+      tech
+    );
 
 
-  const stopStackV2Cycle =
+    renderStackV3Proofs(
+      tech
+    );
+
+  }
+
+
+  const resetStackV3 =
     () => {
 
-      if (stackV2CycleTimer) {
-
-        clearInterval(
-          stackV2CycleTimer
-        );
+      stackV3SelectedTech =
+        null;
 
 
-        stackV2CycleTimer =
-          null;
+      stackV3ActiveDomain =
+        "all";
+
+
+      if (stackV3Search) {
+
+        stackV3Search.value =
+          "";
 
       }
 
 
-      stopStackV2PulseFrames();
+      updateStackV3DomainUI();
 
 
-      stackV2Shell
-        ?.classList
-        .remove(
-          "is-running"
-        );
+      renderStackV3Registry();
+
+
+      if (stackV3FocusTech) {
+
+        stackV3FocusTech.textContent =
+          "Select a technology";
+
+      }
+
+
+      if (stackV3FocusDomain) {
+
+        stackV3FocusDomain.textContent =
+          "Search or browse the registry";
+
+      }
+
+
+      if (stackV3InspectorCode) {
+
+        stackV3InspectorCode.textContent =
+          "GRAPH_READY";
+
+      }
+
+
+      if (stackV3InspectorStatus) {
+
+        stackV3InspectorStatus.textContent =
+          "SELECT";
+
+      }
+
+
+      if (stackV3InspectorDomain) {
+
+        stackV3InspectorDomain.textContent =
+          "TECHNICAL UNIVERSE";
+
+      }
+
+
+      if (stackV3InspectorTitle) {
+
+        stackV3InspectorTitle.textContent =
+          "Select a technology.";
+
+      }
+
+
+      if (stackV3InspectorDescription) {
+
+        stackV3InspectorDescription.textContent =
+          "Search the registry or select a domain to inspect technologies, relationships and portfolio evidence.";
+
+      }
+
+
+      if (stackV3MetricDomain) {
+
+        stackV3MetricDomain.textContent =
+          "ALL";
+
+      }
+
+
+      if (stackV3MetricRelations) {
+
+        stackV3MetricRelations.textContent =
+          "--";
+
+      }
+
+
+      if (stackV3MetricProof) {
+
+        stackV3MetricProof.textContent =
+          "--";
+
+      }
+
+
+      if (stackV3Related) {
+
+        stackV3Related.innerHTML =
+          "<span>Select technology</span>";
+
+      }
+
+
+      if (stackV3ProofList) {
+
+        stackV3ProofList.innerHTML =
+          "<p>Proof links appear when a technology is connected to a project or section in this portfolio.</p>";
+
+      }
 
     };
 
 
-  const advanceStackV2Domain =
-    () => {
-
-      if (
-        Date.now()
-        < stackV2UserHoldUntil
-      ) {
-
-        runStackV2PulseSequence();
-
-        return;
-
-      }
-
-
-      stackV2DomainIndex =
-        (
-          stackV2DomainIndex + 1
-        )
-        % STACK_V2_DOMAIN_ORDER.length;
-
-
-      activateStackV2Domain(
-        STACK_V2_DOMAIN_ORDER[
-          stackV2DomainIndex
-        ]
-      );
-
-
-      runStackV2PulseSequence();
-
-    };
-
-
-  const startStackV2Cycle =
-    () => {
-
-      stopStackV2Cycle();
-
-
-      if (!stackV2Shell) {
-        return;
-      }
-
-
-      activateStackV2Domain(
-        stackV2ActiveDomain
-      );
-
-
-      runStackV2PulseSequence();
-
-
-      if (
-        prefersReducedMotion
-        || document.hidden
-      ) {
-        return;
-      }
-
-
-      stackV2CycleTimer =
-        window.setInterval(
-          advanceStackV2Domain,
-          4300
-        );
-
-    };
-
-
-  stackV2DomainButtons
+  stackV3Filters
     .forEach(button => {
 
       button.addEventListener(
         "click",
         () => {
 
-          activateStackV2Domain(
-            button.dataset.stackDomain,
-            true
-          );
-
-
-          runStackV2PulseSequence();
-
-        }
-      );
-
-
-      button.addEventListener(
-        "mouseenter",
-        () => {
-
-          if (!finePointer) {
-            return;
-          }
-
-
-          activateStackV2Domain(
-            button.dataset.stackDomain,
-            true
+          selectStackV3Domain(
+            button.dataset
+              .stackV3Filter
+            || "all"
           );
 
         }
@@ -6411,146 +6996,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-  stackV2DomainNodes
-    .forEach(node => {
-
-      const activateNode =
-        () => {
-
-          activateStackV2Domain(
-            node.dataset.stackNode,
-            true
-          );
-
-
-          runStackV2PulseSequence();
-
-        };
-
-
-      node.addEventListener(
-        "click",
-        activateNode
-      );
-
-
-      node.addEventListener(
-        "focus",
-        activateNode
-      );
-
-
-      node.addEventListener(
-        "mouseenter",
-        () => {
-
-          if (finePointer) {
-            activateNode();
-          }
-
-        }
-      );
-
-    });
-
-
-  stackV2TechNodes
-    .forEach(node => {
-
-      const inspectTech =
-        () => {
-          inspectStackV2Technology(node);
-        };
-
-
-      node.addEventListener(
-        "click",
-        inspectTech
-      );
-
-
-      node.addEventListener(
-        "focus",
-        inspectTech
-      );
-
-
-      node.addEventListener(
-        "mouseenter",
-        () => {
-
-          if (finePointer) {
-            inspectTech();
-          }
-
-        }
-      );
-
-
-      node.addEventListener(
-        "keydown",
-        event => {
-
-          if (
-            event.key === "Enter"
-            || event.key === " "
-          ) {
-
-            event.preventDefault();
-            inspectTech();
-
-          }
-
-        }
-      );
-
-    });
-
-
-  stackV2BankCards
-    .forEach(card => {
-
-      const inspectBank =
-        () => {
-
-          activateStackV2Domain(
-            card.dataset.stackBank,
-            true
-          );
-
-
-          runStackV2PulseSequence();
-
-        };
-
-
-      card.addEventListener(
-        "click",
-        inspectBank
-      );
-
-
-      card.addEventListener(
-        "keydown",
-        event => {
-
-          if (
-            event.key === "Enter"
-            || event.key === " "
-          ) {
-
-            event.preventDefault();
-            inspectBank();
-
-          }
-
-        }
-      );
-
-    });
-
-
-  stackV2DomainButtons
+  stackV3Domains
     .forEach(
       (
         button,
@@ -6558,16 +7004,29 @@ document.addEventListener("DOMContentLoaded", () => {
       ) => {
 
         button.addEventListener(
+          "click",
+          () => {
+
+            selectStackV3Domain(
+              button.dataset
+                .stackV3Domain
+            );
+
+          }
+        );
+
+
+        button.addEventListener(
           "keydown",
           event => {
 
             if (
               event.key !== "ArrowDown"
-              && event.key !== "ArrowRight"
               && event.key !== "ArrowUp"
-              && event.key !== "ArrowLeft"
             ) {
+
               return;
+
             }
 
 
@@ -6575,10 +7034,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             const direction =
-              (
-                event.key === "ArrowDown"
-                || event.key === "ArrowRight"
-              )
+              event.key === "ArrowDown"
                 ? 1
                 : -1;
 
@@ -6587,14 +7043,14 @@ document.addEventListener("DOMContentLoaded", () => {
               (
                 index
                 + direction
-                + stackV2DomainButtons.length
+                + stackV3Domains.length
               )
-              % stackV2DomainButtons.length;
+              % stackV3Domains.length;
 
 
-            stackV2DomainButtons[
+            stackV3Domains[
               nextIndex
-            ]?.focus();
+            ].focus();
 
           }
         );
@@ -6603,92 +7059,158 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-  if (
-    stackV2Shell
-    && "IntersectionObserver"
-       in window
-  ) {
+  stackV3DomainNodes
+    .forEach(node => {
 
-    const stackV2Observer =
-      new IntersectionObserver(
-        entries => {
+      const activate =
+        () => {
 
-          entries.forEach(entry => {
+          selectStackV3Domain(
+            node.dataset
+              .stackV3DomainNode
+            || "all"
+          );
 
-            stackV2Visible =
-              entry.isIntersecting;
+        };
 
 
-            if (entry.isIntersecting) {
-
-              startStackV2Cycle();
-
-            } else {
-
-              stopStackV2Cycle();
-
-            }
-
-          });
-
-        },
-        {
-          threshold: .15
-        }
+      node.addEventListener(
+        "click",
+        activate
       );
 
 
-    stackV2Observer.observe(
-      stackV2Shell
+      node.addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key === "Enter"
+            || event.key === " "
+          ) {
+
+            event.preventDefault();
+
+            activate();
+
+          }
+
+        }
+      );
+
+    });
+
+
+  stackV3Search
+    ?.addEventListener(
+      "input",
+      () => {
+
+        renderStackV3Registry();
+
+      }
     );
 
-  } else if (stackV2Shell) {
 
-    stackV2Visible =
-      true;
-
-
-    startStackV2Cycle();
-
-  }
-
-
-  if (stackV2Shell) {
-
-    activateStackV2Domain(
-      "systems"
+  stackV3Clear
+    ?.addEventListener(
+      "click",
+      resetStackV3
     );
 
-  }
+
+  stackV3EmptyReset
+    ?.addEventListener(
+      "click",
+      resetStackV3
+    );
+
+
+  stackV3EvidenceCards
+    .forEach(card => {
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          navigateStackV3Proof(
+            card.dataset
+              .stackV3Proof
+          );
+
+        }
+      );
+
+    });
 
 
   document.addEventListener(
-    "visibilitychange",
-    () => {
+    "keydown",
+    event => {
 
-      if (!stackV2Shell) {
-        return;
+      const activeTag =
+        document.activeElement
+          ?.tagName
+          ?.toLowerCase();
+
+
+      const typing =
+        activeTag === "input"
+        || activeTag === "textarea"
+        || document.activeElement
+             ?.isContentEditable;
+
+
+      if (
+        event.key === "/"
+        && !typing
+        && stackV3Search
+        && stackV3System
+      ) {
+
+        const rect =
+          stackV3System
+            .getBoundingClientRect();
+
+
+        const nearStack =
+          rect.bottom > 0
+          && rect.top
+             < window.innerHeight;
+
+
+        if (nearStack) {
+
+          event.preventDefault();
+
+          stackV3Search.focus();
+
+        }
+
       }
 
 
-      if (document.hidden) {
+      if (
+        event.key === "Escape"
+        && document.activeElement
+           === stackV3Search
+      ) {
 
-        stopStackV2Cycle();
+        resetStackV3();
 
-        return;
-
-      }
-
-
-      if (stackV2Visible) {
-
-        startStackV2Cycle();
+        stackV3Search.blur();
 
       }
 
     }
   );
 
+
+  if (stackV3System) {
+
+    resetStackV3();
+
+  }
 
 
   /* ====================================================================== */
